@@ -1,0 +1,25 @@
+{
+	"hooks": {
+		"UserPromptSubmit": [
+			{
+				"hooks": [
+					{
+						"type": "command",
+						"command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/remind-handoff.sh\""
+					}
+				]
+			}
+		],
+		"PreToolUse": [
+			{
+				"matcher": "Write|Edit",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/prose-tells-guard.sh\""
+					}
+				]
+			}
+		]
+	}
+}

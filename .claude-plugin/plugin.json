@@ -1,0 +1,12 @@
+{
+	"name": "stuartshields-skills",
+	"version": "0.1.0-beta-1",
+	"description": "Working skills for Claude Code. Currently: handoff, for passing work between sessions and closing one out deliberately.",
+	"author": {
+		"name": "Stuart Shields"
+	},
+	"homepage": "https://github.com/stuartshields/stuartshields-skills",
+	"repository": "https://github.com/stuartshields/stuartshields-skills",
+	"license": "MIT",
+	"keywords": ["skills", "handoff", "context", "session", "continuity"]
+}
