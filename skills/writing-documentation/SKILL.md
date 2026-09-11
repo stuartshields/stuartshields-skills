@@ -6,10 +6,10 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: "\"${CLAUDE_PLUGIN_ROOT}/skills/writing-documentation/scripts/prose-tells-guard.sh\""
+          command: "\"${CLAUDE_SKILL_DIR}/scripts/prose-tells-guard.sh\""
 ---
 
-<!-- Last updated: 2026-09-11T19:05+10:00 -->
+<!-- Last updated: 2026-09-11T20:35+10:00 -->
 
 # Writing documentation
 
