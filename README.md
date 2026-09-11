@@ -10,9 +10,13 @@ Five working skills for Claude Code in one plugin, with the two hooks that keep 
 | `writing-docblocks` | you add or fix a PHPDoc, JSDoc, TSDoc or SassDoc block | per-language tag order and a `@param` checker |
 | `writing-pull-requests` | you write a pull request title and body | a context script that prints a push and size verdict |
 
-Every skill is namespaced, so `/stuartshields-skills:handoff` invokes the first one directly. Claude also picks each one up from the phrases in its description.
+Installed as a plugin, every skill is namespaced, so `/stuartshields-skills:handoff` invokes the first one directly. Installed with the skills CLI, it is plain `/handoff`. Either way, Claude also picks each one up from the phrases in its description.
 
 ## Install
+
+Two routes. The plugin keeps the skills namespaced and updates through `/plugin`. The skills CLI drops them straight into your skills directory alongside skills from other repositories.
+
+### As a plugin
 
 1. Add the marketplace:
 
@@ -34,6 +38,14 @@ To try a local checkout without installing it:
 claude --plugin-dir /path/to/stuartshields-skills
 ```
 
+### With the skills CLI
+
+```
+npx skills add stuartshields/stuartshields-skills -g
+```
+
+That installs all five into `~/.claude/skills/`. Drop `-g` to install into the current project's `.claude/skills/` instead, or add `--skill handoff` to take one. The CLI symlinks by default; pass `--copy` for a standalone copy.
+
 ## Requirements
 
 - `bash` and `jq` for the hooks and scripts. Without `jq` a hook exits silently and its skill still works.
@@ -42,7 +54,7 @@ claude --plugin-dir /path/to/stuartshields-skills
 
 ## How the hooks work
 
-Two skills declare a hook in their `SKILL.md` frontmatter rather than in a plugin-wide `hooks.json`. Claude Code registers the hook the first time you invoke that skill in a session and keeps it running until the session ends.
+Two skills declare a hook in their `SKILL.md` frontmatter rather than in a plugin-wide `hooks.json`. Claude Code registers the hook the first time you invoke that skill in a session and keeps it running until the session ends. Each hook finds its script through `${CLAUDE_SKILL_DIR}`, so it runs the same from a plugin install and from `~/.claude/skills/`.
 
 Nothing fires before you have used the skill. A Markdown file written before `writing-documentation` has run gets no prose check, and a long session that never invoked `handoff` gets no nudge to close out. I chose that trade over a plugin-wide hook so that installing the plugin changes nothing until you reach for a skill.
 

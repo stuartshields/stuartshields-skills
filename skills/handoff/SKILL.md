@@ -5,10 +5,10 @@ hooks:
   UserPromptSubmit:
     - hooks:
         - type: command
-          command: "\"${CLAUDE_PLUGIN_ROOT}/skills/handoff/scripts/remind-handoff.sh\""
+          command: "\"${CLAUDE_SKILL_DIR}/scripts/remind-handoff.sh\""
 ---
 
-<!-- Last updated: 2026-09-11T20:05+10:00 -->
+<!-- Last updated: 2026-09-11T20:35+10:00 -->
 
 # Handoff
 
