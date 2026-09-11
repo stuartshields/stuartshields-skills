@@ -3,6 +3,8 @@
 # sessions without a recent HANDOFF.md. The skill decides whether a document is
 # the right channel, so this does not assume /clear is the next move.
 # Policy: advisory only (exit 0), surfaced before the next prompt.
+# Declared in the frontmatter of ../SKILL.md, so Claude Code registers it when
+# the handoff skill is invoked and keeps it for the rest of the session.
 # Rate-limited to once per session per condition (cleared on SessionStart clear|resume).
 # Requires jq.
 

@@ -1,9 +1,14 @@
 ---
 name: handoff
 description: Write, update, or resume from a handoff document (docs/HANDOFF.md) so the next session can continue with fresh context, and close a session out deliberately. Use whenever the user says "handoff", "update HANDOFF", "add to HANDOFF", "READ HANDOFF", "wrap up", "tidy up", "cleanup", "close out", "finish up", asks to save or continue work, or says they are about to /clear, compact or exit. Also use when resuming: reading an existing HANDOFF.md and picking the work back up, including any outstanding P0/P1/P2 findings it points at.
+hooks:
+  UserPromptSubmit:
+    - hooks:
+        - type: command
+          command: "\"${CLAUDE_PLUGIN_ROOT}/skills/handoff/scripts/remind-handoff.sh\""
 ---
 
-<!-- Last updated: 2026-08-31T11:00+11:00 -->
+<!-- Last updated: 2026-09-11T19:40+10:00 -->
 
 # Handoff
 

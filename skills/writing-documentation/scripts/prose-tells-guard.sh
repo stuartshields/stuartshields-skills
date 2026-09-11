@@ -1,8 +1,10 @@
 #!/bin/bash
 # PreToolUse advisory for Markdown prose: em dashes and assertion vocabulary.
+# Declared in the frontmatter of ../SKILL.md, so Claude Code registers it when
+# the writing-documentation skill is invoked and keeps it for the session.
 #
 # The literal word list lives in prose-scan.awk, and the same list is written
-# out for reading in skills/writing-documentation/references/prose.md. A
+# out for reading in ../references/prose.md. A
 # denylist inside an always-on instruction has to be pattern-matched against,
 # and it over-suppresses: en dashes expressly permitted for numeric ranges still
 # went unused across six files, because a prohibition swallows its own carve-out.

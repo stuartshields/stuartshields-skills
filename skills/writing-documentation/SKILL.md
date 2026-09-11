@@ -1,6 +1,12 @@
 ---
 name: writing-documentation
 description: Use when writing or rewriting documentation the user will actually read or ship, including README.md, docs/*.md, package docs, and skill bodies. Also use when they say the docs are verbose, bloated, disconnected, hard to scan, or out of date, or when a change needs its documentation updated to match. Also use when asked whether a document should be British or US English, first or third person, or which style guide it follows. Not for inline code comments.
+hooks:
+  PreToolUse:
+    - matcher: "Write|Edit"
+      hooks:
+        - type: command
+          command: "\"${CLAUDE_PLUGIN_ROOT}/skills/writing-documentation/scripts/prose-tells-guard.sh\""
 ---
 
 <!-- Last updated: 2026-09-11T19:05+10:00 -->
@@ -13,7 +19,7 @@ For documentation someone reads: `README.md`, `docs/*.md`, package docs, skill b
 
 `references/prose.md` governs every sentence written here: punctuation, the substance rules, and the word list a checker would hold. Read it once before drafting. Do not carry a copy of it into a project doc; point at the project's own style note where one exists.
 
-This plugin's `hooks/prose-tells-guard.sh` flags em dashes and assertion vocabulary on every Markdown write. Where it flags a word used in its genuine technical sense, or an em dash inside a quotation, say so and keep it. Rewording around a correct word to satisfy a checker makes the prose worse.
+`scripts/prose-tells-guard.sh` flags em dashes and assertion vocabulary on every Markdown write. It is declared in this file's frontmatter, so it registers the first time this skill is invoked in a session and stays on for the rest of it. Where it flags a word used in its genuine technical sense, or an em dash inside a quotation, say so and keep it. Rewording around a correct word to satisfy a checker makes the prose worse.
 
 A checker catches words, not shapes. `references/tells.md` holds the sentence shapes that pass every rule here and still read as generated. Read it during the line-level pass in step 4.
 

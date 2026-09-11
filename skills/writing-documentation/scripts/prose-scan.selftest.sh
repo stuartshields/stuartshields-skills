@@ -1,6 +1,6 @@
 #!/bin/bash
 # Regression guard for prose-scan.awk. Run it after any edit to that file:
-#   bash hooks/prose-scan.selftest.sh
+#   bash skills/writing-documentation/scripts/prose-scan.selftest.sh
 #
 # Every expected value here was measured against the scanner rather than
 # reasoned about, so a failure means behaviour changed, not that the guard

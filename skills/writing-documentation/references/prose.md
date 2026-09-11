@@ -17,7 +17,7 @@ Applies to everything written under this skill, and to the title and body a pull
 
 ## Words to check
 
-A checker's list, not a rule. Every entry has a legitimate use somewhere: quoting a source that uses em dashes, unlocking a keychain, financial leverage, robustness testing. This plugin's `hooks/prose-tells-guard.sh` holds the same list in `hooks/prose-scan.awk` and reports against it on every Markdown write. Where the hook is not running, read the draft against the table once, during the line-level pass in step 4 of `SKILL.md`.
+A checker's list, not a rule. Every entry has a legitimate use somewhere: quoting a source that uses em dashes, unlocking a keychain, financial leverage, robustness testing. The skill's `scripts/prose-tells-guard.sh` holds the same list in `scripts/prose-scan.awk` and reports against it on every Markdown write once the skill has been invoked in the session. Before that, or where the hook is not running, read the draft against the table once, during the line-level pass in step 4 of `SKILL.md`.
 
 | Finding | Words or shapes |
 |---|---|
