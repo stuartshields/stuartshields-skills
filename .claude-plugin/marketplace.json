@@ -6,12 +6,12 @@
 	"plugins": [
 		{
 			"name": "stuartshields-skills",
-			"description": "Working skills for Claude Code. Currently: handoff, for passing work between sessions and closing one out deliberately.",
+			"description": "Five working skills for Claude Code: handoff between sessions, audit-versus-fix discipline for reviews, and writing documentation, docblocks and pull requests. Two advisory hooks keep the prose and the handoff honest.",
 			"source": "./",
 			"version": "1.0.0",
 			"homepage": "https://github.com/stuartshields/stuartshields-skills",
 			"license": "MIT",
-			"keywords": ["skills", "handoff", "context", "session", "continuity"]
+			"keywords": ["skills", "handoff", "context", "session", "continuity", "code-review", "documentation", "docblocks", "pull-requests", "prose"]
 		}
 	]
 }

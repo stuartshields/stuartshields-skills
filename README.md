@@ -8,7 +8,7 @@ Five working skills for Claude Code in one plugin, with the two hooks that keep 
 | `audit-vs-fix-discipline` | you ask for a review, audit or investigation and want findings, not edits | a tiered output format, a false-positive list, search traps |
 | `writing-documentation` | you write or rewrite a README, a docs page or a skill body | a prose hook, a style-guide comparison, three reader tests |
 | `writing-docblocks` | you add or fix a PHPDoc, JSDoc, TSDoc or SassDoc block | per-language tag order and a `@param` checker |
-| `writing-pull-requests` | you write a pull request title and body | a context script that prints a push and size verdict |
+| `writing-pull-requests` | you write a pull request title and body | a context script that prints a push and size verdict, and the same prose hook |
 
 Installed as a plugin, every skill is namespaced, so `/stuartshields-skills:handoff` invokes the first one directly. Installed with the skills CLI, it is plain `/handoff`. Either way, Claude also picks each one up from the phrases in its description.
 
@@ -44,7 +44,7 @@ claude --plugin-dir /path/to/stuartshields-skills
 npx skills add stuartshields/stuartshields-skills -g
 ```
 
-That installs all five into `~/.claude/skills/`. Drop `-g` to install into the current project's `.claude/skills/` instead, or add `--skill handoff` to take one. The CLI symlinks by default; pass `--copy` for a standalone copy.
+That installs all five into `~/.claude/skills/`. Drop `-g` to install into the current project's `.claude/skills/` instead, or add `--skill handoff` to take one. The CLI symlinks by default; pass `--copy` for a standalone copy. Each skill installs on its own: none reads a file from a sibling's directory.
 
 ## Requirements
 
@@ -54,9 +54,9 @@ That installs all five into `~/.claude/skills/`. Drop `-g` to install into the c
 
 ## How the hooks work
 
-Two skills declare a hook in their `SKILL.md` frontmatter rather than in a plugin-wide `hooks.json`. Claude Code registers the hook the first time you invoke that skill in a session and keeps it running until the session ends. Each hook finds its script through `${CLAUDE_SKILL_DIR}`, so it runs the same from a plugin install and from `~/.claude/skills/`.
+Three skills declare a hook in their `SKILL.md` frontmatter rather than in a plugin-wide `hooks.json`. Claude Code registers the hook the first time you invoke that skill in a session and keeps it running until the session ends. Each hook finds its script through `${CLAUDE_SKILL_DIR}`, so it runs the same from a plugin install and from `~/.claude/skills/`.
 
-Nothing fires before you have used the skill. A Markdown file written before `writing-documentation` has run gets no prose check, and a long session that never invoked `handoff` gets no nudge to close out. I chose that trade over a plugin-wide hook so that installing the plugin changes nothing until you reach for a skill.
+Nothing fires before you have used the skill. A Markdown file written before `writing-documentation` or `writing-pull-requests` has run gets no prose check, and a long session that never invoked `handoff` gets no nudge to close out. I chose that trade over a plugin-wide hook so that installing the plugin changes nothing until you reach for a skill.
 
 Both hooks are advisory. They always exit 0 and never block a write or a prompt.
 
@@ -127,6 +127,8 @@ Which tags, in what order, in which syntax, for PHPDoc, JSDoc, TSDoc, WordPress 
 ## `writing-pull-requests`
 
 A one-sentence tl;dr, an imperative title, and a four-part body: what changed, why, how to verify, where to start. `scripts/pr-context.sh [base]` prints a `PUSHABLE` verdict first, then the diff stat against Google's thresholds, the PR template, the commit convention and any linked issue. On `PUSHABLE: NO` the skill says why and stops.
+
+It ships its own copy of the prose hook and the word list, so a session that invokes only this skill still gets the check on Markdown writes. The copies are kept identical to the `writing-documentation` ones by that skill's selftest.
 
 The size thresholds are 100 lines comfortable and 1000 too large, with spread counted separately. It never pushes or opens a pull request unless you ask in the same turn.
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- `writing-pull-requests` carries its own `references/prose.md`, and the pointers into `writing-documentation` are gone from the other writing skills. A skill installed alone with `npx skills add --skill` no longer references files it does not have.
+- `writing-pull-requests` declares the prose hook in its frontmatter and ships its own copy of `prose-tells-guard.sh` and `prose-scan.awk`, so a session that invokes only that skill gets the check. `prose-scan.selftest.sh` fails when any of the three copied files diverges from the `writing-documentation` original.
+
 ## 1.0.0
 
 The three objections to this number in `0.1.0-beta-1` no longer hold: the plugin has a git remote, `prose-scan.selftest.sh` covers the prose scanner, and it ships five skills.

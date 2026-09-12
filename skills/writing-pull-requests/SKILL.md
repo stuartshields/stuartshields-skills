@@ -1,9 +1,15 @@
 ---
 name: writing-pull-requests
 description: Use when writing or rewriting a pull request description, PR title, MR description, or a tl;dr for a change. Triggers on "write the PR", "PR description", "raise a PR", "open a PR", "describe this branch", "summarise this change for review", "what should the PR say", and on being asked to improve a thin or stale PR body. Also use when asked how to word a commit message for a branch that will become a PR.
+hooks:
+  PreToolUse:
+    - matcher: "Write|Edit"
+      hooks:
+        - type: command
+          command: "\"${CLAUDE_SKILL_DIR}/scripts/prose-tells-guard.sh\""
 ---
 
-<!-- Last updated: 2026-09-11T19:05+10:00 -->
+<!-- Last updated: 2026-09-12T19:32+10:00 -->
 
 # Writing pull requests
 
@@ -14,8 +20,12 @@ reads several of these a day. They came for two things the diff cannot give
 them: the intent, and the evidence it works. Everything else in the body delays
 those.
 
-The prose rules in `../writing-documentation/references/prose.md` apply to the
+The prose rules in `references/prose.md` apply to the
 title and the body: punctuation, the substance rules, and the word list.
+`scripts/prose-tells-guard.sh` reports against that list on every Markdown
+write once this skill has been invoked, so a body saved for `--body-file` gets
+checked. A body passed inline to `gh` does not, so read it against the list
+before printing it.
 
 ## Output contract
 
@@ -73,9 +83,6 @@ It goes **above** the template where one exists, and at the top of the body wher
 - **No file names, no counts, no ticket numbers.** Those are in the body.
 - **Readable with no context.** It gets pasted into Slack and read on a phone with the rest cut off.
 - **One sentence.** Where it will not fit in one, the PR is doing two things. See step 5.
-
-The reading evidence behind the tl;dr and the routing lines is in
-`../writing-documentation/references/attention.md`.
 
 ## 3. Title
 

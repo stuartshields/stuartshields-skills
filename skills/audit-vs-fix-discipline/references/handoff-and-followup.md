@@ -22,8 +22,6 @@ Include for each surviving finding:
 - The failure scenario if it was established, since that is the expensive part to reconstruct.
 - Anything already ruled out, so the next session does not re-investigate it.
 
-See the `handoff` skill for the surrounding process.
-
 ## Findings the user declines
 
 Record the decision next to the finding, with the reason given. A declined finding that reappears in the next audit with no memory of the decision wastes the user's time twice: once reading it, once re-explaining.
