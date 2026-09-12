@@ -1,4 +1,4 @@
-# Handoff and follow-up
+# Follow-up
 
 What happens to findings after the report is delivered.
 
@@ -12,7 +12,7 @@ The usual shape: an audit produces tiers, the user fixes one tier, the rest wait
 
 ## Recording before a clear
 
-Outstanding findings must reach `docs/HANDOFF.md` in full: tier, `file:line`, and the one-line problem for each. A handoff saying "6 P2s remain" cannot be worked from, because the next session has to redo the audit to find out what they were.
+Outstanding findings must be written down, in full, somewhere the next session reads before it starts: tier, `file:line`, and the one-line problem for each. Use whatever the project already keeps for session notes. A note saying "6 P2s remain" cannot be worked from, because the next session has to redo the audit to find out what they were.
 
 Include for each surviving finding:
 
@@ -29,7 +29,7 @@ Record the decision next to the finding, with the reason given. A declined findi
 Two decisions are worth distinguishing:
 
 - **Won't fix**: understood and accepted. Do not raise it again unless the surrounding code changes.
-- **Not now**: still live. It belongs in the handoff.
+- **Not now**: still live. It goes on the outstanding list with the others.
 
 ## Verification is not optional after a fix
 
