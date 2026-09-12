@@ -9,7 +9,7 @@ hooks:
           command: "\"${CLAUDE_SKILL_DIR}/scripts/prose-tells-guard.sh\""
 ---
 
-<!-- Last updated: 2026-09-12T19:32+10:00 -->
+<!-- Last updated: 2026-09-12T20:05+10:00 -->
 
 # Writing pull requests
 
@@ -32,7 +32,7 @@ before printing it.
 **Check the branch can be pushed before writing anything.** Step 1's script prints a `PUSHABLE` verdict.
 
 - **`PUSHABLE: NO`.** Say why in one line and stop. Do not print a tl;dr, a title or a body. The missing remote or the failed auth is what the user has to fix first.
-- **`PUSHABLE: YES`.** Write the three parts and print them.
+- **`PUSHABLE: YES`.** Write the three parts and print them inside one fenced block with the `markdown` info string. The terminal renders Markdown, so a body printed as prose reaches the user with its headings, bullets and fences already consumed, and cannot be pasted into GitHub as written. The fenced block hands over the raw CommonMark. Where the body itself carries a fenced example, open the outer fence with four backticks.
 
 Never post, push or open anything without being asked in that turn. Pushable is a statement about the branch, not permission to use it.
 
