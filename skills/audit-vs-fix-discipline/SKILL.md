@@ -3,7 +3,7 @@ name: audit-vs-fix-discipline
 description: Use when the user asks for a code review or asks you to investigate, audit, check, scan, look at, go through, or find issues in code, especially phrased as "do a code review", "properly investigate", "look for Performance, Security, Bugs, Regression", "do not use training data", or "do not make things up". Any diagnostic request without an explicit fix verb. Also use before answering any question about what code does, whether a job or a file recurs, whether a case is already handled, or whether anything retries, cleans up, or calls something, when the answer would change what the user builds. Also use when about to write "nothing", "never", "always", "only" or "no other" about a codebase.
 ---
 
-<!-- Last updated: 2026-09-12T19:38+10:00 -->
+<!-- Last updated: 2026-09-12T20:20+10:00 -->
 
 # Audit vs fix discipline
 
@@ -97,10 +97,10 @@ Findings outlive the session: the user fixes one tier and the rest wait behind a
 ## Audit: <scope> (<criteria>)
 
 ### P0 (blocking)
-- `path/to/file.ts:42`: <finding>. <why it matters, one sentence>.
+- none
 
 ### P1 (correctness / performance risk)
-- `path/to/file.ts:88`: ...
+- `path/to/file.ts:88`: <finding>. <why it matters, one sentence>.
 
 ### P2 (nits)
 - `path/to/file.ts:120`: ...
@@ -112,7 +112,7 @@ Findings outlive the session: the user fixes one tier and the rest wait behind a
 Want me to fix any of these? Specify by number, by tier ("fix all P0"), or by file.
 ```
 
-Name every tier even when empty. `P0: none` is signal; an omitted header is ambiguous.
+All four headers appear in every report. An empty tier carries the single bullet `- none`, as the P0 tier above shows: it tells the reader that tier was checked, where an omitted header leaves them unsure whether it was.
 
 ## Rationalisation table
 

@@ -86,7 +86,8 @@ function tell(word, label,    pat) {
 	# The list could be five times this length; it is not, because the scanner's
 	# value is that a report means something. A check that fires on most
 	# paragraphs gets skimmed, which is the same reasoning behind LONG_MAX = 30.
-	# Sentence shapes a regex cannot match live in ../references/tells.md.
+	# Sentence shapes a regex cannot match are documented in the
+	# writing-documentation skill under references/tells.md, not in this file.
 	if (l ~ /here.s (the thing|what|why|how)/) emit("throat-clearing opener")
 	if (l ~ /it.s worth noting/)           emit("\"it's worth noting\"")
 	if (l ~ /at the end of the day/)       emit("\"at the end of the day\"")
