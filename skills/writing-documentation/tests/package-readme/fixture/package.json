@@ -1,0 +1,8 @@
+{
+  "name": "slugify-lite",
+  "version": "1.0.0",
+  "description": "URL slugs from titles",
+  "main": "index.js",
+  "license": "MIT",
+  "engines": { "node": ">=18" }
+}
