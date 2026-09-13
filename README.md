@@ -1,6 +1,6 @@
 # stuartshields-skills
 
-Five working skills for Claude Code in one plugin, with the two hooks that keep them honest. I built them after the same three failures kept recurring in my own sessions. A review would quietly fix things, documentation read as generated, and the handoff file grew into a changelog.
+Six working skills for Claude Code in one plugin, with the two hooks that keep them honest. I built them after the same three failures kept recurring in my own sessions. A review would quietly fix things, documentation read as generated, and the handoff file grew into a changelog.
 
 | Skill | Use it when | Ships |
 |---|---|---|
@@ -9,6 +9,7 @@ Five working skills for Claude Code in one plugin, with the two hooks that keep 
 | `writing-documentation` | you write or rewrite a README, a docs page or a skill body | a prose hook, a style-guide comparison, three reader tests |
 | `writing-docblocks` | you add or fix a PHPDoc, JSDoc, TSDoc or SassDoc block | per-language tag order and a `@param` checker |
 | `writing-pull-requests` | you write a pull request title and body | a context script that prints a push and size verdict, and the same prose hook |
+| `testing-skills` | you want to know whether a skill changes what the model does, before shipping or after editing it | a runner that drives an isolated `claude -p` for a control and a treatment arm, and a scenario format each skill's `tests/` directory follows |
 
 Installed as a plugin, every skill is namespaced, so `/stuartshields-skills:handoff` invokes the first one directly. Installed with the skills CLI, it is plain `/handoff`. Either way, Claude also picks each one up from the phrases in its description.
 
@@ -44,7 +45,7 @@ claude --plugin-dir /path/to/stuartshields-skills
 npx skills add stuartshields/stuartshields-skills -g
 ```
 
-That installs all five into `~/.claude/skills/`. Drop `-g` to install into the current project's `.claude/skills/` instead, or add `--skill handoff` to take one. The CLI symlinks by default; pass `--copy` for a standalone copy. Each skill installs on its own: none reads a file from a sibling's directory.
+That installs all six into `~/.claude/skills/`. Drop `-g` to install into the current project's `.claude/skills/` instead, or add `--skill handoff` to take one. The CLI symlinks by default; pass `--copy` for a standalone copy. Each skill installs on its own: none reads a file from a sibling's directory.
 
 ## Requirements
 
@@ -131,6 +132,22 @@ A one-sentence tl;dr, an imperative title, and a four-part body: what changed, w
 It ships its own copy of the prose hook and the word list, so a session that invokes only this skill still gets the check on Markdown writes. The copies are kept identical to the `writing-documentation` ones by that skill's selftest.
 
 The size thresholds are 100 lines comfortable and 1000 too large, with spread counted separately. It never pushes or opens a pull request unless you ask in the same turn.
+
+## `testing-skills`
+
+Whether a skill changes what the model does, before shipping one or after editing one.
+
+### What it fixes
+
+Any run spawned inside a session inherits the user's global `CLAUDE.md` and rules, so a control run without the skill is never clean, and the difference between arms understates what the skill does. The runner drives a separate `claude -p` with its own config directory, logged in once with `CLAUDE_CONFIG_DIR=~/.claude-skill-tests/config claude auth login`.
+
+### Use
+
+`skills/testing-skills/scripts/run-matrix.sh --skills <name> --stage --reps 5`. The control arm gets the request from `tests/<scenario>/request.txt` alone; the treatment arm gets it with one sentence pointing at the skill file. `--stage` runs two reps per arm and extends to five only where the two did not settle it. Results, replies and per-run token usage land under `~/.claude-skill-tests/results/`.
+
+Every skill in this repository carries at least one scenario under `skills/<name>/tests/`, with an optional fixture, setup script and check script. The format is in `skills/testing-skills/references/scenario-format.md`.
+
+Every run happens in a throwaway copy, which is why the runner skips permission prompts; fixtures must be disposable.
 
 ## Licence
 
