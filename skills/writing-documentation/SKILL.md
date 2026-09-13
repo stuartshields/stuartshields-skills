@@ -9,7 +9,7 @@ hooks:
           command: "\"${CLAUDE_SKILL_DIR}/scripts/prose-tells-guard.sh\""
 ---
 
-<!-- Last updated: 2026-09-11T20:35+10:00 -->
+<!-- Last updated: 2026-09-12T20:22+10:00 -->
 
 # Writing documentation
 
@@ -186,6 +186,9 @@ The finding is the first point where a reader would need something the document 
 - an unstated prerequisite
 - a command that assumes a directory
 - a variable introduced without saying where it comes from
+- an install command that fetches somebody else's package
+
+The last one hides behind a successful lookup. A registry entry with the same name is a match only when its `repository` field, maintainer or published description is this project's. A name alone matching proves that the name is taken, and the install section then says so and gives the path or URL that does work.
 
 ### The scan test
 

@@ -97,6 +97,21 @@ check 'a tell inside a code span is not prose' 0 \
 check 'the same tell in prose is flagged' 1 \
 	"$(printf 'It was a seamless migration.\n' | count 'seamless' on)"
 
+# writing-pull-requests carries copies of the word list, the hook and the
+# scanner so it installs alone. Each pair has to stay identical, and the only
+# fixed relationship between them is being siblings in this repository, so the
+# checks are skipped when the skill runs from a single-skill install.
+SKILL_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+PR_DIR="$(cd "$SKILL_DIR/.." && pwd)/writing-pull-requests"
+if [ -d "$PR_DIR" ]; then
+	for shared in references/prose.md scripts/prose-tells-guard.sh scripts/prose-scan.awk; do
+		check "writing-pull-requests carries an identical $shared" 0 \
+			"$(cmp -s "$SKILL_DIR/$shared" "$PR_DIR/$shared"; echo $?)"
+	done
+else
+	printf 'skip  no sibling writing-pull-requests, shared-file sync not checked\n'
+fi
+
 if [ "$FAILED" -gt 0 ]; then
 	printf '\n%s check(s) failed.\n' "$FAILED"
 	exit 1

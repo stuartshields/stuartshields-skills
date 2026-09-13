@@ -1,14 +1,14 @@
 ---
 name: writing-docblocks
-description: Use when adding or fixing a docblock, docstring, or inline comment in code, including PHPDoc, JSDoc, TSDoc, WordPress inline documentation, CSS section comments and SassDoc. Also use when the user says a function is undocumented, asks you to document a class or method, says the comments are stale, wrong, or disagree with the code, or asks which tags a docblock needs and in what order. Also use when a signature changes and its docblock has to follow. Not for README or prose documentation, which is writing-documentation.
+description: Use when adding or fixing a docblock, docstring, or inline comment in code, including PHPDoc, JSDoc, TSDoc, WordPress inline documentation, CSS section comments and SassDoc. Also use when the user says a function is undocumented, asks you to document a class or method, says the comments are stale, wrong, or disagree with the code, or asks which tags a docblock needs and in what order. Also use when a signature changes and its docblock has to follow. Not for README or prose documentation.
 ---
 
-<!-- Last updated: 2026-09-11T19:05+10:00 -->
+<!-- Last updated: 2026-09-12T19:32+10:00 -->
 
 # Writing docblocks and inline comments
 
 The block above a declaration, and the comments inside a function body. Prose
-documentation is `writing-documentation`.
+documentation is a different standard and is not covered here.
 
 `references/comments.md` decides whether a comment earns its place. This skill
 decides which tags, in what order, in what syntax, and whether the block still
@@ -94,9 +94,6 @@ Drop what the language or framework does: what `WP_Query` is, what a Promise
 resolves to. Drop the history: what the code used to do, which bug the rewrite
 fixed, which pass of a session produced it, what an earlier draft got wrong.
 If the block is longer than the function, you are telling a story.
-
-The reading evidence behind this section is in
-`../writing-documentation/references/attention.md`.
 
 ## 4. Inline comments
 
