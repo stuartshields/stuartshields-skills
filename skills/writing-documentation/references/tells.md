@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-09-11T19:05+10:00 -->
+<!-- Last updated: 2026-09-13T19:25+10:00 -->
 
 # Sentence shapes that read as generated
 
@@ -19,30 +19,36 @@ information. `attention.md` carries the measurements.
 
 A negation used to set up its own reversal.
 
-| Shape | Example |
-|---|---|
-| "Not X, but Y" | "This is not a queue, but a scheduler." |
-| "X isn't the problem. Y is." | "Latency isn't the problem. Retries are." |
-| "The answer isn't X. It's Y." | |
-| "It feels like X. It's actually Y." | |
-| "stops being X and starts being Y" | |
+| Shape | Fails | Passes |
+|---|---|---|
+| "Not X, but Y" | "This is not a queue, but a scheduler." | "This is a scheduler." |
+| "X isn't the problem. Y is." | "Latency isn't the problem. Retries are." | "Each retry adds 400ms, and there are three." |
+| "The answer isn't X. It's Y." | "The answer isn't more workers. It's a shorter visibility timeout." | "Cut the visibility timeout to 30s." |
+| "It feels like X. It's actually Y." | "It feels like a network timeout. It's actually pool exhaustion." | "The pool is exhausted, so connections wait for one to free." |
+| "stops being X and starts being Y" | "stops being a cache and starts being a database" | "Writes land here that exist nowhere else." |
 
-**Repair:** state Y. "This is a scheduler." The negated half was scaffolding.
+**Repair:** state Y. The negated half was scaffolding.
 
 ## Negative listing
 
 Naming what a thing is not, several times, before naming what it is. The reader
 holds three rejected ideas to reach one real one.
 
-**Repair:** open with the real one.
+> This is not a cron replacement. It is not a message broker, and it does not
+> persist anything across restarts. It runs a function after a delay you set.
+
+**Repair:** open with the real one, then keep at most one contrast, and only
+where a reader arriving from a named alternative would otherwise guess wrong.
+"It runs a function after a delay you set. Unlike cron, a pending delay is
+dropped on restart."
 
 ## Dramatic fragmentation
 
-| Shape | Example |
-|---|---|
-| "[Noun]. That's it. That's the [thing]." | "One flag. That's it. That's the fix." |
-| "X. And Y. And Z." | |
-| Sentence fragments for emphasis | |
+| Shape | Fails | Passes |
+|---|---|---|
+| "[Noun]. That's it. That's the [thing]." | "One flag. That's it. That's the fix." | "Setting `--strict` fixes it." |
+| "X. And Y. And Z." | "It retries. And backs off. And gives up." | "It retries three times with exponential backoff, then gives up." |
+| Sentence fragments for emphasis | "Three times. Then the dead-letter table." | "After the third retry the event moves to the dead-letter table." |
 
 **Repair:** complete sentences. A fragment used for weight is asking the layout
 to carry an argument the words did not make.
