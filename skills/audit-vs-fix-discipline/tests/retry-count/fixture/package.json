@@ -1,0 +1,5 @@
+{
+  "name": "fetch-retry",
+  "version": "0.1.0",
+  "main": "src/retry.js"
+}
