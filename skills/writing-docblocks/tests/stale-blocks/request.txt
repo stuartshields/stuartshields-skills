@@ -1,0 +1,1 @@
+The docblocks in inc/reading-time.php are stale. Fix them.
