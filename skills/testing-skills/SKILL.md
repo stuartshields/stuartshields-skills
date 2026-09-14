@@ -3,7 +3,7 @@ name: testing-skills
 description: Use when checking whether a skill changes what the model does, before shipping a new or edited skill, when a skill seems not to bind or not to fire, or when asked "test this skill", "does the skill work", "baseline the skill", "run the skill tests", "does it actually change behaviour", or "compare with and without the skill". Also use after editing a skill body, to confirm the edit binds. Not for unit testing application code.
 ---
 
-<!-- Last updated: 2026-09-13T14:20+10:00 -->
+<!-- Last updated: 2026-09-14T14:10+10:00 -->
 
 # Testing skills
 
@@ -11,7 +11,7 @@ A skill is text meant to change what the model does. The only evidence that it d
 
 ## Why the runs leave the session
 
-Any agent spawned from inside a session inherits the user's global `CLAUDE.md` and rules. A run without the skill still carries a weaker version of whatever the skill enforces, so the difference between arms understates the skill and sometimes hides it. Two probes established that replacing the system prompt does not remove those files either, and a separate config directory does not either: with only `CLAUDE_CONFIG_DIR` set, every run of a twenty-run matrix still received `~/.claude/CLAUDE.md` and the path-scoped files under `~/.claude/rules/`. One control read the routing table there and went looking for `~/.claude/agents/`.
+Any agent spawned from inside a session inherits the user's global `CLAUDE.md` and rules. A run without the skill still carries a weaker version of whatever the skill enforces, so the difference between arms understates the skill and sometimes hides it. Two probes established that replacing the system prompt does not remove those files either, and a separate config directory does not either: with only `CLAUDE_CONFIG_DIR` set, every run of a twenty-run matrix still received `~/.claude/CLAUDE.md` and the path-scoped files under `~/.claude/rules/`.
 
 `scripts/run-matrix.sh` therefore drives a separate `claude -p` process with its own config directory, under one of two isolation flags. The control arm sees the request alone either way.
 
@@ -43,13 +43,29 @@ It is interactive, so the user runs it. Type it for them if the harness offers a
 
 ## 2. Write the scenario
 
+**One scenario, then stop.** Write the single most impactful scenario, run it, report what it returned, name the one you would write next, and wait to be told to go on. The most impactful is the rule whose failure the control arm is likeliest to produce unprompted and whose outcome a check can settle, which is usually the rule the skill exists for rather than the one most recently edited.
+
+The reason is not tidiness. Each scenario costs a matrix of full sessions, and what the first one returns routinely changes which scenario is worth writing at all. A first fixture that the control arm passed four times in five turned the second scenario into a different test. A later scenario showed the control already producing the shape a planned third scenario was going to check, which would have measured a gap that does not exist. Both would have been written and paid for under a batch.
+
+**No exceptions:**
+- Not for a scenario that is "obviously needed too".
+- Not for staging the next fixture while the first matrix runs.
+- Not for sharing one fixture across two scenarios written together.
+- A plan naming three scenarios is a plan. Write the first one.
+
 One directory per scenario at `skills/<name>/tests/<scenario>/`. `references/scenario-format.md` carries the four files and their contracts. The two that decide whether the test means anything:
 
 **`request.txt` is what a user would type.** It tempts the failure the skill guards against and says nothing about the skill. "Look at src/retry.js and check for issues" tempts an unrequested fix. "Test whether this follows the audit skill" tests nothing, because both arms now know what is being measured.
 
 **`fixture/` is the smallest repository in which the failure can happen.** A stale docblock next to two correct ones. A handoff document that names a file since renamed. If the control arm cannot fail on it, the fixture is too easy, and a pass on the treatment arm proves nothing.
 
+**Provoke the failure by hand before you build the fixture around it.** Run the thing that decides pass or fail against the shape a model writes from memory, and keep the shapes that break. One command is cheaper than a matrix: a `validate` probe across eight block types found three that a from-memory author gets wrong, after a fixture built without it produced valid output in four of five control runs and settled nothing. A fixture assembled from shapes you have already watched fail starts from a control arm that can fail.
+
 Write `check.sh` for what a count can settle: files changed, a phrase present, a linter's exit code. Leave to the hand read what a count cannot.
+
+**Calibrate the check against a run whose answer you already know, before any matrix depends on it.** Point it at a stored `reply.md` you have read and confirm every key returns what you know to be true. A wrong key does not announce itself: it fills a column with plausible numbers and every row inherits them. One key that counted tool calls was wrong twice in opposite directions, first counting a `grep` over the skill's own references as a run, then missing every real run, and both times the matrix looked clean and was reported from.
+
+**A check that reads the run's transcript parses it; it never greps it.** Command strings in `<config dir>/projects/*.jsonl` are JSON-escaped and span newlines, so a heredoc that builds an input file and then pipes it to the tool sits behind an escaped quote where `grep -o '"command":"[^"]*"'` stops. Walk the file with a JSON parser and read `input.command` off the tool calls.
 
 ## 3. Run
 
@@ -59,15 +75,15 @@ scripts/run-matrix.sh --skills <name> --stage --reps 5
 
 Runs are scenarios × arms × reps, and each is a full `claude -p` session plus whatever the model reads. Without `--skills`, every skill with a `tests/` directory runs: seven scenarios today, so 70 sessions at five reps. Name the skill.
 
-`--stage` runs two reps per arm, then extends to `--reps` only where two did not settle it. Two reps fail to settle an arm whose replies printed different check lines, and a scenario whose two arms printed the same lines. The rule comes from the one five-rep matrix on record (php-tdd, 2026-09-12, 20 runs). Every arm that sat at 0/5 or 5/5 kept its direction in all ten two-rep subsamples. Every arm that sat at 3/5 read as 2/2 in three of them and 0/2 in one. Two reps settle a saturated arm and mislead on a partial one. A settled scenario supports the direction of the effect; a count in a report, such as "5 of 5", still needs the five. Without `--stage`, `--reps` runs flat, and its default is 2.
+`--stage` runs two reps per arm, then extends to `--reps` only where two did not settle it. Two reps fail to settle an arm whose replies printed different check lines, and a scenario whose two arms printed the same lines. Two reps settle a saturated arm and mislead on a partial one, and `references/reading-results.md` carries the subsample counts behind that. A settled scenario supports the direction of the effect; a count in a report, such as "5 of 5", still needs the five. Without `--stage`, `--reps` runs flat, and its default is 2.
 
-`--setting-sources project` switches to installed mode. The list must contain `project`, since nothing else finds a skill under the work copy's `.claude/`, and the runner refuses any other list rather than run a treatment arm with no skill in it. A list containing `user` runs with a warning, because that is the on-top-of-my-rules comparison rather than the bare one.
+`--setting-sources project` switches to installed mode, and the list it is given must contain `project`, since nothing else finds a skill under the work copy's `.claude/`. A list containing `user` runs with a warning, because that measures what the skill adds on top of your own rules rather than what it does alone.
 
-`--arm treatment` reruns one side after an edit. `--out <dir>` resumes: a run with `checks.txt` is skipped, so pointing at an earlier directory reuses its control arm and adds only what is missing. A results directory records its mode and refuses a resume in the other one, which would otherwise compare a control read as text against a treatment reached through the Skill tool. A run the API rejected has no `checks.txt` and is retried the same way; an expired login stops the matrix and prints the login command.
+`--out <dir>` resumes by skipping any run that already has `checks.txt`, so pointing at an earlier directory reuses its control arm and adds only what is missing. A results directory refuses a resume in the other mode, which would compare a control read as text against a treatment reached through the Skill tool.
 
-Each run leaves `result.json`, `reply.md`, `checks.txt` and `usage.txt` (session id, turns, tokens, cost), and the summary totals usage per arm. The `demo-skill` scenario under this skill asks the model to run this runner, so each treatment run that follows the skill is three sessions. Leave it out of a matrix that is not about this skill.
+The `demo-skill` scenario under this skill asks the model to run this runner, so each treatment run that follows the skill is three sessions. Leave it out of a matrix that is not about this skill.
 
-Every run happens in a throwaway copy, which is the only reason the runner skips permission prompts. Do not point `--skills-dir` at anything whose fixtures are not disposable.
+`scripts/run-matrix.sh -h` prints the rest: every flag, the state layout under `~/.claude-skill-tests`, and what each isolation flag drops. Read it there rather than here, where it would go stale against the script.
 
 ## 4. Read every reply
 
@@ -93,6 +109,8 @@ A skill edit is a hypothesis about the failure. Match the form to it:
 
 Rerun the treatment arm alone. The control results stand until the fixture or request changes.
 
+**A treatment arm measures the skill. To measure the edit, add an arm holding the skill as it was.** Rerunning treatment alone answers "skill against nothing", which a shipped skill already passed. Stage the previous version as a third arm, and read the process keys rather than only the outcome: the clearest separation on record sat at 5/5 against 5/5 on validity and split completely on how many times each arm invoked the tool. `references/measuring-an-edit.md` carries the commands, the one-scenario-per-tree trick, and what a null means here.
+
 ## Common mistakes
 
 - **Testing through the session's own agents.** The control is contaminated. Use the runner.
@@ -100,3 +118,4 @@ Rerun the treatment arm alone. The control results stand until the fixture or re
 - **Two reps, then a count.** Two reps settle the direction of a saturated arm and mislead on a partial one, and cannot tell a 5/5 from a 3/5. `--stage` extends the second kind; a count needs the five.
 - **A request that names the skill or its rule.** Both arms then perform for the test.
 - **Fixing the fixture to make the treatment pass.** The fixture changes to make the control fail.
+- **Writing the second scenario before the first has reported.** Its result decides whether the second is worth writing.
