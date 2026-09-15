@@ -1,9 +1,9 @@
 ---
 name: writing-docblocks
-description: Use when adding or fixing a docblock, docstring, or inline comment in code, including PHPDoc, JSDoc, TSDoc, WordPress inline documentation, CSS section comments and SassDoc. Also use when the user says a function is undocumented, asks you to document a class or method, says the comments are stale, wrong, or disagree with the code, or asks which tags a docblock needs and in what order. Also use when a signature changes and its docblock has to follow. Not for README or prose documentation.
+description: Use when adding or fixing a docblock, docstring, or inline comment in code, including PHPDoc, JSDoc, TSDoc, WordPress inline documentation, CSS section comments and SassDoc. Also use when the user says a function is undocumented, asks you to document a class or method, says the comments are stale, wrong, or disagree with the code, or asks which tags a docblock needs and in what order. Also use when a signature changes and its docblock has to follow. Also use before authoring a new file, class or module that will carry docblocks, because the comment budget is easier to hold while writing than to recover afterwards. Not for README or prose documentation.
 ---
 
-<!-- Last updated: 2026-09-12T19:32+10:00 -->
+<!-- Last updated: 2026-09-15T15:18+10:00 -->
 
 # Writing docblocks and inline comments
 
@@ -95,6 +95,11 @@ resolves to. Drop the history: what the code used to do, which bug the rewrite
 fixed, which pass of a session produced it, what an earlier draft got wrong.
 If the block is longer than the function, you are telling a story.
 
+A paragraph arguing for this approach over the one you rejected is PR or ADR
+material, and it is the first thing to go stale. Change the approach and the
+argument survives, defending code that is no longer there, with nothing in the
+build to notice.
+
 ## 4. Inline comments
 
 - A comment sits directly above the line or block it explains, at the same
@@ -133,8 +138,34 @@ what it describes and name what you read. Where you cannot open it, cut the
 sentence, or write the narrower claim you can defend and say which claim you
 softened. Cutting is the cheaper fix.
 
+## 6. Measure the budget
+
+`references/comments.md` puts it at about 15% of a file. Count it rather than
+judge it, because the ratio is invisible while you write and obvious afterwards.
+
+```sh
+f=<file>; echo "$(( $(grep -cE '^\s*(/\*|\*|//)' "$f") * 100 / $(wc -l < "$f") ))% comment"
+```
+
+Scaffolding counts toward that figure: `/**`, `*/`, the blank `*` separators and
+the tag rows. A file of many short functions therefore sits high by
+construction, so separate the two before cutting anything.
+
+```sh
+grep -cE '^\s*(\*|//) [A-Za-z`]' <file>   # prose lines only
+```
+
+A file that is two-thirds scaffolding has a different problem from one that is
+two-thirds prose, and only the second is narration. Cut the paragraphs that
+argue before the ones that warn.
+
 ## When a signature changes
 
 The docblock changes in the same edit, not as a follow-up. Add the changelog tag
 the language uses. WordPress wants a second `@since` with the version and a
 sentence describing the change, with the original line left in place.
+
+A comment describing a list, a count or a structure follows the same rule.
+"All four groups" outlived the addition of a fifth and still read as correct,
+because nothing checks a sentence against the thing it counts. Changing the
+thing changes the sentence, in the same edit.

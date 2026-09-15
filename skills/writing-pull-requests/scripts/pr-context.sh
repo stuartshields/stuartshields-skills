@@ -159,7 +159,9 @@ elif [ -f "$TEMPLATE" ]; then
 	echo "Found: $TEMPLATE"
 	echo "--- required sections ---"
 	grep -nE '^#{1,4} ' "$TEMPLATE" || echo "(no headings; read the file in full)"
-	echo "Fill every section. Where one does not apply, say why rather than deleting the heading."
+	echo "Headings only. Open $TEMPLATE and read it before drafting: the"
+	echo "instruction for each section, and any rule about the title, sits in an"
+	echo "HTML comment this list does not show."
 fi
 echo
 

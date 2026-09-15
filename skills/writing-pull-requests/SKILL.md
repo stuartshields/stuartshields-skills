@@ -9,7 +9,7 @@ hooks:
           command: "\"${CLAUDE_SKILL_DIR}/scripts/prose-tells-guard.sh\""
 ---
 
-<!-- Last updated: 2026-09-12T20:05+10:00 -->
+<!-- Last updated: 2026-09-15T15:59+10:00 -->
 
 # Writing pull requests
 
@@ -35,6 +35,8 @@ before printing it.
 - **`PUSHABLE: YES`.** Write the three parts and print them inside one fenced block with the `markdown` info string. The terminal renders Markdown, so a body printed as prose reaches the user with its headings, bullets and fences already consumed, and cannot be pasted into GitHub as written. The fenced block hands over the raw CommonMark. Where the body itself carries a fenced example, open the outer fence with four backticks.
 
 Never post, push or open anything without being asked in that turn. Pushable is a statement about the branch, not permission to use it.
+
+**On a revision, print only the sections that changed**, each in its own fenced block. Reprinting a body the reader has already been through in order to alter two lines buries the two lines.
 
 **Write it once, in the shape below.** Gather the context and read the diff first, then write the tl;dr, the title and the body in that order. Do not draft loosely and reshape it into the contract afterwards: a reshaped draft keeps the first draft's structure and quietly loses the parts the contract asks for.
 
@@ -88,6 +90,8 @@ It goes **above** the template where one exists, and at the top of the body wher
 
 Imperative, present tense, no trailing period. "Delete the FizzBuzz RPC and replace it with the new system", not "Deleting the FizzBuzz RPC and replacing it".
 
+A template's own title rule outranks this section. Read the HTML comment at the top of the template file before writing a title: a required issue-key prefix, a banned word, or a length limit lives there, and a deploy or release script may reject a title that breaks it.
+
 Add a Conventional Commits prefix only where step 1 found the repo already uses one.
 
 A title passes when a reader who knows the codebase but not this branch could
@@ -98,6 +102,16 @@ A commit message stays a label. A commit that grows into three paragraphs is a P
 
 ## 4. Body
 
+**Where the repo has a template, it is the body. Start there, not here.** Step 1 prints it under `=== TEMPLATE ===`, having checked every location GitHub supports: `pull_request_template.md` in the root, in `docs/` and in `.github/`, and the `PULL_REQUEST_TEMPLATE/` directory form in each of the three.
+
+Open the file and read it. The script prints its headings, and the headings are the least of it: the instruction for each section sits in an HTML comment beneath it, and that comment is where a team states what it wants and what will reject the PR. One repo's template carried its title convention and a deploy script that fails on titles naming internal tooling, neither of which appears in a heading list.
+
+Its sections replace the four below, in its order, under its headings, including any rule it states about the title. Fill every one. Where a section does not apply, say why in a clause rather than deleting the heading: a missing heading reads as an oversight, an answered one reads as a decision. One exception: a section only a human can supply, such as screenshots, a recording or a demo link. Leave the heading with nothing beneath it. Prose explaining why you attached no screenshot is addressed to the person who has to attach it, and it occupies the space the screenshot goes in.
+
+The tl;dr from step 2 still goes above the template.
+
+The four parts below are the fallback for a repo with no template. They are also the standard for what the content inside a template's headings has to do, whatever those headings are called.
+
 Four parts. Drop one only where the change genuinely has nothing to put in it. `references/anatomy.md` carries what each holds, with the source quotes.
 
 Use the shortest form that carries a fact: a table row beats a bullet, a bullet
@@ -107,9 +121,13 @@ ticket number is under linked issues, so neither is repeated in prose.
 
 **What changed.** The mechanism, not a file listing. A reviewer has the file list on the Files tab and cannot get the intent anywhere else.
 
-**Why.** The problem, and why this approach rather than the obvious alternative. Name any shortcoming: it gets a faster review than leaving a reviewer to find the gap. Summarise what a linked document decided rather than linking it alone, because access restrictions and retention policies outlive the link.
+**Why.** The problem, and why this approach rather than the obvious alternative. Give the standing reason, not the route you took to it: "post metadata belongs to the template that frames it" is the why, "we narrowed the scope after the first pass" is the chronology, and the second is invisible in the diff and useless to a reviewer. Name any shortcoming: it gets a faster review than leaving a reviewer to find the gap. Summarise what a linked document decided rather than linking it alone, because access restrictions and retention policies outlive the link.
 
-**How to verify.** The commands you ran and what they returned, plus what a reviewer should run. "Tests pass" is a claim; `47 passed, 0 failed` is evidence. Where something was not run, say which and why.
+**How to verify.** The commands you ran and what they returned, plus what a reviewer should run. "Tests pass" is a claim; `47 passed, 0 failed` is evidence.
+
+Every piece of that evidence has to be reproducible from the branch. A gate failing on an untracked local file, or a figure from a script you did not commit, is not part of the change: a reviewer cannot run it, so it reads as noise and invites a question you then have to answer. Cite the result, or leave it out.
+
+**Status is a checkbox, not a sentence.** Where the template carries a pre-review checklist, an unticked box already says the step is outstanding. Saying it again in prose ("steps 1 to 6 have not been run in a browser", "no screenshots attached") addresses the author rather than the reviewer, and it is the first thing a reader skips. Leave the box unticked and write nothing. Only where there is no checklist does an untested area need a clause of its own.
 
 **Where to start.** Two lines do the work, and the second is the one people omit:
 
@@ -128,8 +146,6 @@ Banned openers, in the tl;dr and the body: "This PR", "This change", "Small",
 "Quick", "Just", "As discussed", "It is worth noting", and any apology for the
 size, which occupies the line where the split proposal should be. Start at the
 verb.
-
-**A template's sections are the team's decision and outrank this list.** Fill every one. Where a section does not apply, say why in a clause rather than deleting the heading: a missing heading reads as an oversight, an answered one reads as a decision.
 
 `references/examples.md` has a before and after at three sizes. Take the shape
 and none of the figures.
