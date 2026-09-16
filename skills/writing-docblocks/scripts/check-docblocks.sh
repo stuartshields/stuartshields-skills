@@ -49,6 +49,27 @@ for FILE in "$@"; do
 		return s
 	}
 
+	# Strip a leading `{...}` type, counting depth so a nested generic such as
+	# `{Array<{a: string}>}` is removed whole. Matching to the first `}` instead
+	# leaves the row starting at `>`, where the name pattern fails and the row is
+	# dropped without being counted.
+	function strip_type(s,   depth, i, c) {
+		if (substr(s, 1, 1) != "{") return s
+		depth = 0
+		for (i = 1; i <= length(s); i++) {
+			c = substr(s, i, 1)
+			if (c == "{") depth++
+			else if (c == "}") {
+				if (--depth == 0) {
+					s = substr(s, i + 1)
+					sub(/^[ \t]*/, "", s)
+					return s
+				}
+			}
+		}
+		return s
+	}
+
 	# Strip a default value, type annotation, and modifiers from one
 	# declared parameter so only the name is left.
 	function param_name(raw,   s, n, parts) {
@@ -89,7 +110,7 @@ for FILE in "$@"; do
 			# TSDoc: @param name - description
 			rest = line
 			sub(/^.*@param[ \t]*/, "", rest)
-			sub(/^\{[^}]*\}[ \t]*/, "", rest)
+			rest = strip_type(rest)
 			sub(/^\[/, "", rest)
 			if (match(rest, /^[A-Za-z_$][A-Za-z0-9_$.]*/)) {
 				name = substr(rest, RSTART, RLENGTH)

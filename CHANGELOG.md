@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- `check-docblocks.sh` strips a JSDoc `@param` type by counting brace depth. Matching to the first `}` cut `{Array<{countries: string[]}>}` at its inner brace, leaving the row starting at `>`, where the name pattern failed and the parameter was dropped without being counted. The block then read as one row against two parameters, so a correct docblock was reported as a disagreement, beside a closing line telling the reader to fix it.
+- `writing-docblocks` ships `docblock-guard.sh`, declared in its frontmatter beside the other two hooks. It flags a paragraph arguing against a rejected approach, a comment describing history rather than current state, and a run over five prose lines. A single sentence naming a rejected approach is not flagged: `references/comments.md` asks for one, and only a paragraph is ADR material. Tag rows, multi-line `@return {{...}}` types and markerless `/* ... */` continuation lines each needed handling, having been miscounted in a different direction each time.
+- The `writing-docblocks` description covers an edit that rewrites a comment while the stated task is a fix, a refactor or a styling change. Every other trigger described the comment as the headline of the request, and it almost never is, so the skill went uninvoked across sessions of comment writing.
+- `writing-documentation` instructs invoking `writing-docblocks` for inline comments instead of stating that it does not cover them. A boundary is satisfied by stopping, so the referral was read and not acted on.
+
 - `writing-pull-requests` carries its own `references/prose.md`, and the pointers into `writing-documentation` are gone from the other writing skills. A skill installed alone with `npx skills add --skill` no longer references files it does not have.
 - `writing-pull-requests` declares the prose hook in its frontmatter and ships its own copy of `prose-tells-guard.sh` and `prose-scan.awk`, so a session that invokes only that skill gets the check. `prose-scan.selftest.sh` fails when any of the three copied files diverges from the `writing-documentation` original.
 - Added `testing-skills`: a runner that drives an isolated `claude -p` for a control arm and a treatment arm per scenario, so the arm without the skill carries none of the user's global rules, plus the scenario format and a guide to reading results.

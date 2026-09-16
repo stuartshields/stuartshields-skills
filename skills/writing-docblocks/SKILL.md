@@ -1,9 +1,15 @@
 ---
 name: writing-docblocks
-description: Use when adding or fixing a docblock, docstring, or inline comment in code, including PHPDoc, JSDoc, TSDoc, WordPress inline documentation, CSS section comments and SassDoc. Also use when the user says a function is undocumented, asks you to document a class or method, says the comments are stale, wrong, or disagree with the code, or asks which tags a docblock needs and in what order. Also use when a signature changes and its docblock has to follow. Also use before authoring a new file, class or module that will carry docblocks, because the comment budget is easier to hold while writing than to recover afterwards. Not for README or prose documentation.
+description: Use when adding or fixing a docblock, docstring, or inline comment in code, including PHPDoc, JSDoc, TSDoc, WordPress inline documentation, CSS section comments and SassDoc. Also use when the user says a function is undocumented, asks you to document a class or method, says the comments are stale, wrong, or disagree with the code, or asks which tags a docblock needs and in what order. Also use when a signature changes and its docblock has to follow. Also use before authoring a new file, class or module that will carry docblocks, because the comment budget is easier to hold while writing than to recover afterwards. Also use whenever an edit adds or rewrites a comment while the stated task is something else, such as a bug fix, a refactor, a rename, or a styling change: the comment is almost never the headline of the request that produces it, so this is the case that gets missed. Not for README or prose documentation.
+hooks:
+  PreToolUse:
+    - matcher: "Write|Edit"
+      hooks:
+        - type: command
+          command: "\"${CLAUDE_SKILL_DIR}/scripts/docblock-guard.sh\""
 ---
 
-<!-- Last updated: 2026-09-15T15:18+10:00 -->
+<!-- Last updated: 2026-09-16T21:40+10:00 -->
 
 # Writing docblocks and inline comments
 
@@ -110,6 +116,13 @@ build to notice.
 - A warning needs its consequence. "Careful here" says nothing. "Careful: this
   runs before `init`, so `get_option()` returns the default" says what breaks.
 - Never comment out code. `references/comments.md` covers it.
+
+`scripts/docblock-guard.sh` flags paragraph-length argument, history, and runs
+over five prose lines on every code write. It is declared in this file's
+frontmatter, so it registers the first time this skill is invoked in a session
+and stays on for the rest of it. Advisory, never blocking. A single sentence
+naming a rejected approach is deliberately not flagged: `references/comments.md`
+asks for it, and only a paragraph arguing the case is ADR material.
 
 ## 5. Verify the block against the code
 
