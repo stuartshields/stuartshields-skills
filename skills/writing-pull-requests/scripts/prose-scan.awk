@@ -15,6 +15,9 @@
 BEGIN {
 	fence = 0
 	frontmatter = 0
+	# Content indented at the very start of a file is a code block, with no
+	# preceding blank line to mark it.
+	was_blank = 1
 	FS = "\n"
 	# Sentence-length checking is opt-in. prose-tells-guard.sh turns it on for
 	# Markdown writes, where a 40-word sentence is worth catching before the file
@@ -38,6 +41,24 @@ frontmatter { next }
 # Fenced blocks are skipped whole: a code sample legitimately contains anything.
 /^[[:space:]]*(```|~~~)/ { fence = !fence; next }
 fence { next }
+
+# An indented code block is four spaces after a blank line. The same indentation
+# under a list item is continuation prose, so list state is tracked: skipping
+# every indented line would leave real sentences unchecked, which is the worse
+# error of the two. A blank line does not close a block, since code samples
+# contain them.
+{
+	if ($0 ~ /^[[:space:]]*$/) {
+		was_blank = 1
+	} else {
+		if ($0 ~ /^[[:space:]]{0,3}([-*+]|[0-9]+\.)[[:space:]]/) list_open = 1
+		else if ($0 ~ /^[^[:space:]]/) list_open = 0
+
+		indent_code = ($0 ~ /^([ ]{4}|\t)/ && !list_open && (was_blank || indent_code))
+		was_blank = 0
+	}
+}
+indent_code { next }
 
 function emit(finding) {
 	print NR "\t" finding "\t" snippet

@@ -90,7 +90,7 @@ It goes **above** the template where one exists, and at the top of the body wher
 
 Imperative, present tense, no trailing period. "Delete the FizzBuzz RPC and replace it with the new system", not "Deleting the FizzBuzz RPC and replacing it".
 
-A template's own title rule outranks this section. Read the HTML comment at the top of the template file before writing a title: a required issue-key prefix, a banned word, or a length limit lives there, and a deploy or release script may reject a title that breaks it.
+A template's own title rule outranks this section. Read the HTML comment at the top of the template file before writing a title. A required issue-key prefix, a banned word, or a length limit lives there. A deploy or release script may reject a title that breaks one.
 
 Add a Conventional Commits prefix only where step 1 found the repo already uses one.
 
@@ -104,7 +104,7 @@ A commit message stays a label. A commit that grows into three paragraphs is a P
 
 **Where the repo has a template, it is the body. Start there, not here.** Step 1 prints it under `=== TEMPLATE ===`, having checked every location GitHub supports: `pull_request_template.md` in the root, in `docs/` and in `.github/`, and the `PULL_REQUEST_TEMPLATE/` directory form in each of the three.
 
-Open the file and read it. The script prints its headings, and the headings are the least of it: the instruction for each section sits in an HTML comment beneath it, and that comment is where a team states what it wants and what will reject the PR. One repo's template carried its title convention and a deploy script that fails on titles naming internal tooling, neither of which appears in a heading list.
+Open the file and read it. The script prints its headings, and the headings are the least of it. The instruction for each section sits in an HTML comment beneath it. That comment is where a team states what it wants and what will reject the PR. One repo's template carried its title convention and a deploy script that fails on titles naming internal tooling, neither of which appears in a heading list.
 
 Its sections replace the four below, in its order, under its headings, including any rule it states about the title. Fill every one. Where a section does not apply, say why in a clause rather than deleting the heading: a missing heading reads as an oversight, an answered one reads as a decision. One exception: a section only a human can supply, such as screenshots, a recording or a demo link. Leave the heading with nothing beneath it. Prose explaining why you attached no screenshot is addressed to the person who has to attach it, and it occupies the space the screenshot goes in.
 
@@ -121,13 +121,13 @@ ticket number is under linked issues, so neither is repeated in prose.
 
 **What changed.** The mechanism, not a file listing. A reviewer has the file list on the Files tab and cannot get the intent anywhere else.
 
-**Why.** The problem, and why this approach rather than the obvious alternative. Give the standing reason, not the route you took to it: "post metadata belongs to the template that frames it" is the why, "we narrowed the scope after the first pass" is the chronology, and the second is invisible in the diff and useless to a reviewer. Name any shortcoming: it gets a faster review than leaving a reviewer to find the gap. Summarise what a linked document decided rather than linking it alone, because access restrictions and retention policies outlive the link.
+**Why.** The problem, and why this approach rather than the obvious alternative. Give the standing reason, not the route you took to it. The why is "post metadata belongs to the template that frames it". The chronology is "we narrowed the scope after the first pass", which is invisible in the diff and useless to a reviewer. Name any shortcoming: it gets a faster review than leaving a reviewer to find the gap. Summarise what a linked document decided rather than linking it alone, because access restrictions and retention policies outlive the link.
 
 **How to verify.** The commands you ran and what they returned, plus what a reviewer should run. "Tests pass" is a claim; `47 passed, 0 failed` is evidence.
 
-Every piece of that evidence has to be reproducible from the branch. A gate failing on an untracked local file, or a figure from a script you did not commit, is not part of the change: a reviewer cannot run it, so it reads as noise and invites a question you then have to answer. Cite the result, or leave it out.
+Every piece of that evidence has to be reproducible from the branch. A gate failing on an untracked local file, or a figure from a script you did not commit, is not part of the change. A reviewer cannot run it, so it reads as noise and invites a question you then have to answer. Cite the result, or leave it out.
 
-**Status is a checkbox, not a sentence.** Where the template carries a pre-review checklist, an unticked box already says the step is outstanding. Saying it again in prose ("steps 1 to 6 have not been run in a browser", "no screenshots attached") addresses the author rather than the reviewer, and it is the first thing a reader skips. Leave the box unticked and write nothing. Only where there is no checklist does an untested area need a clause of its own.
+**Status is a checkbox, not a sentence.** Where the template carries a pre-review checklist, an unticked box already says the step is outstanding. Saying it again in prose ("steps 1 to 6 have not been run in a browser", "no screenshots attached") addresses the author rather than the reviewer. It is the first thing a reader skips. Leave the box unticked and write nothing. Only where there is no checklist does an untested area need a clause of its own.
 
 **Where to start.** Two lines do the work, and the second is the one people omit:
 
