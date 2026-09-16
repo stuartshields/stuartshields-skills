@@ -1,13 +1,13 @@
 # stuartshields-skills
 
-Six working skills for Claude Code in one plugin, with the two hooks that keep them honest. I built them after the same three failures kept recurring in my own sessions. A review would quietly fix things, documentation read as generated, and the handoff file grew into a changelog.
+Six working skills for Claude Code in one plugin, with the three hooks that keep them honest. I built them after the same three failures kept recurring in my own sessions. A review would quietly fix things, documentation read as generated, and the handoff file grew into a changelog.
 
 | Skill | Use it when | Ships |
 |---|---|---|
 | `handoff` | you are about to `/clear`, wrap up, or resume from `docs/HANDOFF.md` | a template and a long-session nudge hook |
 | `audit-vs-fix-discipline` | you ask for a review, audit or investigation and want findings, not edits | a tiered output format, a false-positive list, search traps |
 | `writing-documentation` | you write or rewrite a README, a docs page or a skill body | a prose hook, a style-guide comparison, three reader tests |
-| `writing-docblocks` | you add or fix a PHPDoc, JSDoc, TSDoc or SassDoc block | per-language tag order and a `@param` checker |
+| `writing-docblocks` | you add or fix a PHPDoc, JSDoc, TSDoc or SassDoc block | per-language tag order, a `@param` checker, and a comment hook |
 | `writing-pull-requests` | you write a pull request title and body | a context script that prints a push and size verdict, and the same prose hook |
 | `testing-skills` | you want to know whether a skill changes what the model does, before shipping or after editing it | a runner that drives an isolated `claude -p` for a control and a treatment arm, and a scenario format each skill's `tests/` directory follows |
 
@@ -55,11 +55,11 @@ That installs all six into `~/.claude/skills/`. Drop `-g` to install into the cu
 
 ## How the hooks work
 
-Three skills declare a hook in their `SKILL.md` frontmatter rather than in a plugin-wide `hooks.json`. Claude Code registers the hook the first time you invoke that skill in a session and keeps it running until the session ends. Each hook finds its script through `${CLAUDE_SKILL_DIR}`, so it runs the same from a plugin install and from `~/.claude/skills/`.
+Four skills declare a hook in their `SKILL.md` frontmatter rather than in a plugin-wide `hooks.json`. Claude Code registers the hook the first time you invoke that skill in a session and keeps it running until the session ends. Each hook finds its script through `${CLAUDE_SKILL_DIR}`, so it runs the same from a plugin install and from `~/.claude/skills/`.
 
-Nothing fires before you have used the skill. A Markdown file written before `writing-documentation` or `writing-pull-requests` has run gets no prose check, and a long session that never invoked `handoff` gets no nudge to close out. I chose that trade over a plugin-wide hook so that installing the plugin changes nothing until you reach for a skill.
+Nothing fires before you have used the skill. A Markdown file written before `writing-documentation` or `writing-pull-requests` has run gets no prose check, and a comment written before `writing-docblocks` has run gets no comment check. A long session that never invoked `handoff` gets no nudge to close out. I chose that trade over a plugin-wide hook so that installing the plugin changes nothing until you reach for a skill.
 
-Both hooks are advisory. They always exit 0 and never block a write or a prompt.
+All three hooks are advisory. They always exit 0 and never block a write or a prompt.
 
 ## `handoff`
 
@@ -124,6 +124,10 @@ For a document someone reads: a README, a docs page, a skill body. Four question
 Which tags, in what order, in which syntax, for PHPDoc, JSDoc, TSDoc, WordPress inline documentation, CSS section comments and SassDoc. The nearest convention wins: the two nearest blocks in the file, then the linter config, then the bundled reference for that language. `references/comments.md` decides whether a comment earns its place at all.
 
 `scripts/check-docblocks.sh <file>` checks `@param` names against the signature in PHP, JavaScript and TypeScript. It names blocks it could not parse rather than passing them. It does not check types, `@return` or `@throws`, which the project linter does.
+
+### Its hook
+
+`scripts/docblock-guard.sh` runs before every Write or Edit to a code file once the skill has been invoked. It reports a paragraph arguing against a rejected approach, a comment describing history rather than current state, and a comment run past five prose lines. One sentence naming a rejected approach is left alone, because `references/comments.md` asks for it.
 
 ## `writing-pull-requests`
 

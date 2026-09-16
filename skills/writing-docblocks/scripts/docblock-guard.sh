@@ -1,12 +1,9 @@
 #!/bin/bash
 # PreToolUse advisory for code comments: rejected-alternative prose, session
-# history, and overlong blocks. Declared in ../../../hooks/hooks.json at the
-# plugin root rather than in a skill's frontmatter, so it runs whenever the
-# plugin is enabled instead of only after something invokes the skill.
-#
-# That placement is the point. A comment is almost never the stated task, so the
-# skill goes uninvoked while comments are written anyway, and a guard that waits
-# for invocation waits forever.
+# history, and overlong blocks. Declared in ../SKILL.md frontmatter, so it
+# registers when that skill is first invoked in a session. ${CLAUDE_SKILL_DIR}
+# resolves under a plugin install and under ~/.claude/skills/ alike, where
+# ${CLAUDE_PLUGIN_ROOT} is unset.
 #
 # ADVISORY, NEVER BLOCKING. Every phrase here has a legitimate use: a comment
 # genuinely recording why an approach was rejected is what ../references/
