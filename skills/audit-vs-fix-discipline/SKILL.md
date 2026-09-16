@@ -36,7 +36,7 @@ An ambiguous prompt defaults to audit mode. If they meant fix, they would have s
 
 ## Verify, don't recall
 
-Check each claim against the code actually in front of you. The most common way a review goes wrong is asserting what a codebase like this usually does instead of what this one does: a function that "must" exist, a flag that "should" be there, a helper assumed to work the way its name suggests.
+Check each claim against the code actually in front of you. The most common way a review goes wrong is asserting what a codebase like this usually does instead of what this one does. It arrives as a function that "must" exist, a flag that "should" be there, or a helper assumed to work the way its name suggests.
 
 Confirm the specific thing before flagging it. Read the caller. Grep for the definition. Run the read-only command. A finding that dissolves the moment someone opens the file costs more trust than a missed issue, because it makes every other finding suspect.
 
@@ -60,7 +60,7 @@ Failing one costs a tool call. Getting it wrong costs a design decision built on
 
 ## Calibration
 
-A clean audit is a valid outcome. `P0: none` is a correct answer. Manufacturing findings to populate a tier is the primary failure mode of LLM reviewers: it costs the user more time than a miss does, and teaches them to distrust the whole report.
+A clean audit is a valid outcome. `P0: none` is a correct answer. Manufacturing findings to populate a tier is the primary failure mode of LLM reviewers. It costs the user more time than a miss does, and teaches them to distrust the whole report.
 
 **Gate: 80% confident with a concrete failure mode, or drop it.** Before a finding goes in a tier:
 
@@ -112,7 +112,7 @@ Findings outlive the session: the user fixes one tier and the rest wait behind a
 Want me to fix any of these? Specify by number, by tier ("fix all P0"), or by file.
 ```
 
-All four headers appear in every report. An empty tier carries the single bullet `- none`, as the P0 tier above shows: it tells the reader that tier was checked, where an omitted header leaves them unsure whether it was.
+All four headers appear in every report. An empty tier carries the single bullet `- none`, as the P0 tier above shows. That tells the reader the tier was checked, where an omitted header leaves them unsure.
 
 ## Rationalisation table
 

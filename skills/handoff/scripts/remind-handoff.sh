@@ -12,12 +12,15 @@ command -v jq > /dev/null 2>&1 || exit 0
 
 INPUT=$(cat)
 
-EVENT=$(echo "$INPUT" | jq -r '.hook_event_name // ""')
+# Parse errors are discarded, not printed: this runs before every prompt, so
+# unparseable input would put jq's complaint on screen each time. Silence leaves
+# every value empty and the guards below exit.
+EVENT=$(echo "$INPUT" | jq -r '.hook_event_name // ""' 2>/dev/null)
 [ "$EVENT" != "UserPromptSubmit" ] && exit 0
 
-CWD=$(echo "$INPUT" | jq -r '.cwd // ""')
-SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // ""')
-TRANSCRIPT=$(echo "$INPUT" | jq -r '.transcript_path // ""')
+CWD=$(echo "$INPUT" | jq -r '.cwd // ""' 2>/dev/null)
+SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // ""' 2>/dev/null)
+TRANSCRIPT=$(echo "$INPUT" | jq -r '.transcript_path // ""' 2>/dev/null)
 
 [ -z "$SESSION_ID" ] && exit 0
 [ -z "$TRANSCRIPT" ] || [ ! -f "$TRANSCRIPT" ] && exit 0

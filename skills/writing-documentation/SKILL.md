@@ -1,6 +1,6 @@
 ---
 name: writing-documentation
-description: Use when writing or rewriting documentation the user will actually read or ship, including README.md, docs/*.md, package docs, and skill bodies. Also use when they say the docs are verbose, bloated, disconnected, hard to scan, or out of date, or when a change needs its documentation updated to match. Also use when asked whether a document should be British or US English, first or third person, or which style guide it follows. Not for inline code comments.
+description: Use when writing or rewriting documentation the user will actually read or ship, including README.md, docs/*.md, package docs, and skill bodies. Also use when they say the docs are verbose, bloated, disconnected, hard to scan, or out of date, or when a change needs its documentation updated to match. Also use when asked whether a document should be British or US English, first or third person, or which style guide it follows. For inline code comments and docblocks, invoke writing-docblocks instead of this skill.
 hooks:
   PreToolUse:
     - matcher: "Write|Edit"
@@ -13,7 +13,9 @@ hooks:
 
 # Writing documentation
 
-For documentation someone reads: `README.md`, `docs/*.md`, package docs, skill bodies. Inline code comments are `writing-docblocks`, which is a different standard.
+For documentation someone reads: `README.md`, `docs/*.md`, package docs, skill bodies.
+
+Inline code comments and docblocks are a different standard. Stop and invoke `writing-docblocks` for those rather than applying the rules below to them. This is a redirection, not a boundary: reading it and going no further leaves the comments ungoverned.
 
 ## Prose style
 

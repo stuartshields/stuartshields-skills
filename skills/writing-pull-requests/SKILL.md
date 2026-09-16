@@ -1,6 +1,6 @@
 ---
 name: writing-pull-requests
-description: Use when writing or rewriting a pull request description, PR title, MR description, or a tl;dr for a change. Triggers on "write the PR", "PR description", "raise a PR", "open a PR", "describe this branch", "summarise this change for review", "what should the PR say", and on being asked to improve a thin or stale PR body. Also use when asked how to word a commit message for a branch that will become a PR.
+description: Use when writing or rewriting a pull request description, PR title, or MR description. Triggers on "write the PR", "PR description", "raise a PR", "open a PR", "describe this branch", "summarise this change for review", "what should the PR say", and on being asked to improve a thin or stale PR body. Also use when asked how to word a commit message for a branch that will become a PR.
 hooks:
   PreToolUse:
     - matcher: "Write|Edit"
@@ -9,11 +9,11 @@ hooks:
           command: "\"${CLAUDE_SKILL_DIR}/scripts/prose-tells-guard.sh\""
 ---
 
-<!-- Last updated: 2026-09-12T20:05+10:00 -->
+<!-- Last updated: 2026-09-15T15:59+10:00 -->
 
 # Writing pull requests
 
-Produces three things, in this order: a one-sentence tl;dr, a title, a body.
+Produces two things, in this order: a title, a body.
 
 The reader is a reviewer who knows the codebase, has the Files tab open, and
 reads several of these a day. They came for two things the diff cannot give
@@ -31,12 +31,14 @@ before printing it.
 
 **Check the branch can be pushed before writing anything.** Step 1's script prints a `PUSHABLE` verdict.
 
-- **`PUSHABLE: NO`.** Say why in one line and stop. Do not print a tl;dr, a title or a body. The missing remote or the failed auth is what the user has to fix first.
-- **`PUSHABLE: YES`.** Write the three parts and print them inside one fenced block with the `markdown` info string. The terminal renders Markdown, so a body printed as prose reaches the user with its headings, bullets and fences already consumed, and cannot be pasted into GitHub as written. The fenced block hands over the raw CommonMark. Where the body itself carries a fenced example, open the outer fence with four backticks.
+- **`PUSHABLE: NO`.** Say why in one line and stop. Do not print a title or a body. The missing remote or the failed auth is what the user has to fix first.
+- **`PUSHABLE: YES`.** Write both parts and print them inside one fenced block with the `markdown` info string. The terminal renders Markdown, so a body printed as prose reaches the user with its headings, bullets and fences already consumed, and cannot be pasted into GitHub as written. The fenced block hands over the raw CommonMark. Where the body itself carries a fenced example, open the outer fence with four backticks.
 
 Never post, push or open anything without being asked in that turn. Pushable is a statement about the branch, not permission to use it.
 
-**Write it once, in the shape below.** Gather the context and read the diff first, then write the tl;dr, the title and the body in that order. Do not draft loosely and reshape it into the contract afterwards: a reshaped draft keeps the first draft's structure and quietly loses the parts the contract asks for.
+**On a revision, print only the sections that changed**, each in its own fenced block. Reprinting a body the reader has already been through in order to alter two lines buries the two lines.
+
+**Write it once, in the shape below.** Gather the context and read the diff first, then write the title and the body in that order. Do not draft loosely and reshape it into the contract afterwards: a reshaped draft keeps the first draft's structure and quietly loses the parts the contract asks for.
 
 ## 1. Gather the context
 
@@ -66,27 +68,11 @@ Where the diff is too large to read in full, say so in your reply, and read the 
 
 `references/detection.md` has the individual commands, for when the script cannot run or its answer needs checking.
 
-## 2. Write the tl;dr
-
-One sentence. What changed and why. Under 25 words.
-
-```markdown
-## tl;dr
-
-Adds retry-with-backoff to the webhook queue so a flaky endpoint no longer
-drops events.
-```
-
-It goes **above** the template where one exists, and at the top of the body where one does not.
-
-- **What and why, both.** "Adds retry-with-backoff" is half a sentence.
-- **No file names, no counts, no ticket numbers.** Those are in the body.
-- **Readable with no context.** It gets pasted into Slack and read on a phone with the rest cut off.
-- **One sentence.** Where it will not fit in one, the PR is doing two things. See step 5.
-
-## 3. Title
+## 2. Title
 
 Imperative, present tense, no trailing period. "Delete the FizzBuzz RPC and replace it with the new system", not "Deleting the FizzBuzz RPC and replacing it".
+
+A template's own title rule outranks this section. Read the HTML comment at the top of the template file before writing a title. A required issue-key prefix, a banned word, or a length limit lives there. A deploy or release script may reject a title that breaks one.
 
 Add a Conventional Commits prefix only where step 1 found the repo already uses one.
 
@@ -96,7 +82,15 @@ examples, each true and none specific.
 
 A commit message stays a label. A commit that grows into three paragraphs is a PR body in the wrong file.
 
-## 4. Body
+## 3. Body
+
+**Where the repo has a template, it is the body. Start there, not here.** Step 1 prints it under `=== TEMPLATE ===`, having checked every location GitHub supports: `pull_request_template.md` in the root, in `docs/` and in `.github/`, and the `PULL_REQUEST_TEMPLATE/` directory form in each of the three.
+
+Open the file and read it. The script prints its headings, and the headings are the least of it. The instruction for each section sits in an HTML comment beneath it. That comment is where a team states what it wants and what will reject the PR. One repo's template carried its title convention and a deploy script that fails on titles naming internal tooling, neither of which appears in a heading list.
+
+Its sections replace the four below, in its order, under its headings, including any rule it states about the title. Fill every one. Where a section does not apply, say why in a clause rather than deleting the heading: a missing heading reads as an oversight, an answered one reads as a decision. One exception: a section only a human can supply, such as screenshots, a recording or a demo link. Leave the heading with nothing beneath it. Prose explaining why you attached no screenshot is addressed to the person who has to attach it, and it occupies the space the screenshot goes in.
+
+The four parts below are the fallback for a repo with no template. They are also the standard for what the content inside a template's headings has to do, whatever those headings are called.
 
 Four parts. Drop one only where the change genuinely has nothing to put in it. `references/anatomy.md` carries what each holds, with the source quotes.
 
@@ -107,9 +101,13 @@ ticket number is under linked issues, so neither is repeated in prose.
 
 **What changed.** The mechanism, not a file listing. A reviewer has the file list on the Files tab and cannot get the intent anywhere else.
 
-**Why.** The problem, and why this approach rather than the obvious alternative. Name any shortcoming: it gets a faster review than leaving a reviewer to find the gap. Summarise what a linked document decided rather than linking it alone, because access restrictions and retention policies outlive the link.
+**Why.** The problem, and why this approach rather than the obvious alternative. Give the standing reason, not the route you took to it. The why is "post metadata belongs to the template that frames it". The chronology is "we narrowed the scope after the first pass", which is invisible in the diff and useless to a reviewer. Name any shortcoming: it gets a faster review than leaving a reviewer to find the gap. Summarise what a linked document decided rather than linking it alone, because access restrictions and retention policies outlive the link.
 
-**How to verify.** The commands you ran and what they returned, plus what a reviewer should run. "Tests pass" is a claim; `47 passed, 0 failed` is evidence. Where something was not run, say which and why.
+**How to verify.** The commands you ran and what they returned, plus what a reviewer should run. "Tests pass" is a claim; `47 passed, 0 failed` is evidence.
+
+Every piece of that evidence has to be reproducible from the branch. A gate failing on an untracked local file, or a figure from a script you did not commit, is not part of the change. A reviewer cannot run it, so it reads as noise and invites a question you then have to answer. Cite the result, or leave it out.
+
+**Status is a checkbox, not a sentence.** Where the template carries a pre-review checklist, an unticked box already says the step is outstanding. Saying it again in prose ("steps 1 to 6 have not been run in a browser", "no screenshots attached") addresses the author rather than the reviewer. It is the first thing a reader skips. Leave the box unticked and write nothing. Only where there is no checklist does an untested area need a clause of its own.
 
 **Where to start.** Two lines do the work, and the second is the one people omit:
 
@@ -124,17 +122,15 @@ The body records the change, not the drafting. Drop what you tried first, how
 many runs the tests took, what an earlier version of the branch did, and what a
 rebase removed. None of it is in the diff, so none of it is reviewable.
 
-Banned openers, in the tl;dr and the body: "This PR", "This change", "Small",
+Banned openers, in the title and the body: "This PR", "This change", "Small",
 "Quick", "Just", "As discussed", "It is worth noting", and any apology for the
 size, which occupies the line where the split proposal should be. Start at the
 verb.
 
-**A template's sections are the team's decision and outrank this list.** Fill every one. Where a section does not apply, say why in a clause rather than deleting the heading: a missing heading reads as an oversight, an answered one reads as a decision.
-
 `references/examples.md` has a before and after at three sizes. Take the shape
 and none of the figures.
 
-## 5. Size check
+## 4. Size check
 
 Step 1's script prints the verdict against Google's thresholds: 100 lines is comfortable, 1000 is too large, and spread counts separately, so 200 lines across 50 files is also too large.
 
@@ -142,12 +138,11 @@ Two exceptions, both surfaced by the script: a whole-file deletion counts as rou
 
 Over the threshold with neither exception applying, state the line count and propose a split by concern. Do not compensate with a longer description.
 
-## 6. Self-review before handing it over
+## 5. Self-review before handing it over
 
 1. **Does every claim in the body match the diff?** A described behaviour that is not in the change costs a reviewer the most time.
 2. **Is there anything in the diff the body does not mention?** A stray debugging line, a version bump, a reformatted file.
-3. **Does the tl;dr survive alone?** Read it with the rest covered.
-4. **Where the PR was already open, is everything a human wrote and the diff
+3. **Where the PR was already open, is everything a human wrote and the diff
    still supports still there?** Say what you removed and why.
 
 Report what you checked and what you found.

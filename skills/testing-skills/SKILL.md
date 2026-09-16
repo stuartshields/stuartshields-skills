@@ -11,7 +11,7 @@ A skill is text meant to change what the model does. The only evidence that it d
 
 ## Why the runs leave the session
 
-Any agent spawned from inside a session inherits the user's global `CLAUDE.md` and rules. A run without the skill still carries a weaker version of whatever the skill enforces, so the difference between arms understates the skill and sometimes hides it. Two probes established that replacing the system prompt does not remove those files either, and a separate config directory does not either: with only `CLAUDE_CONFIG_DIR` set, every run of a twenty-run matrix still received `~/.claude/CLAUDE.md` and the path-scoped files under `~/.claude/rules/`.
+Any agent spawned from inside a session inherits the user's global `CLAUDE.md` and rules. A run without the skill still carries a weaker version of whatever the skill enforces, so the difference between arms understates the skill and sometimes hides it. Two probes established that replacing the system prompt does not remove those files, and nor does a separate config directory. With only `CLAUDE_CONFIG_DIR` set, every run of a twenty-run matrix still received `~/.claude/CLAUDE.md` and the path-scoped files under `~/.claude/rules/`.
 
 `scripts/run-matrix.sh` therefore drives a separate `claude -p` process with its own config directory, under one of two isolation flags. The control arm sees the request alone either way.
 
@@ -25,7 +25,7 @@ Two ways, answering different questions.
 
 **Installed, with `--setting-sources project`.** The runner copies the skill into the work copy at `.claude/skills/<name>/` and hands both arms the bare request. The model reaches it through the Skill tool, as it would in a real session. The `tests/` directory is left out of that copy, because a model that read its own scenario would know what was being measured.
 
-Installed mode puts the description under test alongside the body. That is worth having, and it is also a confound: a treatment arm that matches its control might be a description that never fired rather than a body that did not bind. `usage.txt` records `skill_invoked` per run to separate the two, and the summary prints it beside the checks.
+Installed mode puts the description under test alongside the body. That is worth having, and it is also a confound. A treatment arm that matches its control might be a description that never fired rather than a body that did not bind. `usage.txt` records `skill_invoked` per run to separate the two, and the summary prints it beside the checks.
 
 Two things installed mode does not give you. The bundled skills stay in the listing for both arms, so the baseline is a stock Claude rather than a bare one. Work copies also move out of `$HOME`, because project sources walk up from the work directory and `~/.claude/CLAUDE.md` sits on that walk. The same probe on 2026-09-13 read the global protocol from a copy under `$HOME` and nothing from one under `/tmp`. The runner relocates the copies and prints where they went.
 
@@ -43,7 +43,7 @@ It is interactive, so the user runs it. Type it for them if the harness offers a
 
 ## 2. Write the scenario
 
-**One scenario, then stop.** Write the single most impactful scenario, run it, report what it returned, name the one you would write next, and wait to be told to go on. The most impactful is the rule whose failure the control arm is likeliest to produce unprompted and whose outcome a check can settle, which is usually the rule the skill exists for rather than the one most recently edited.
+**One scenario, then stop.** Write the single most impactful scenario, run it, report what it returned, name the one you would write next, and wait to be told to go on. The most impactful is the rule whose failure the control arm is likeliest to produce unprompted, and whose outcome a check can settle. That is usually the rule the skill exists for, not the one most recently edited.
 
 The reason is not tidiness. Each scenario costs a matrix of full sessions, and what the first one returns routinely changes which scenario is worth writing at all. A first fixture that the control arm passed four times in five turned the second scenario into a different test. A later scenario showed the control already producing the shape a planned third scenario was going to check, which would have measured a gap that does not exist. Both would have been written and paid for under a batch.
 
@@ -59,11 +59,11 @@ One directory per scenario at `skills/<name>/tests/<scenario>/`. `references/sce
 
 **`fixture/` is the smallest repository in which the failure can happen.** A stale docblock next to two correct ones. A handoff document that names a file since renamed. If the control arm cannot fail on it, the fixture is too easy, and a pass on the treatment arm proves nothing.
 
-**Provoke the failure by hand before you build the fixture around it.** Run the thing that decides pass or fail against the shape a model writes from memory, and keep the shapes that break. One command is cheaper than a matrix: a `validate` probe across eight block types found three that a from-memory author gets wrong, after a fixture built without it produced valid output in four of five control runs and settled nothing. A fixture assembled from shapes you have already watched fail starts from a control arm that can fail.
+**Provoke the failure by hand before you build the fixture around it.** Run the thing that decides pass or fail against the shape a model writes from memory, and keep the shapes that break. One command is cheaper than a matrix. A `validate` probe across eight block types found three that a from-memory author gets wrong. The fixture built without it produced valid output in four of five control runs and settled nothing. A fixture assembled from shapes you have already watched fail starts from a control arm that can fail.
 
 Write `check.sh` for what a count can settle: files changed, a phrase present, a linter's exit code. Leave to the hand read what a count cannot.
 
-**Calibrate the check against a run whose answer you already know, before any matrix depends on it.** Point it at a stored `reply.md` you have read and confirm every key returns what you know to be true. A wrong key does not announce itself: it fills a column with plausible numbers and every row inherits them. One key that counted tool calls was wrong twice in opposite directions, first counting a `grep` over the skill's own references as a run, then missing every real run, and both times the matrix looked clean and was reported from.
+**Calibrate the check against a run whose answer you already know, before any matrix depends on it.** Point it at a stored `reply.md` you have read and confirm every key returns what you know to be true. A wrong key does not announce itself: it fills a column with plausible numbers and every row inherits them. One key that counted tool calls was wrong twice in opposite directions. It first counted a `grep` over the skill's own references as a run, then missed every real run. Both times the matrix looked clean and was reported from.
 
 **A check that reads the run's transcript parses it; it never greps it.** Command strings in `<config dir>/projects/*.jsonl` are JSON-escaped and span newlines, so a heredoc that builds an input file and then pipes it to the tool sits behind an escaped quote where `grep -o '"command":"[^"]*"'` stops. Walk the file with a JSON parser and read `input.command` off the tool calls.
 
@@ -109,7 +109,7 @@ A skill edit is a hypothesis about the failure. Match the form to it:
 
 Rerun the treatment arm alone. The control results stand until the fixture or request changes.
 
-**A treatment arm measures the skill. To measure the edit, add an arm holding the skill as it was.** Rerunning treatment alone answers "skill against nothing", which a shipped skill already passed. Stage the previous version as a third arm, and read the process keys rather than only the outcome: the clearest separation on record sat at 5/5 against 5/5 on validity and split completely on how many times each arm invoked the tool. `references/measuring-an-edit.md` carries the commands, the one-scenario-per-tree trick, and what a null means here.
+**A treatment arm measures the skill. To measure the edit, add an arm holding the skill as it was.** Rerunning treatment alone answers "skill against nothing", which a shipped skill already passed. Stage the previous version as a third arm, and read the process keys rather than only the outcome. The clearest separation on record sat at 5/5 against 5/5 on validity, and split completely on how many times each arm invoked the tool. `references/measuring-an-edit.md` carries the commands, the one-scenario-per-tree trick, and what a null means here.
 
 ## Common mistakes
 

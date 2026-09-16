@@ -134,7 +134,7 @@ tutorial and not a reference page, a docblock or a PR.
 
 W3C's *Making Content Usable* is the accessibility standard behind the contract
 terms in `writing-documentation` step 3, the docblock description rule, and the
-PR tl;dr.
+PR title.
 
 | Pattern | What it asks for |
 |---|---|
