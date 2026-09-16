@@ -4,14 +4,6 @@
 
 What each part carries, and the source that settles it.
 
-## tl;dr
-
-One sentence, what and why, under 25 words, above everything including a
-template.
-
-Not a summary of the body. It is the sentence someone reads in a Slack unfurl,
-a notification preview, or a release note, with everything after it cut off.
-
 ## Title
 
 Google's rule:
@@ -105,7 +97,7 @@ part of a larger issue, reference it without a keyword.
 
 A repo template's sections are the team's decision and outrank this anatomy.
 Fill every one. Where one does not apply, say so in a clause rather than
-deleting the heading. The tl;dr still goes above it.
+deleting the heading.
 
 ## Sources
 

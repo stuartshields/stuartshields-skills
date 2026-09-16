@@ -127,7 +127,7 @@ Which tags, in what order, in which syntax, for PHPDoc, JSDoc, TSDoc, WordPress 
 
 ## `writing-pull-requests`
 
-A one-sentence tl;dr, an imperative title, and a four-part body: what changed, why, how to verify, where to start. `scripts/pr-context.sh [base]` prints a `PUSHABLE` verdict first, then the diff stat against Google's thresholds, the PR template, the commit convention and any linked issue. On `PUSHABLE: NO` the skill says why and stops.
+An imperative title and a four-part body: what changed, why, how to verify, where to start. `scripts/pr-context.sh [base]` prints a `PUSHABLE` verdict first, then the diff stat against Google's thresholds, the PR template, the commit convention and any linked issue. On `PUSHABLE: NO` the skill says why and stops.
 
 It ships its own copy of the prose hook and the word list, so a session that invokes only this skill still gets the check on Markdown writes. The copies are kept identical to the `writing-documentation` ones by that skill's selftest.
 

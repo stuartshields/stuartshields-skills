@@ -31,13 +31,6 @@ What did you do to fix it?" It is true and it is useless.
 **After**
 
 ```markdown
-## tl;dr
-
-Fixes the excerpt trim dropping the last word, which broke every archive
-listing.
-
----
-
 Trim the excerpt on word boundaries rather than character count.
 
 `wp_trim_words()` was being called after a `substr()` that had already cut the
@@ -55,22 +48,13 @@ Manual check on `/blog/` shows full final words on all 10 excerpts.
 Fixes #1841
 ```
 
-Thirteen words in the tl;dr. The invented parts are the path, the line number,
-the two test counts and the issue number; the shape around them is the point.
+The invented parts are the path, the line number, the two test counts and the
+issue number. The shape around them is the point.
 
-The title is the second line of the body here because GitHub takes it
+The title is the first line of the body here because GitHub takes it
 separately. Printed as text, give it its own line labelled Title.
 
 ## Medium: a feature with a trade-off
-
-**tl;dr**
-
-```markdown
-Adds retry-with-backoff to the webhook queue so a flaky endpoint no longer
-drops events.
-```
-
-Fourteen words. What and why. No file names, no ticket number, no line count.
 
 **Body**
 
@@ -125,13 +109,6 @@ them nothing. "Tests pass" is a claim with no output.
 **After**
 
 ```markdown
-## tl;dr
-
-Splits the 2,100-line Order class into four services so the checkout path can
-be tested without a database.
-
----
-
 Extract Order into OrderTotals, OrderTaxes, OrderShipping and OrderPersistence.
 
 **Size warning: 1,840 lines across 34 files.** Google's guidance puts 1,000
@@ -159,9 +136,9 @@ admin screens, which felt like a separate change.
 **Skip** `tests/Unit/Order/*Test.php`, new tests for the extracted interfaces.
 ```
 
-Eighteen words in the tl;dr. The 1,000-line figure is Google's and real; every
-other number here is invented, and they are internally consistent only because
-a worked example that contradicts itself teaches the wrong lesson.
+The 1,000-line figure is Google's and real. Every other number here is
+invented, and they are internally consistent only because a worked example that
+contradicts itself teaches the wrong lesson.
 
 The size warning proposes a split rather than apologising for the absence of
 one. That is the behaviour step 5 of the skill asks for: the description names
@@ -176,7 +153,6 @@ This table is the part to carry into real work. Nothing above it is.
 
 | Line | Purpose |
 |---|---|
-| `## tl;dr` + one sentence | Survives being read alone |
 | Imperative title | What a reader sees in the merge log |
 | Why paragraph | The alternative you rejected |
 | `**Shortcoming:**` | What a reviewer would otherwise have to find |
