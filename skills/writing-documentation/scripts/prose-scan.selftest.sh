@@ -97,16 +97,25 @@ check 'a tell inside a code span is not prose' 0 \
 check 'the same tell in prose is flagged' 1 \
 	"$(printf 'It was a seamless migration.\n' | count 'seamless' on)"
 
-# writing-pull-requests carries copies of the word list, the hook and the
-# scanner so it installs alone. Each pair has to stay identical, and the only
-# fixed relationship between them is being siblings in this repository, so the
-# checks are skipped when the skill runs from a single-skill install.
+# writing-pull-requests shares the word list, the hook and the scanner through
+# relative symlinks, so the repository holds one copy of each. The skills CLI
+# copies with dereference on, so an install materialises real files: the link
+# branch is what the repository sees, the identical branch what an installed
+# pair sees. Neither runs from a single-skill install, where the sibling is absent.
 SKILL_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PR_DIR="$(cd "$SKILL_DIR/.." && pwd)/writing-pull-requests"
 if [ -d "$PR_DIR" ]; then
 	for shared in references/prose.md scripts/prose-tells-guard.sh scripts/prose-scan.awk; do
-		check "writing-pull-requests carries an identical $shared" 0 \
-			"$(cmp -s "$SKILL_DIR/$shared" "$PR_DIR/$shared"; echo $?)"
+		pr_file="$PR_DIR/$shared"
+		if [ -L "$pr_file" ]; then
+			check "writing-pull-requests links $shared to this skill" \
+				"../../writing-documentation/$shared" "$(readlink "$pr_file")"
+			check "the $shared link resolves" 0 \
+				"$([ -r "$pr_file" ]; echo $?)"
+		else
+			check "writing-pull-requests carries an identical $shared" 0 \
+				"$(cmp -s "$SKILL_DIR/$shared" "$pr_file"; echo $?)"
+		fi
 	done
 else
 	printf 'skip  no sibling writing-pull-requests, shared-file sync not checked\n'
