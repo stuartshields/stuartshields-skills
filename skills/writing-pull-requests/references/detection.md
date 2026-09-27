@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-08-31T12:20+11:00 -->
+<!-- Last updated: 2026-09-28T09:14+11:00 -->
 
 # Detection
 
@@ -21,10 +21,7 @@ git log --oneline --no-merges <base>...HEAD
 git diff <base>...HEAD
 ```
 
-Three dots compares against the merge base, which is what the PR will show. Two
-dots reports unrelated commits from the base as part of your change.
-
-`--stat` first: it gives the line count for the size check in step 5 and says
+`--stat` first: it gives the line count for the size check in step 4 and says
 whether the full diff is readable in one pass.
 
 ## The template
@@ -75,9 +72,6 @@ Three places, in order:
 `fixes`, `fixed`, `resolve`, `resolves`, `resolved`, each followed by `#<n>`,
 or `owner/repo#<n>` across repositories.
 
-Use one only where merging finishes the issue. On a partial change it closes
-work still open, and nobody notices until the issue is missing from the board.
-
 ## Existing PR state
 
 Where the PR is already open:
@@ -86,9 +80,6 @@ Where the PR is already open:
 gh pr view --json title,body,baseRefName,files,additions,deletions
 gh pr diff
 ```
-
-Rewriting an existing description keeps anything a human added that the diff
-still supports. Say what you removed and why.
 
 ## Sources
 

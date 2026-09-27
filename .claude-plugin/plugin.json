@@ -1,12 +1,19 @@
 {
 	"name": "stuartshields-skills",
 	"version": "1.0.0",
-	"description": "Six working skills for Claude Code: handoff between sessions, audit-versus-fix discipline for reviews, writing documentation, docblocks and pull requests, and testing whether a skill changes behaviour. Two advisory hooks keep the prose and the handoff honest.",
+	"description": "Five working skills for Claude Code: handoff between sessions, audit-versus-fix discipline for reviews, and writing documentation, docblocks and pull requests. Advisory hooks check prose, comments and handoff length, and a gate loads the docblock skill before a comment is written.",
 	"author": {
 		"name": "Stuart Shields"
 	},
 	"homepage": "https://github.com/stuartshields/stuartshields-skills",
 	"repository": "https://github.com/stuartshields/stuartshields-skills",
 	"license": "MIT",
-	"keywords": ["skills", "handoff", "context", "session", "continuity", "code-review", "documentation", "docblocks", "pull-requests", "prose", "testing", "evaluation"]
+	"userConfig": {
+		"docs_paths": {
+			"type": "string",
+			"title": "Documentation paths",
+			"description": "Comma-separated globs, relative to the project root, that get a prose check before writing-documentation is invoked. Leave empty for README.md, CONTRIBUTING.md, docs/** and **/SKILL.md."
+		}
+	},
+	"keywords": ["skills", "handoff", "context", "session", "continuity", "code-review", "documentation", "docblocks", "pull-requests", "prose"]
 }

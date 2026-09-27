@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-08-31T10:00+11:00 -->
+<!-- Last updated: 2026-09-27T13:05+10:00 -->
 
 # JavaScript and TypeScript docblocks
 
@@ -42,9 +42,12 @@ Different from the PHP order. Do not carry one across to the other.
 
 ## Summary and description
 
-**Summary:** one line, one sentence, ending in a period. No markup.
+**Summary:** one line, one sentence, ending in a period. No markup. The
+handbook: "Document "what" and "when" - "why" should rarely need to be
+included."
 
-**Description:** optional supplement, ending in a period. Markdown permitted.
+**Description:** optional, and usually omitted. Ends in a period. Markdown
+permitted.
 
 ## `@since`
 

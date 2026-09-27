@@ -9,7 +9,7 @@ hooks:
           command: "\"${CLAUDE_SKILL_DIR}/scripts/docblock-guard.sh\""
 ---
 
-<!-- Last updated: 2026-09-16T21:40+10:00 -->
+<!-- Last updated: 2026-09-27T13:05+10:00 -->
 
 # Writing docblocks and inline comments
 
@@ -46,13 +46,13 @@ Where the file has neither, name the default you applied.
 
 ## 2. Decide whether it needs a block
 
-Document every visible class, member and method. Skip one only where there is
-nothing to say beyond its own name, such as a getter returning a stored value.
-A getter that lazily initialises, hits a cache, or returns a value in a unit its
-name does not state has something to say.
+Write a block only where it tells the reader something the name and signature
+do not. A getter returning a stored value needs nothing. A getter that lazily
+initialises, hits a cache, or returns a value in a unit its name does not state
+has something to say.
 
-WordPress documents every function regardless of visibility. Check the ruleset
-before applying the exception.
+Where the ruleset requires a block on every function, as WordPress does, write
+the one-line summary and the tags it requires. Nothing more.
 
 The gate decides whether a block should exist, not whether an existing one gets
 deleted.
@@ -64,21 +64,50 @@ deleted.
 
 ## 3. Write the block
 
-Three parts, in this order, in every language covered here.
+Default to the summary line and the required tags. A block that is one line
+long reads faster than a paragraph, and says more.
 
-1. **Summary.** One sentence. What it does, not how. Ends with a period. No
-   markup.
-2. **Description.** Optional. The constraint, the trap, or the reason a caller
-   would get it wrong. Blank comment line above it. Two or three lines. Past
-   that, it belongs in the code or an ADR.
-3. **Tags.** In the order the language mandates. Read the reference. WordPress
-   PHP and WordPress JavaScript use different orders.
+1. **Summary.** One line. What it does, or for a hook, when it fires. Ends with
+   a period. No markup.
+2. **Description.** Usually omitted. One or two lines, only when the code does
+   something the summary cannot hold, such as a side effect or an edge-case
+   return. Blank comment line above it.
+3. **Tags.** Only those the language or ruleset requires, in the order it
+   mandates. Read the reference. WordPress PHP and WordPress JavaScript use
+   different orders. Each tag description is a short phrase.
 
-Use the shortest form that carries a fact. The signature beats a tag, a tag
-beats a description sentence, and a fact the signature already states is
-written nowhere. Each fact appears once, in the part where it is most useful:
-the type lives in the tag or the signature and not again in the description,
-and `@return` does not restate the summary.
+Say what the code does, not why. The WordPress standard: "Avoid describing
+"why" an element exists, rather, focus on documenting "what" and "when" it does
+something." A reason for the approach goes in the commit or the PR, because it
+outlives the code it defends and nothing in the build notices.
+
+Each fact appears once. The signature beats a tag, a tag beats a description
+sentence, and a fact the signature already states is written nowhere. The type
+lives in the tag or the signature, and `@return` does not restate the summary.
+
+```php
+/**
+ * Calculates the reading time for a post.
+ *
+ * This function is used to work out how long a post takes to read. It uses
+ * 200 words per minute because that is the average adult reading speed, and
+ * rounds up so that short posts never show zero minutes.
+ *
+ * @param int $post_id The ID of the post to calculate the reading time for.
+ * @return int The reading time for the post in minutes.
+ */
+```
+
+becomes:
+
+```php
+/**
+ * Returns the reading time in minutes at 200 words per minute, minimum 1.
+ *
+ * @param int $post_id Post ID.
+ * @return int Minutes.
+ */
+```
 
 Summary rules:
 
@@ -89,40 +118,31 @@ Summary rules:
   is used to", "A `Foo` is a", "Helper that", "Used to", "Responsible for",
   "It is important to note". Start at the verb, or at the noun the reader
   wants.
-- Keep it impersonal. Spend direct address only where the block records a
-  choice: "prefer `get_the_excerpt()` here; this one skips the filter
-  deliberately."
-- Past roughly eight tag rows with no description, the finding is that the
-  function has too many parameters. Say so.
+- Past roughly eight tag rows, the finding is that the function has too many
+  parameters. Say so.
 
-The block records the current state, and nothing the reader already knows.
-Drop what the language or framework does: what `WP_Query` is, what a Promise
-resolves to. Drop the history: what the code used to do, which bug the rewrite
-fixed, which pass of a session produced it, what an earlier draft got wrong.
-If the block is longer than the function, you are telling a story.
-
-A paragraph arguing for this approach over the one you rejected is PR or ADR
-material, and it is the first thing to go stale. Change the approach and the
-argument survives, defending code that is no longer there, with nothing in the
-build to notice.
+Drop what the reader already knows: what the language or framework does, what
+`WP_Query` is, what a Promise resolves to. Drop history: what the code used to
+do, which bug the rewrite fixed. If the block is longer than the function, cut
+it.
 
 ## 4. Inline comments
 
-- A comment sits directly above the line or block it explains, at the same
+- One line, directly above the line or block it describes, at the same
   indentation, with no blank line between. In CSS an end-of-line comment on the
   declaration is correct.
+- It says what the code does, where the code does not make that plain. If a
+  better name would make the comment unnecessary, rename instead.
 - **Multi-line comments open with `/*`, never `/**`.** A parser reads `/**` as a
   DocBlock. WordPress states this for PHP and JavaScript alike.
-- A warning needs its consequence. "Careful here" says nothing. "Careful: this
-  runs before `init`, so `get_option()` returns the default" says what breaks.
+- A warning names what happens. "Careful here" says nothing. "Runs before
+  `init`, so `get_option()` returns the default" does.
 - Never comment out code. `references/comments.md` covers it.
 
-`scripts/docblock-guard.sh` flags paragraph-length argument, history, and runs
-over five prose lines on every code write. It is declared in this file's
-frontmatter, so it registers the first time this skill is invoked in a session
-and stays on for the rest of it. Advisory, never blocking. A single sentence
-naming a rejected approach is deliberately not flagged: `references/comments.md`
-asks for it, and only a paragraph arguing the case is ADR material.
+`scripts/docblock-guard.sh` flags reasons, history, and runs over three prose
+lines on every code write. It is declared in this file's frontmatter, so it
+registers the first time this skill is invoked in a session and stays on for
+the rest of it. Advisory, never blocking.
 
 ## 5. Verify the block against the code
 
@@ -169,8 +189,8 @@ grep -cE '^\s*(\*|//) [A-Za-z`]' <file>   # prose lines only
 ```
 
 A file that is two-thirds scaffolding has a different problem from one that is
-two-thirds prose, and only the second is narration. Cut the paragraphs that
-argue before the ones that warn.
+two-thirds prose, and only the second is narration. Cut reasons and paragraphs
+first.
 
 ## When a signature changes
 

@@ -1,8 +1,9 @@
-<!-- Last updated: 2026-08-31T12:20+11:00 -->
+<!-- Last updated: 2026-09-28T09:14+11:00 -->
 
 # Anatomy of a pull request description
 
-What each part carries, and the source that settles it.
+The sources behind each part of `SKILL.md` step 3. The instructions live there;
+this file holds the quotes that settle them.
 
 ## Title
 
@@ -10,8 +11,6 @@ Google's rule:
 
 > Short summary of what is being done. Complete sentence, written as though it
 > was an order. Follow by empty line.
-
-Imperative, present tense, no trailing period.
 
 Their bad examples, verbatim, because each is a real one someone submitted:
 
@@ -23,30 +22,22 @@ Their bad examples, verbatim, because each is a real one someone submitted:
 - "Add convenience functions"
 - "kill weird URLs"
 
-Each is true, and none is specific. A title passes when a reader who knows the
-codebase but not this branch could guess which files it touches.
-
 The shape to copy:
 
 > RPC: Remove size limit on RPC server message freelist
 
-A scope prefix, an imperative verb, a specific object. The body then explains
-why the limit mattered.
+A scope prefix, an imperative verb, a specific object.
 
 ## Body
 
 ### What changed
-
-The mechanism. A reviewer has the file list on the Files tab and cannot get the
-intent anywhere else.
 
 Google: "fill in the details and include any supplemental information a reader
 needs to understand the changelist holistically".
 
 ### Why
 
-The problem, the approach, and why not the obvious alternative. Google's
-wording, which is looser than a checklist:
+Google's wording, which is looser than a checklist:
 
 > It might include a brief description of the problem that's being solved, and
 > why this is the best approach. If there are any shortcomings to the approach,
@@ -60,14 +51,6 @@ omitting a benchmark is not incomplete; one hiding a known weakness is.
 > If you include links to external resources consider that they may not be
 > visible to future readers due to access restrictions or retention policies.
 
-Summarise what the linked document decided. A bare link is a description that
-expires.
-
-### How to verify
-
-Commands and their output. "Tests pass" is a claim; `47 passed, 0 failed` is
-evidence. Where something was not run, say which and why.
-
 ### Where to start
 
 GitHub:
@@ -75,29 +58,12 @@ GitHub:
 > Guidance is especially helpful when a pull request touches many files or
 > requires a specific review order.
 
-Two lines do the work:
-
-```markdown
-**Start at** `src/Queue/Dispatcher.php:88`, which holds the retry decision.
-**Skip** `tests/__snapshots__/`, which is a mechanical regeneration.
-```
-
-The second line is the one people omit and the one that saves the most time.
-GitHub also suggests naming the kind of review wanted.
-
 ### Linked issues
+
+GitHub:
 
 > Use issue-closing keywords when a pull request should close an issue after
 > merging.
-
-Closing keywords only where merging finishes the issue. Where the PR is one
-part of a larger issue, reference it without a keyword.
-
-## What a template changes
-
-A repo template's sections are the team's decision and outrank this anatomy.
-Fill every one. Where one does not apply, say so in a clause rather than
-deleting the heading.
 
 ## Sources
 

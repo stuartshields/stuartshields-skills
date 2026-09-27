@@ -1,6 +1,6 @@
 # stuartshields-skills
 
-Six working skills for Claude Code in one plugin, with the three hooks that keep them honest. I built them after the same three failures kept recurring in my own sessions. A review would quietly fix things, documentation read as generated, and the handoff file grew into a changelog.
+Five working skills for Claude Code in one plugin, with the hooks that keep them honest. I built them after the same three failures kept recurring in my own sessions. A review would quietly fix things, documentation read as generated, and the handoff file grew into a changelog.
 
 | Skill | Use it when | Ships |
 |---|---|---|
@@ -9,7 +9,6 @@ Six working skills for Claude Code in one plugin, with the three hooks that keep
 | `writing-documentation` | you write or rewrite a README, a docs page or a skill body | a prose hook, a style-guide comparison, three reader tests |
 | `writing-docblocks` | you add or fix a PHPDoc, JSDoc, TSDoc or SassDoc block | per-language tag order, a `@param` checker, and a comment hook |
 | `writing-pull-requests` | you write a pull request title and body | a context script that prints a push and size verdict, and the same prose hook |
-| `testing-skills` | you want to know whether a skill changes what the model does, before shipping or after editing it | a runner that drives an isolated `claude -p` for a control and a treatment arm, and a scenario format each skill's `tests/` directory follows |
 
 Installed as a plugin, every skill is namespaced, so `/stuartshields-skills:handoff` invokes the first one directly. Installed with the skills CLI, it is plain `/handoff`. Either way, Claude also picks each one up from the phrases in its description.
 
@@ -45,7 +44,7 @@ claude --plugin-dir /path/to/stuartshields-skills
 npx skills add stuartshields/stuartshields-skills -g
 ```
 
-That installs all six into `~/.claude/skills/`. Drop `-g` to install into the current project's `.claude/skills/` instead, or add `--skill handoff` to take one. The CLI symlinks by default; pass `--copy` for a standalone copy. Each skill installs on its own. `writing-pull-requests` shares a word list, a scanner and a prose hook with `writing-documentation`, held in this repository as symlinks. The CLI resolves a symlink to the file it points at, so `--skill writing-pull-requests` on its own still lands real files.
+That installs all five into `~/.claude/skills/`. Drop `-g` to install into the current project's `.claude/skills/` instead, or add `--skill handoff` to take one. The CLI symlinks by default; pass `--copy` for a standalone copy. Each skill installs on its own. `writing-pull-requests` shares a word list, a scanner and a prose hook with `writing-documentation`, held in this repository as symlinks. The CLI resolves a symlink to the file it points at, so `--skill writing-pull-requests` on its own still lands real files.
 
 ## Requirements
 
@@ -57,9 +56,25 @@ That installs all six into `~/.claude/skills/`. Drop `-g` to install into the cu
 
 Four skills declare a hook in their `SKILL.md` frontmatter rather than in a plugin-wide `hooks.json`. Claude Code registers the hook the first time you invoke that skill in a session and keeps it running until the session ends. Each hook finds its script through `${CLAUDE_SKILL_DIR}`, so it runs the same from a plugin install and from `~/.claude/skills/`.
 
-Nothing fires before you have used the skill. A Markdown file written before `writing-documentation` or `writing-pull-requests` has run gets no prose check, and a comment written before `writing-docblocks` has run gets no comment check. A long session that never invoked `handoff` gets no nudge to close out. I chose that trade over a plugin-wide hook so that installing the plugin changes nothing until you reach for a skill.
+Nothing in a skill's frontmatter fires before you have used the skill. A long session that never invoked `handoff` gets no nudge to close out. The skill hooks are advisory: they always exit 0 and never block a write or a prompt.
 
-All three hooks are advisory. They always exit 0 and never block a write or a prompt.
+### Before a skill is invoked
+
+The writing skills cover work that is rarely the headline of a request, so they went uninvoked while that work was done. The plugin's `hooks/hooks.json` registers these for every session:
+
+| Hook | Runs on | Does |
+|---|---|---|
+| `docblock-gate.sh` | a code `Write` or `Edit` that adds a comment line | denies it until `writing-docblocks` is invoked |
+| `pr-gate.sh` | `gh pr create` or `gh pr edit` | denies it until `writing-pull-requests` is invoked |
+| `pr-nudge.sh` | a prompt mentioning a PR, MR or pull request | reminds Claude to invoke `writing-pull-requests`, which covers a PR written for copy and paste |
+| `docs-prose-guard.sh` | a `Write` or `Edit` to a documentation path | runs the prose check, advisory only |
+| `record-skill.sh` | every `Skill` call | records which skills the session has invoked |
+
+Each gate and reminder stops once its skill is invoked, including a slash command typed at the prompt. The prose check stops once `writing-documentation` or `writing-pull-requests` runs its own copy.
+
+Documentation paths default to `README.md`, `CONTRIBUTING.md`, `docs/**` and `**/SKILL.md`, relative to the project root. Set your own as a comma-separated list in the plugin's `docs_paths` option, under `/config`. Your list replaces the defaults.
+
+Installed with the skills CLI, there is no plugin `hooks.json`, so none of these run.
 
 ## `handoff`
 
@@ -111,7 +126,7 @@ Three references carry the parts a reviewer gets wrong most often:
 
 ## `writing-documentation`
 
-For a document someone reads: a README, a docs page, a skill body. Four questions come before drafting: dialect, person, document type and style guide. Then a contract you can check instead of a tone, two drafting passes, and three reader tests: substitution, walk and scan.
+For a document someone reads: a README, a docs page, a skill body. Four questions come before drafting a new document: dialect, person, document type and style guide. An edit to an existing one takes the answers from the document. Then a contract you can check instead of a tone, two drafting passes, and three reader tests: substitution, walk and scan.
 
 `references/prose.md` holds the prose rules and the word list the hook checks. `references/tells.md` holds the sentence shapes no word list catches. `references/style-guides.md` compares the four guides worth referencing instead of copying.
 
@@ -127,8 +142,7 @@ Which tags, in what order, in which syntax, for PHPDoc, JSDoc, TSDoc, WordPress 
 
 ### Its hook
 
-`scripts/docblock-guard.sh` runs before every Write or Edit to a code file once the skill has been invoked. It reports a paragraph arguing against a rejected approach, a comment describing history rather than current state, and a comment run past five prose lines. One sentence naming a rejected approach is left alone, because `references/comments.md` asks for it.
-
+`scripts/docblock-guard.sh` runs before every Write or Edit to a code file once the skill has been invoked. It reports a comment giving a reason instead of saying what the code does, a comment describing history rather than current state, and a comment run past three prose lines.
 ## `writing-pull-requests`
 
 An imperative title and a four-part body: what changed, why, how to verify, where to start. `scripts/pr-context.sh [base]` prints a `PUSHABLE` verdict first, then the diff stat against Google's thresholds, the PR template, the commit convention and any linked issue. On `PUSHABLE: NO` the skill says why and stops.
@@ -136,22 +150,6 @@ An imperative title and a four-part body: what changed, why, how to verify, wher
 It ships its own copy of the prose hook and the word list, so a session that invokes only this skill still gets the check on Markdown writes. The copies are kept identical to the `writing-documentation` ones by that skill's selftest.
 
 The size thresholds are 100 lines comfortable and 1000 too large, with spread counted separately. It never pushes or opens a pull request unless you ask in the same turn.
-
-## `testing-skills`
-
-Whether a skill changes what the model does, before shipping one or after editing one.
-
-### What it fixes
-
-Any run spawned inside a session inherits the user's global `CLAUDE.md` and rules, so a control run without the skill is never clean, and the difference between arms understates what the skill does. The runner drives a separate `claude -p` with its own config directory, logged in once with `CLAUDE_CONFIG_DIR=~/.claude-skill-tests/config claude auth login`.
-
-### Use
-
-`skills/testing-skills/scripts/run-matrix.sh --skills <name> --stage --reps 5`. The control arm gets the request from `tests/<scenario>/request.txt` alone; the treatment arm gets it with one sentence pointing at the skill file. `--stage` runs two reps per arm and extends to five only where the two did not settle it. Results, replies and per-run token usage land under `~/.claude-skill-tests/results/`.
-
-Every skill in this repository carries at least one scenario under `skills/<name>/tests/`, with an optional fixture, setup script and check script. The format is in `skills/testing-skills/references/scenario-format.md`.
-
-Every run happens in a throwaway copy, which is why the runner skips permission prompts; fixtures must be disposable.
 
 ## Licence
 

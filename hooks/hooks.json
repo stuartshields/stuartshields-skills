@@ -1,0 +1,51 @@
+{
+	"description": "Loads the writing skills before the work they cover: gates a comment edit and a gh pr command, reminds on a PR prompt, and prose-checks documentation paths.",
+	"hooks": {
+		"UserPromptSubmit": [
+			{
+				"hooks": [
+					{
+						"type": "command",
+						"command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/pr-nudge.sh\""
+					}
+				]
+			}
+		],
+		"PreToolUse": [
+			{
+				"matcher": "Write|Edit",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/docblock-gate.sh\""
+					},
+					{
+						"type": "command",
+						"command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/docs-prose-guard.sh\""
+					}
+				]
+			},
+			{
+				"matcher": "Bash",
+				"hooks": [
+					{
+						"type": "command",
+						"if": "Bash(gh pr *)",
+						"command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/pr-gate.sh\""
+					}
+				]
+			}
+		],
+		"PostToolUse": [
+			{
+				"matcher": "Skill",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/record-skill.sh\""
+					}
+				]
+			}
+		]
+	}
+}

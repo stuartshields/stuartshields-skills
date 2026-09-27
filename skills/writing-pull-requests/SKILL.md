@@ -9,7 +9,7 @@ hooks:
           command: "\"${CLAUDE_SKILL_DIR}/scripts/prose-tells-guard.sh\""
 ---
 
-<!-- Last updated: 2026-09-15T15:59+10:00 -->
+<!-- Last updated: 2026-09-28T09:14+11:00 -->
 
 # Writing pull requests
 
@@ -20,21 +20,20 @@ reads several of these a day. They came for two things the diff cannot give
 them: the intent, and the evidence it works. Everything else in the body delays
 those.
 
-The prose rules in `references/prose.md` apply to the
-title and the body: punctuation, the substance rules, and the word list.
-`scripts/prose-tells-guard.sh` reports against that list on every Markdown
-write once this skill has been invoked, so a body saved for `--body-file` gets
-checked. A body passed inline to `gh` does not, so read it against the list
-before printing it.
+The prose rules in `references/prose.md` apply to the title and the body. Read
+the body against its word list before printing it.
 
 ## Output contract
 
-**Check the branch can be pushed before writing anything.** Step 1's script prints a `PUSHABLE` verdict.
+**Print the title and body inside one fenced block** with the `markdown` info string, so the raw CommonMark can be pasted into GitHub. Where the body itself carries a fenced example, open the outer fence with four backticks.
 
-- **`PUSHABLE: NO`.** Say why in one line and stop. Do not print a title or a body. The missing remote or the failed auth is what the user has to fix first.
-- **`PUSHABLE: YES`.** Write both parts and print them inside one fenced block with the `markdown` info string. The terminal renders Markdown, so a body printed as prose reaches the user with its headings, bullets and fences already consumed, and cannot be pasted into GitHub as written. The fenced block hands over the raw CommonMark. Where the body itself carries a fenced example, open the outer fence with four backticks.
+**Asked to write the PR, not open it?** That fenced block is the whole deliverable. Run no `gh` command.
+
+**Asked to open it?** Check step 1's `PUSHABLE` verdict first. On `PUSHABLE: NO`, say why in one line and stop, because the missing remote or the failed auth is what the user fixes first. Where they asked only for the text, write it anyway and add one line saying the branch cannot be pushed yet.
 
 Never post, push or open anything without being asked in that turn. Pushable is a statement about the branch, not permission to use it.
+
+**The title and body describe the code change and nothing else.** Leave out any line crediting an AI tool or assistant, including an attribution line or `Co-Authored-By` trailer the harness supplies, and anything about how the text was written. The same holds for a commit message.
 
 **On a revision, print only the sections that changed**, each in its own fenced block. Reprinting a body the reader has already been through in order to alter two lines buries the two lines.
 
@@ -84,9 +83,9 @@ A commit message stays a label. A commit that grows into three paragraphs is a P
 
 ## 3. Body
 
-**Where the repo has a template, it is the body. Start there, not here.** Step 1 prints it under `=== TEMPLATE ===`, having checked every location GitHub supports: `pull_request_template.md` in the root, in `docs/` and in `.github/`, and the `PULL_REQUEST_TEMPLATE/` directory form in each of the three.
+**Where the repo has a template, it is the body. Start there, not here.** Step 1 prints it under `=== TEMPLATE ===`.
 
-Open the file and read it. The script prints its headings, and the headings are the least of it. The instruction for each section sits in an HTML comment beneath it. That comment is where a team states what it wants and what will reject the PR. One repo's template carried its title convention and a deploy script that fails on titles naming internal tooling, neither of which appears in a heading list.
+Open the file and read it. The script prints its headings, and the headings are the least of it. The instruction for each section sits in an HTML comment beneath it, and that is where a team states what it wants and what will reject the PR.
 
 Its sections replace the four below, in its order, under its headings, including any rule it states about the title. Fill every one. Where a section does not apply, say why in a clause rather than deleting the heading: a missing heading reads as an oversight, an answered one reads as a decision. One exception: a section only a human can supply, such as screenshots, a recording or a demo link. Leave the heading with nothing beneath it. Prose explaining why you attached no screenshot is addressed to the person who has to attach it, and it occupies the space the screenshot goes in.
 
@@ -101,7 +100,7 @@ ticket number is under linked issues, so neither is repeated in prose.
 
 **What changed.** The mechanism, not a file listing. A reviewer has the file list on the Files tab and cannot get the intent anywhere else.
 
-**Why.** The problem, and why this approach rather than the obvious alternative. Give the standing reason, not the route you took to it. The why is "post metadata belongs to the template that frames it". The chronology is "we narrowed the scope after the first pass", which is invisible in the diff and useless to a reviewer. Name any shortcoming: it gets a faster review than leaving a reviewer to find the gap. Summarise what a linked document decided rather than linking it alone, because access restrictions and retention policies outlive the link.
+**Why.** The problem the change solves. Give the standing reason, not the route you took to it. The why is "post metadata belongs to the template that frames it". The chronology is "we narrowed the scope after the first pass", which is invisible in the diff and useless to a reviewer. Name any shortcoming: it gets a faster review than leaving a reviewer to find the gap. Summarise what a linked document decided rather than linking it alone, because access restrictions and retention policies outlive the link.
 
 **How to verify.** The commands you ran and what they returned, plus what a reviewer should run. "Tests pass" is a claim; `47 passed, 0 failed` is evidence.
 
@@ -109,7 +108,7 @@ Every piece of that evidence has to be reproducible from the branch. A gate fail
 
 **Status is a checkbox, not a sentence.** Where the template carries a pre-review checklist, an unticked box already says the step is outstanding. Saying it again in prose ("steps 1 to 6 have not been run in a browser", "no screenshots attached") addresses the author rather than the reviewer. It is the first thing a reader skips. Leave the box unticked and write nothing. Only where there is no checklist does an untested area need a clause of its own.
 
-**Where to start.** Two lines do the work, and the second is the one people omit:
+**Where to start.** Only where the diff has more than one file worth reading. Two lines do the work, and the second is the one people omit:
 
 ```markdown
 **Start at** `src/Queue/Dispatcher.php:88`, which holds the retry decision.

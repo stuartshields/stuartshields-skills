@@ -9,7 +9,7 @@ hooks:
           command: "\"${CLAUDE_SKILL_DIR}/scripts/prose-tells-guard.sh\""
 ---
 
-<!-- Last updated: 2026-09-12T20:22+10:00 -->
+<!-- Last updated: 2026-09-28T09:14+11:00 -->
 
 # Writing documentation
 
@@ -21,7 +21,7 @@ Inline code comments and docblocks are a different standard. Stop and invoke `wr
 
 `references/prose.md` governs every sentence written here: punctuation, the substance rules, and the word list a checker would hold. Read it once before drafting. Do not carry a copy of it into a project doc; point at the project's own style note where one exists.
 
-`scripts/prose-tells-guard.sh` flags em dashes and assertion vocabulary on every Markdown write. It is declared in this file's frontmatter, so it registers the first time this skill is invoked in a session and stays on for the rest of it. Where it flags a word used in its genuine technical sense, or an em dash inside a quotation, say so and keep it. Rewording around a correct word to satisfy a checker makes the prose worse.
+`scripts/prose-tells-guard.sh` flags that word list on every Markdown write once this skill has been invoked. `references/prose.md` says when to keep a flagged word.
 
 A checker catches words, not shapes. `references/tells.md` holds the sentence shapes that pass every rule here and still read as generated. Read it during the line-level pass in step 4.
 
@@ -36,7 +36,7 @@ Four questions, in one `AskUserQuestion` call, which takes four at most:
 
 Ask all four together. A dialect answer arriving after the first draft respells every sentence in it, and a person answer arriving late rewrites all of them.
 
-Where the repo already records the answers, in its `CLAUDE.md` or a style note, read them from there and say which file you read them from.
+Skip the interview where the answers already exist. An edit to an existing document takes its dialect, person and type from the document. A new document takes them from the repo's `CLAUDE.md` or style note where one records them. Say which file you read them from.
 
 Reference the chosen guide; do not copy it into the repo. Record only where the project departs from it, with the reason. `references/style-guides.md` compares the four worth referencing.
 
@@ -67,7 +67,7 @@ Ask for a contract rather than a tone. "Concise and clear" cannot be checked, so
 
 State it back in one line before writing, with the interview answers in it, and flag any section that cannot fit it.
 
-Defaults where the user has no preference, from GitLab: sentences under 20 words, prose around an eighth-grade reading level. GitLab states the level in grades and names no metric, so cite it in grades.
+Defaults where the user has no preference, from GitLab: sentences under 20 words, prose around an eighth-grade reading level.
 
 ### Shape terms
 
@@ -84,20 +84,14 @@ Limits alone produce prose that breaks none of them and still reads as though no
 - **No sentence whose only job is to introduce the next one.**
 - **Give the consequence rather than saying there is one.**
 
-Two of those are countable, so count them:
+These are for sentences the document already needs. Do not add a sentence to satisfy one. `references/attention.md` carries the effect sizes.
 
-1. **Direct address at least once per section.** Not once per document. A section with no "you" in it has stopped talking to anybody.
-2. **First person wherever the section records a choice, and in the opener whether or not it looks like one.** Somebody decided to build this rather than use the thing that already existed, and that decision is what a reader is weighing. Scoped to choices alone, this rule never fires on the most-read text on the page.
+### Substance terms
 
-`references/attention.md` carries the effect sizes. This is the best-evidenced rule here and the one most likely to be dropped as decoration.
-
-### Substance terms, which are what stop AI slop
-
-Every term above constrains shape: where a point sits, how long a sentence runs, whether a reader is addressed. A draft can satisfy all of them and still read as generated, because none of them asks whether the text says anything about this particular thing. These three do, and they are countable.
+Every term above constrains shape. A draft can satisfy all of them and still say nothing about this particular thing. These two ask whether it does.
 
 1. **Every feature claim carries a checkable specific**: a number, a default, a mechanism, or a named cost. The failure has a name, marketese: "exaggeration, subjective claims, and boasting, rather than just simple facts."
-2. **The document names one thing it does not do**: a limitation, an unsupported case, or which tool to use instead. A document with no boundary in it has not been used in anger.
-3. **A person appears in the first screen.** The voice rule above, with its trigger widened to reach the opener.
+2. **A limitation a reader would hit is stated**, next to the feature it limits.
 
 Padding is not neutral. The reader spends attention rejecting an unearned claim, which is time taken from the text that mattered.
 
@@ -177,7 +171,7 @@ The repair puts the specifics back:
 > - Retry state lives in Redis, so a Redis restart drops anything mid-backoff
 > - 4xx is terminal on purpose: a 422 will not become valid on a retry
 
-Substitute a competitor's name into that and the second bullet is a lie about them. That is the test passing. That bullet is also the limitation the contract asks for, sitting in the feature list rather than in a section nobody reaches.
+Substitute a competitor's name into that and the second bullet is a lie about them. That is the test passing. That bullet also states the limitation, next to the feature it limits.
 
 ### The walk test
 

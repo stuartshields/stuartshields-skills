@@ -1,8 +1,8 @@
-<!-- Last updated: 2026-09-08T08:35+10:00 -->
+<!-- Last updated: 2026-09-28T09:14+11:00 -->
 
 # External style guides
 
-Adopt one and record only where the project departs from it. Copying any of them into a repo is the mistake step 1 of `SKILL.md` names: the copy goes stale and then contradicts its source.
+The four guides step 1 of `SKILL.md` offers, and what each settles.
 
 Every quotation below was read from the live page on 2026-08-23. Where a guide does not settle something, this file says so instead of filling the gap.
 
@@ -27,10 +27,6 @@ Every quotation below was read from the live page on 2026-08-23. Where a guide d
 
 ## Where they disagree
 
-Three divergences, and each one follows from the dialect answer in `interview.md`. This is why that question comes first.
-
-1. **Numbers below ten.** GOV.UK: "Write all other numbers in numerals (including 2 to 9)", with words at the start of a sentence. US practice spells out one to nine.
-2. **Contractions.** GOV.UK: "Avoid negative contractions like can't and don't", and avoid "should've, could've, would've". Google and GitLab allow ordinary contractions.
-3. **Quotation marks.** GOV.UK reserves double quotes for direct quotation of spoken or written words, and uses single quotes for unusual terms, publication titles and interface labels. US practice uses double throughout.
+The dialect table in `formatting.md` carries the three divergences: numbers below ten, negative contractions and quotation marks. The British column follows GOV.UK; the US column follows Google and GitLab.
 
 One thing none of them settled in what was read: whether British-English prose takes the serial comma. Google requires it ("Use serial commas"). The GOV.UK A to Z entries read on 2026-08-23 did not cover it. So a British project decides it once and records the decision, and nobody should claim a guide made that call.
