@@ -2,7 +2,7 @@
 
 # Prose rules
 
-Applies to everything written under the skill that ships this file: documentation, and the title and body a pull request gets. More than one skill in this repository carries this file with `scripts/prose-tells-guard.sh` and `scripts/prose-scan.awk`, so each installs alone through the skills CLI. A selftest in the repository fails when a pair of copies differs: edit one and copy it over the other.
+Applies to everything written under the skill that ships this file: documentation, and the title and body a pull request gets. More than one skill in this repository uses this file with `scripts/prose-tells-guard.sh` and `scripts/prose-scan.awk`. `writing-pull-requests` holds all three as symlinks to the copies here. The skills CLI resolves a symlink when it installs, so each skill still installs alone. Edit the file here and the other skill follows. A selftest in the repository fails when a link goes missing.
 
 ## Punctuation
 

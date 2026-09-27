@@ -45,7 +45,7 @@ claude --plugin-dir /path/to/stuartshields-skills
 npx skills add stuartshields/stuartshields-skills -g
 ```
 
-That installs all six into `~/.claude/skills/`. Drop `-g` to install into the current project's `.claude/skills/` instead, or add `--skill handoff` to take one. The CLI symlinks by default; pass `--copy` for a standalone copy. Each skill installs on its own: none reads a file from a sibling's directory.
+That installs all six into `~/.claude/skills/`. Drop `-g` to install into the current project's `.claude/skills/` instead, or add `--skill handoff` to take one. The CLI symlinks by default; pass `--copy` for a standalone copy. Each skill installs on its own. `writing-pull-requests` shares a word list, a scanner and a prose hook with `writing-documentation`, held in this repository as symlinks. The CLI resolves a symlink to the file it points at, so `--skill writing-pull-requests` on its own still lands real files.
 
 ## Requirements
 

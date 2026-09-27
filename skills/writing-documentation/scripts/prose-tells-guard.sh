@@ -1,9 +1,9 @@
 #!/bin/bash
 # PreToolUse advisory for Markdown prose: em dashes and assertion vocabulary.
 # Declared in the frontmatter of ../SKILL.md, so Claude Code registers it when
-# that skill is invoked and keeps it for the session. Skills in this repository
-# that carry a copy of this script and prose-scan.awk keep the copies identical
-# through prose-scan.selftest.sh.
+# that skill is invoked and keeps it for the session. writing-pull-requests
+# symlinks this script and prose-scan.awk rather than copying them, so an
+# install dereferences one source. prose-scan.selftest.sh checks the links.
 #
 # The literal word list lives in prose-scan.awk, and the same list is written
 # out for reading in ../references/prose.md. A
