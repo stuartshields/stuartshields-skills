@@ -9,7 +9,7 @@ hooks:
           command: "\"${CLAUDE_SKILL_DIR}/scripts/prose-tells-guard.sh\""
 ---
 
-<!-- Last updated: 2026-09-28T11:55+11:00 -->
+<!-- Last updated: 2026-09-28T12:08+11:00 -->
 
 # Writing pull requests
 
@@ -35,8 +35,10 @@ Opening a PR is not permission to commit or push. Where the working tree or loca
 
 **On a revision, show only the sections that changed.** Reprinting a body the reader has already been through in order to alter two lines buries the two lines. A behaviour a new commit adds gets its own entry, not a clause on the end of an existing one.
 
+That limits the reply, not the review. Run step 5 over the whole title and body, not only the new commits: a gap an earlier revision left is still in front of the reviewer. A section that fails step 5 counts as changed.
+
 - **Text only:** rewrite the file in full, because the user pastes the whole body. Reply with the path and the names of the sections that changed.
-- **`gh pr edit`:** GitHub replaces the whole body, so start from the live one (`gh pr view --json body`). Rewrite only the sections the change touches, and keep what a human wrote that the diff still supports. Pass the result with `--body-file`, then reply with the URL and each changed section in its own fenced block.
+- **`gh pr edit`:** GitHub replaces the whole body, so start from the live one (`gh pr view --json body`). Rewrite only the sections the change touches or step 5 fails, and keep what a human wrote that the diff still supports. Pass the result with `--body-file`, and a new title with `--title` where the old one fails step 2 or step 4. Then reply with the URL and each changed section in its own fenced block.
 
 **Write it once, in the shape below.** Gather the context and read the diff first, then write the title and the body in that order. Do not draft loosely and reshape it into the contract afterwards: a reshaped draft keeps the first draft's structure and quietly loses the parts the contract asks for.
 
@@ -145,6 +147,8 @@ Two exceptions, both surfaced by the script: a whole-file deletion counts as rou
 Over the threshold with neither exception applying, state the line count and propose a split by concern. Do not compensate with a longer description.
 
 Lines are not the only measure. Google defines a small change by focus, not by line count, and `references/anatomy.md` has the quote. List the independent concerns in the diff: changes that could merge or revert apart. More than one means proposing a split, whatever the line count. Where the user keeps them together, each concern gets its own entry in What changed, its own reason and its own check, and the title names each.
+
+The split proposal goes to the user in the reply, never into the body. The body describes the change as the user chose to ship it.
 
 ## 5. Self-review before handing it over
 
