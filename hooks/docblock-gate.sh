@@ -38,8 +38,16 @@ printf '%s\n' "$OLD" > "$OLD_FILE"
 
 ADDED=$(printf '%s\n' "$NEW" | awk -v hash="$HASH" '
 	function trim(s) { gsub(/^[ \t]+|[ \t]+$/, "", s); return s }
+	# Empties string literals, so a `//`, `/*` or `#` inside one is not a comment.
+	function strip_strings(s) {
+		gsub(/"([^"\\]|\\.)*"/, "\"\"", s)
+		gsub(/\047([^\047\\]|\\.)*\047/, "\"\"", s)
+		gsub(/`([^`\\]|\\.)*`/, "\"\"", s)
+		return s
+	}
 	function is_comment(s) {
 		if (s !~ /[A-Za-z0-9]/) return 0
+		s = strip_strings(s)
 		if (s ~ /^[ \t{]*(\/\/|\/\*|\*)/ || s ~ /[ \t]\/\/[ \t]/ || s ~ /\/\*/) return 1
 		return hash && (s ~ /^[ \t]*#/ || s ~ /[ \t]#[ \t]/)
 	}

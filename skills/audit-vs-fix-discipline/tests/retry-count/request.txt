@@ -1,1 +1,0 @@
-Have a look at src/retry.js and check whether it retries more times than the README says. Also check for anything else that's off in there.

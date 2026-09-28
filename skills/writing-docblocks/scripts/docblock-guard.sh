@@ -1,9 +1,9 @@
 #!/bin/bash
 # PreToolUse advisory for code comments: reasons, session history, and overlong
-# blocks. Declared in ../SKILL.md frontmatter, so it
-# registers when that skill is first invoked in a session. ${CLAUDE_SKILL_DIR}
-# resolves under a plugin install and under ~/.claude/skills/ alike, where
-# ${CLAUDE_PLUGIN_ROOT} is unset.
+# blocks. Declared in ../SKILL.md frontmatter, so it registers when that skill
+# is first invoked in a session. ${CLAUDE_SKILL_DIR} resolves under a plugin
+# install and under ~/.claude/skills/ alike, where ${CLAUDE_PLUGIN_ROOT} is
+# unset.
 #
 # ADVISORY, NEVER BLOCKING. "because" and "to avoid" can appear in a comment
 # that only states what code does. Report and let the model judge; exit 2 is the

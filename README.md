@@ -143,6 +143,7 @@ Which tags, in what order, in which syntax, for PHPDoc, JSDoc, TSDoc, WordPress 
 ### Its hook
 
 `scripts/docblock-guard.sh` runs before every Write or Edit to a code file once the skill has been invoked. It reports a comment giving a reason instead of saying what the code does, a comment describing history rather than current state, and a comment run past three prose lines.
+
 ## `writing-pull-requests`
 
 An imperative title and a four-part body: what changed, why, how to verify, where to start. `scripts/pr-context.sh [base]` prints a `PUSHABLE` verdict first, then the diff stat against Google's thresholds, the PR template, the commit convention and any linked issue. On `PUSHABLE: NO` the skill says why and stops.
