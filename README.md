@@ -4,7 +4,7 @@ Five working skills for Claude Code in one plugin, with the hooks that keep them
 
 | Skill | Use it when | Ships |
 |---|---|---|
-| `handoff` | you are about to `/clear`, wrap up, or resume from `docs/HANDOFF.md` | a template and a long-session nudge hook |
+| `handoff` | you are about to `/clear`, wrap up, or resume from `docs/HANDOFF.md` | a four-section template and a size-check hook |
 | `audit-vs-fix-discipline` | you ask for a review, audit or investigation and want findings, not edits | a tiered output format, a false-positive list, search traps |
 | `writing-documentation` | you write or rewrite a README, a docs page or a skill body | a prose hook, a style-guide comparison, three reader tests |
 | `writing-docblocks` | you add or fix a PHPDoc, JSDoc, TSDoc or SassDoc block | per-language tag order, a `@param` checker, and a comment hook |
@@ -56,7 +56,7 @@ That installs all five into `~/.claude/skills/`. Drop `-g` to install into the c
 
 Four skills declare a hook in their `SKILL.md` frontmatter rather than in a plugin-wide `hooks.json`. Claude Code registers the hook the first time you invoke that skill in a session and keeps it running until the session ends. Each hook finds its script through `${CLAUDE_SKILL_DIR}`, so it runs the same from a plugin install and from `~/.claude/skills/`.
 
-Nothing in a skill's frontmatter fires before you have used the skill. A long session that never invoked `handoff` gets no nudge to close out. The skill hooks are advisory: they always exit 0 and never block a write or a prompt.
+Nothing in a skill's frontmatter fires before you have used the skill. A `HANDOFF.md` written in a session that never invoked `handoff` gets no size check. The skill hooks are advisory: they always exit 0 and never block a write or a prompt.
 
 ### Before a skill is invoked
 
@@ -78,17 +78,19 @@ Installed with the skills CLI, there is no plugin `hooks.json`, so none of these
 
 ## `handoff`
 
-Passing work between sessions, and a close-out ritual for ending one on purpose.
+Passing work to a session that starts with fresh context.
 
-`docs/HANDOFF.md` is the interchange format. It carries the state a fresh agent needs to continue, and nothing else. The skill covers writing that document, updating it in place, resuming from it, and deciding whether a document is the right channel at all.
+`docs/HANDOFF.md` carries the goal, the current state, the dead ends and the next step, in 3,000 characters or fewer. The skill writes it, rewrites it in place, and resumes from it. Where you will come back to the same conversation, it points you at `claude --resume <name>` instead, since compaction already re-injects `CLAUDE.md`, auto memory and invoked skills.
 
 ### What it fixes
 
-Handoff documents rot in two ways, and both are gradual enough that no single session notices.
+Handoff documents rot in three ways, and each is gradual enough that no single session notices.
 
 They become changelogs, because appending is easier than revising. One reached 923 lines and 87 dated entries, at which point reading it cost most of the context it existed to preserve.
 
 They become knowledge bases, which is quieter, because every entry is worth keeping. One grew a "carry-forward facts" section to 32 entries and 46,619 bytes, and 63% of the file was then content no pruning rule could reach. The answer is routing: state stays in the document and gets revised, and a durable fact goes somewhere it can survive.
+
+They fit a line limit and still grow. Under the old 120-line ceiling, one document held 8,725 bytes in 48 lines, 18 of them over 200 characters. The budget is now counted in characters, so a long line costs what it weighs.
 
 ### Use
 
@@ -96,11 +98,7 @@ Say "handoff", "wrap up", "close out", or "READ HANDOFF and do X". The skill pic
 
 ### Its hook
 
-`scripts/remind-handoff.sh` runs on `UserPromptSubmit` once the skill has been invoked. Past 200 transcript events it suggests closing out, once per 30 minutes. It stays quiet when a `HANDOFF.md` was touched in the last hour, or when the skill itself ran in that hour. The second check exists because a correct close-out sometimes writes no document at all.
-
-Where `docs/HANDOFF.md` passes 120 lines it says so regardless. That growth is invisible from inside a single session, which is why a hook measures it.
-
-Date parsing uses BSD `date -j` with a GNU `date -d` fallback. The BSD path is verified. The GNU path is written but untested, and if both fail the hook fails open into nudging rather than into silence.
+`scripts/check-handoff-size.sh` runs after each `Write` or `Edit` once the skill has been invoked. When a file named `HANDOFF.md` passes 3,000 characters, it tells Claude the size and what usually fills the excess. It counts with `wc -m`, which counts bytes outside a UTF-8 locale, so there it can only be stricter.
 
 ### Prior art
 
@@ -110,7 +108,7 @@ This skill was adapted and improved on from the following sources:
 - [maaarcooo/agent-skills](https://github.com/maaarcooo/agent-skills) supplied the mechanics. Its resume step treats recorded state as a claim to be checked against the repository. Its coverage rule keeps a thread from vanishing by accident. It keeps handoff and resume as two skills, and dated files rather than one.
 - [thenguyenvn90/claude-session-handoff](https://github.com/thenguyenvn90/claude-session-handoff) shares much of the section vocabulary, and outputs to the chat rather than to a file.
 
-How mine differs is one document revised in place rather than a new file each session, findings carried across the gap with their `file:line`, and writing, updating and resuming handled by one skill instead of two.
+How mine differs is one document revised in place rather than a new file each session, findings pointed at in their own queue rather than copied, and writing, updating and resuming handled by one skill instead of two.
 
 ## `audit-vs-fix-discipline`
 

@@ -1,40 +1,25 @@
-<!-- Last updated: 2026-08-31T11:00+11:00 -->
+<!-- Last updated: 2026-09-28T12:55+11:00 -->
 
 # Handoff document template
 
-Six sections. Revise them in place on every update, and **do not add more**: a seventh section is how these documents turn into knowledge bases.
-
-Keep a header with "none" under it rather than dropping it, so the next agent can tell "none" from "not recorded".
-
-The whole document stays under 120 lines. There is no Key Files section and no Git State section: `git diff --stat` regenerates the first and the session's environment block already carries the second.
+Four sections and 3,000 characters in total. Keep a heading with "none" under it rather than dropping it, so the next session can tell "none" from "not recorded".
 
 ```markdown
+# Handoff
+
 ## Goal
-What we're trying to accomplish, with acceptance criteria if any were given,
-and any standing constraints the user has set. Three lines.
+The outcome as a condition a checker could confirm, so it can go straight into
+`/goal`. Add any standing constraints the user set. Two or three lines.
 
-## Where Things Live
-Pointers, never content. The findings queue and the command to count it. The
-stores that routed facts went to. The specs, ADRs, issues, commits and PRs
-that hold the work's own detail, by path or URL.
+## State
+What is in progress and what is left, one line each. Point at the plan, spec,
+PR or findings queue by path instead of restating it. Name any check not yet run.
 
-## Current Progress
-Where the work stands now, in enough detail that the next agent doesn't
-re-derive it. Completed work is one line of outcome each, not a history of how
-it went. Give the command rather than its output.
+## Dead ends
+Approaches tried and dropped that a fresh session would otherwise try again,
+one line each with the reason. Drop an entry once it stops constraining the work.
 
-## Verification
-The commands that decide whether this work is sound, so the next agent can
-re-run them, plus the gaps stated plainly. "Not yet run" is a useful answer.
-Do not paste results: they are true of a tree that has since moved.
-
-## Decisions and Dead Ends
-Approaches that failed and why, and things noticed and consciously left alone.
-One line each. Keep an entry only while it still constrains the work. One that
-will still be true next month is a durable fact: route it out.
-
-## Next Steps
-Ordered, and rewritten from scratch each time. The first item must be
-actionable without further investigation. Name the skill a step needs, exactly
-as the Skill tool takes it.
+## Next step
+The first action, doable without further investigation. Name the skill it
+needs, exactly as the Skill tool takes it. Add at most two more.
 ```
