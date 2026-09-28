@@ -15,7 +15,7 @@ case "$FILE_PATH" in
 	*) exit 0 ;;
 esac
 
-[ -f "$FILE_PATH" ] || exit 0
+[ -f "$FILE_PATH" ] && [ -r "$FILE_PATH" ] || exit 0
 
 SIZE=$(wc -m < "$FILE_PATH" | tr -d ' ')
 [ "$SIZE" -le "$BUDGET" ] && exit 0
