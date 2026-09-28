@@ -1,15 +1,11 @@
-<!-- Last updated: 2026-08-30T07:50+11:00 -->
+<!-- Last updated: 2026-09-28T09:14+11:00 -->
 
 # Writing for attention
 
-The reading evidence behind `writing-documentation`, `writing-docblocks` and
-`writing-pull-requests`. All three point here. Read it when deciding whether
-one of their drafting rules can bend, because the citation says what the rule
-was protecting and how much it was worth.
-
-This file holds only what all three share. Each skill states its own
-application in its own body, so a rule and its evidence are never written out
-three times.
+The reading evidence behind this skill's drafting rules. Read it when deciding
+whether a rule can bend, because the citation says what the rule was protecting
+and how much it was worth. The rules themselves live in `SKILL.md` and
+`formatting.md`.
 
 The reader this assumes is not a careless one. They are reading at the rate
 everybody reads at, on something long enough that they will leave partway and
@@ -53,9 +49,7 @@ description, and an author who is present in the sentence. You do not need to
 be charming. You need to be talking to somebody.
 
 Two boundary conditions are reported, and both narrow where it pays: the effect
-weakens for high-prior-knowledge readers and for long lessons. That is why each
-skill spends voice in a different place, and why none of them spends it
-everywhere.
+weakens for high-prior-knowledge readers and for long lessons.
 
 ### Signalling and segmenting, which are worth a lot and cost nothing
 
@@ -89,18 +83,7 @@ itself.
 
 The inference: uniform blocks are the rote-and-repetitive condition, and they
 are also the unsignalled condition that produces the F-scan. Changing carrier
-fixes both at once.
-
-**Heuristic.** After roughly a dozen consecutive lines carried by one form,
-change form. Prose, bulleted list, numbered list, table, code block, worked
-example and block quotation are the forms available.
-
-The alternation is a side effect, not the goal. Each carrier has a job, and
-`formatting.md` decides which one a passage wants. Where a section genuinely
-needs fourteen lines of prose, it gets them, and the finding to act on is that
-the section is doing two jobs.
-
-This lever does not transfer to a docblock, where the parser fixes the carrier.
+fixes both at once. `formatting.md` carries the heuristic built on it.
 
 ## Emotion attaches to stakes, not to decoration
 
@@ -111,30 +94,18 @@ spend on the base text.
 
 Harp and Mayer's distinction is the one to hold. Adjuncts that raise
 **emotional** interest impede learning. Adjuncts that raise **cognitive**
-interest assist it.
+interest assist it. `SKILL.md` step 3 turns this into a test.
 
-The test is whether the sentence changes what the reader does:
-
-| Passes | Fails |
-|---|---|
-| "Skip this and the build succeeds locally and fails in CI." | "This next part is the fun bit." |
-| `// Runs before init, so get_option() returns the default.` | `// Careful here!` |
-| "1,840 lines across 34 files, over the 1,000-line guidance. I can split it." | "Sorry this one's a monster." |
-
-The left column names a consequence. The right column is atmosphere, and it
-costs the reader the line it sits in.
-
-Narrative is the partial exception, and only in prose. A meta-analysis over 75
-samples and more than 33,000 participants found stories better understood and
-better recalled than essays. The same literature reports the advantage
-inverting for high-prior-knowledge readers, so a narrative opener suits a
-tutorial and not a reference page, a docblock or a PR.
+Narrative is the partial exception. A meta-analysis over 75 samples and more
+than 33,000 participants found stories better understood and better recalled
+than essays. The same literature reports the advantage inverting for
+high-prior-knowledge readers, so a narrative opener suits a tutorial and not a
+reference page.
 
 ## COGA patterns these rules implement
 
 W3C's *Making Content Usable* is the accessibility standard behind the contract
-terms in `writing-documentation` step 3, the docblock description rule, and the
-PR title.
+terms in `SKILL.md` step 3.
 
 | Pattern | What it asks for |
 |---|---|
@@ -159,24 +130,16 @@ Worth not claiming, since each is asserted somewhere on the open web.
    level and its 20-word sentence limit measure difficulty. Something can be
    easy to understand and still be something nobody finishes. Two problems, two
    sets of rules.
-4. **No study measures docblock or PR-description comprehension directly.**
-   Applying this file to either carrier takes prose-reading evidence somewhere
-   it has not been tested. The nearest domain-specific sources are Google Java
-   §7.2 on the summary fragment, quoted in `writing-docblocks`, and Google's
-   small-CL reasoning, quoted in `writing-pull-requests`. The second is stated
-   as experience rather than measured.
 
 ## Sources
 
-Read on 2026-08-28. The Google, GitHub and W3C quotes were re-verified against
-the live pages on 2026-08-30.
+Read on 2026-08-28. The W3C quotes were re-verified against the live page on
+2026-08-30.
 
 - [W3C, Making Content Usable for People with Cognitive and Learning Disabilities](https://www.w3.org/TR/coga-usable/)
 - [Nielsen Norman Group, F-shaped pattern of reading: misunderstood, but still relevant](https://www.nngroup.com/articles/f-shaped-pattern-reading-web-content/)
 - [Nielsen Norman Group, How users read on the web](https://www.nngroup.com/articles/how-users-read-on-the-web/)
 - [GOV.UK content principles: conventions and research background](https://www.gov.uk/government/publications/govuk-content-principles-conventions-and-research-background/govuk-content-principles-conventions-and-research-background), which carries the Dee-Lucas, Spyridakis and Morkes and Nielsen citations
-- [Google Java Style Guide, section 7](https://google.github.io/styleguide/javaguide.html)
-- [Google, Small CLs](https://google.github.io/eng-practices/review/developer/small-cls.html)
 - [Mayer, A personalization effect in multimedia learning](https://tecfa.unige.ch/tecfa/teaching/methodo/Mayer2004)
 - [Cambridge Handbook of Multimedia Learning, chapter 14: principles based on social cues](https://www.cambridge.org/core/books/abs/cambridge-handbook-of-multimedia-learning/principles-based-on-social-cues-in-multimedia-learning-personalization-voice-image-and-embodiment-principles/3841340D8AD820C26DBCD39AE664BCEC)
 - [Cognitive and affective effects of seductive details in multimedia learning](https://nschwartz.yourweb.csuchico.edu/COGNITIVE%20AND%20AFFECTIVE%20EFFECTS%20OF%20SEDUCTIVE%20DETAILS%20IN%20MULTIMEDIA%20LEARNING.pdf), carrying the Harp and Mayer distinction

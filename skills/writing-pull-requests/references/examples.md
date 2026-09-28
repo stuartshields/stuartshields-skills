@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-08-31T12:20+11:00 -->
+<!-- Last updated: 2026-09-28T11:55+11:00 -->
 
 # Worked examples
 
@@ -14,7 +14,7 @@ each part of a description sits and what a filled-in part reads like.
 Take the structure. Take none of the figures.
 
 A figure that cannot be traced to a command you ran or a file you read does not
-go in. `SKILL.md` step 6 checks every claim in the body against the diff, and a
+go in. `SKILL.md` step 5 checks every claim in the body against the diff, and a
 number imported from this file is what that check is looking for.
 
 ## Small: a one-file fix
@@ -43,16 +43,15 @@ Swapped the order: trim to words first, then apply the length cap.
 `composer test -- --filter ExcerptTest` returns `12 passed, 0 failed`.
 Manual check on `/blog/` shows full final words on all 10 excerpts.
 
-**Start at** `inc/formatting.php:214`. Nothing else in the diff is behavioural.
-
 Fixes #1841
 ```
 
-The invented parts are the path, the line number, the two test counts and the
-issue number. The shape around them is the point.
+The invented parts are the test counts, the excerpt count and the issue number.
+The shape around them is the point. One file changed, so there is no Start at
+line: the Files tab already routes the reviewer.
 
 The title is the first line of the body here because GitHub takes it
-separately. Printed as text, give it its own line labelled Title.
+separately. In a text-only file, it takes its own `Title:` line.
 
 ## Medium: a feature with a trade-off
 
@@ -70,8 +69,8 @@ The dispatcher now retries on 5xx and on connection timeouts, backing off
 terminal, since a 422 will not become valid on a retry.
 
 **Shortcoming:** retry state lives in Redis, so a Redis restart mid-backoff
-loses the pending retries. Making that durable means a schema change and it did
-not seem worth blocking this on. Tracked in #1902.
+loses the pending retries. Making it durable needs a schema change, tracked in
+#1902.
 
 **How to verify**
 `composer test -- --group queue` returns `38 passed, 0 failed`.
@@ -114,17 +113,15 @@ Extract Order into OrderTotals, OrderTaxes, OrderShipping and OrderPersistence.
 **Size warning: 1,840 lines across 34 files.** Google's guidance puts 1,000
 lines as usually too large, and this is over it. Of the total, 1,310 lines are
 the mechanical move of existing methods into the four new classes with no
-change to their bodies; 530 lines are new interfaces and their tests. I can
-split this into the four extractions as separate PRs if you would rather
-review them one at a time. Say the word and I will.
+change to their bodies; 530 lines are new interfaces and their tests. It splits
+into the four extractions as separate PRs.
 
 **Why now:** checkout tests each needed a seeded database because totals and
 persistence sat in one class, so the suite took 4 minutes. It is 40 seconds
 after this.
 
 **Shortcoming:** OrderTaxes still reaches for the global tax config rather than
-taking it as a constructor argument. Doing that properly means touching the
-admin screens, which felt like a separate change.
+taking it as a constructor argument. Changing that touches the admin screens.
 
 **How to verify**
 `composer test` returns `412 passed, 0 failed` (was 412 before, unchanged).
@@ -141,7 +138,7 @@ invented, and they are internally consistent only because a worked example that
 contradicts itself teaches the wrong lesson.
 
 The size warning proposes a split rather than apologising for the absence of
-one. That is the behaviour step 5 of the skill asks for: the description names
+one. That is the behaviour step 4 of the skill asks for: the description names
 the problem and hands the decision back.
 
 The reviewer routing does the other half. A 34-file diff where 30 files are
@@ -154,7 +151,7 @@ This table is the part to carry into real work. Nothing above it is.
 | Line | Purpose |
 |---|---|
 | Imperative title | What a reader sees in the merge log |
-| Why paragraph | The alternative you rejected |
+| Why paragraph | The problem the change solves |
 | `**Shortcoming:**` | What a reviewer would otherwise have to find |
 | `**How to verify**` + output | Evidence, not a claim |
 | `**Start at**` / `**Skip**` | The routing that saves the most time |

@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-08-31T10:00+11:00 -->
+<!-- Last updated: 2026-09-27T13:05+10:00 -->
 
 # CSS and SASS comments
 
@@ -7,8 +7,10 @@ file instead. SassDoc adds an API layer for mixins and functions.
 
 ## WordPress CSS
 
-**Comment liberally.** File size is not a reason to strip comments from source;
-that is what minification and `SCRIPT_DEBUG` are for.
+**"Comment, and comment liberally."** The handbook says it about file size:
+minification and `SCRIPT_DEBUG` strip comments, so source keeps them. That
+permits comments. It does not ask for paragraphs, and the one-line default in
+`SKILL.md` still holds.
 
 **Numbered section headers**, so a section is searchable by number:
 
@@ -33,8 +35,8 @@ contents at the top using the same numbers.
 }
 ```
 
-Every `!important` wants its reason on the same line, because the next reader's
-first instinct is to delete it.
+Every `!important` gets a same-line comment naming what it overrides, such as
+`/* Overrides the block library's inline width. */`.
 
 **Wrap long comments at 80 characters**, broken by hand.
 

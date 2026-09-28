@@ -1,23 +1,14 @@
-<!-- Last updated: 2026-09-11T19:05+10:00 -->
+<!-- Last updated: 2026-09-28T09:14+11:00 -->
 
 # The interview
 
-Ask before drafting a word. Put all four questions in one `AskUserQuestion` call, which takes four at most. Asking them one at a time trains the user to stop answering.
-
-Skip the interview only where the repo already records the answers, in its `CLAUDE.md` or a style note. Then say which file you read them from.
-
-## The four questions
-
-1. British or US English?
-2. Which person, and for whom?
-3. Which document type?
-4. Which guide settles what you did not ask?
+The options for each of the four questions in `SKILL.md` step 1, the author's recorded defaults, and what changes in the text when an answer flips. Asking them one at a time trains the user to stop answering.
 
 ### 1. British or US English?
 
 Offer: British English, US English, or match what the repo already uses.
 
-The answer decides spelling: the `-ise`/`-ize` and `-our`/`-or` families, `licence` against `license`, doubled consonants in `modelling`. It also decides date order, whether numbers below ten are spelled out, whether negative contractions are allowed, and single or double quotation marks around interface labels. `style-guides.md` lists the three places the guides disagree.
+The answer decides spelling: the `-ise`/`-ize` and `-our`/`-or` families, `licence` against `license`, doubled consonants in `modelling`. It also decides the choices in the dialect table in `formatting.md`.
 
 Measure the repo before offering a default:
 
@@ -67,7 +58,7 @@ Google, GitLab, GOV.UK, Fuchsia, or the repo's existing docs. `style-guides.md` 
 
 ## What not to ask
 
-Six things every guide checked agrees on: sentence-case headings, active voice, present tense for behaviour, numbered lists for sequences, bulleted lists otherwise, and parallel construction within a list. `formatting.md` carries them as defaults.
+Anything `formatting.md` applies without asking.
 
 ## Record the answers
 

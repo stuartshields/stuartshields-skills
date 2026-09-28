@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-09-11T19:05+10:00 -->
+<!-- Last updated: 2026-09-28T09:14+11:00 -->
 
 # Formatting
 
@@ -29,10 +29,6 @@ Where the prose says how many items follow ("four questions", "three checks"), n
 Where no count is stated and no sequence exists, bullet.
 
 A table already lets the reader count its rows, so a stated count above a table needs no numbering. The rule bites on bullets.
-
-### Prose flows, structure carries counts
-
-Continuous prose is the default for an argument or an explanation, and a list is what you reach for when the items are genuinely parallel and countable. The test is in step 4 of `SKILL.md`: two or more consecutive sentences of the same shape, reorderable without loss, were a list all along.
 
 ### Change carrier after about a dozen lines
 
@@ -65,4 +61,3 @@ Match the file you are editing. Starting a new file, match its neighbours, and s
 - A table suits pairs of related values. A table too wide for the terminal becomes a list.
 - Link text describes the destination. No bare URLs in prose, and no "here".
 - Indentation: tabs in the body, spaces inside YAML frontmatter, where a tab is a parse error. Where the project's own convention differs, the project wins.
-- Anything over roughly 30 lines, code samples and long tables included, moves to its own file with a teaser left behind. Step 4 of `SKILL.md` covers this.

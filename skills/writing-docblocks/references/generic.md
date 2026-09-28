@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-09-07T13:46+10:00 -->
+<!-- Last updated: 2026-09-27T13:05+10:00 -->
 
 # Any other language
 
@@ -8,18 +8,16 @@ bottom. Where you cannot, these rules hold across all of them.
 
 ## Whether it needs a block
 
-Document every visible class, member or record component. Visible means public,
-or protected inside a visible container. Three exceptions:
+Step 2 of the skill decides. Where the language's linter requires a block on
+every visible member, write the one-line summary only. Two cases never need
+one:
 
 - **Self-explanatory members**, such as a `getFoo()`, where there is nothing to
-  say but "the foo". This does not license dropping documentation for a term the
-  reader may not know.
+  say but "the foo".
 - **Overrides.** The parent's block is the documentation.
-- **Everything else** is as needed.
 
-One rule attaches to the last case and applies everywhere: if you are about to
-write a comment inside a function explaining what the whole function is for, it
-belongs above the function.
+A comment inside a function saying what the whole function does belongs above
+the function.
 
 ## The three-part structure
 

@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-08-31T10:00+11:00 -->
+<!-- Last updated: 2026-09-27T13:05+10:00 -->
 
 # PHP docblocks
 
@@ -31,10 +31,13 @@ Omit what does not apply. Never reorder.
 ## Summary and description
 
 **Summary:** one sentence, two lines maximum, ending in a period. No HTML, no
-Markdown. Write "img element", never the literal tag.
+Markdown. Write "img element", never the literal tag. The handbook: "Avoid
+describing "why" an element exists, rather, focus on documenting "what" and
+"when" it does something."
 
-**Description:** optional. Markdown allowed, HTML prohibited outside code
-examples. Blank comment line before and after lists and code samples.
+**Description:** optional, and usually omitted. Markdown allowed, HTML
+prohibited outside code examples. Blank comment line before and after lists and
+code samples.
 
 ## `@since`
 
