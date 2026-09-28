@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-09-28T09:14+11:00 -->
+<!-- Last updated: 2026-09-28T11:38+11:00 -->
 
 # Anatomy of a pull request description
 
@@ -51,6 +51,28 @@ omitting a benchmark is not incomplete; one hiding a known weakness is.
 > If you include links to external resources consider that they may not be
 > visible to future readers due to access restrictions or retention policies.
 
+The questions Google puts to the author, which is why a missing reason is asked
+for rather than filled in:
+
+> Why are these changes being made? What contexts did you have as an author
+> when making this change? Were there decisions you made that aren't reflected
+> in the source code?
+
+GitHub, on a generated summary, which is what this skill produces:
+
+> you should review it carefully and add context that only you know.
+
+### How to verify
+
+GitHub's self-review:
+
+> A self-review can include reading the diff, checking for accidental changes,
+> and making sure relevant builds or tests have run.
+
+Google:
+
+> The CL should include related test code.
+
 ### Where to start
 
 GitHub:
@@ -65,9 +87,27 @@ GitHub:
 > Use issue-closing keywords when a pull request should close an issue after
 > merging.
 
+## Scope
+
+The concern count in `SKILL.md` step 4. Google defines the right size as "one
+self-contained change", which means:
+
+> The CL makes a minimal change that addresses just one thing.
+
+And on what small means, verbatim:
+
+> Remember that smallness here refers the conceptual idea that the CL should be
+> focused and is not a simplistic function on line count.
+
+GitHub:
+
+> When a change grows large, consider splitting it into smaller pull requests
+> that each serve one purpose.
+
 ## Sources
 
-Google quotes verified against the live page on 2026-08-30.
+Quotes verified against the live pages on 2026-09-28.
 
 - https://google.github.io/eng-practices/review/developer/cl-descriptions.html
+- https://google.github.io/eng-practices/review/developer/small-cls.html
 - https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/helping-others-review-your-changes

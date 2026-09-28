@@ -9,7 +9,7 @@ hooks:
           command: "\"${CLAUDE_SKILL_DIR}/scripts/prose-tells-guard.sh\""
 ---
 
-<!-- Last updated: 2026-09-28T11:29+11:00 -->
+<!-- Last updated: 2026-09-28T11:38+11:00 -->
 
 # Writing pull requests
 
@@ -33,7 +33,7 @@ Opening a PR is not permission to commit or push. Where the working tree or loca
 
 **The title and body describe the code change and nothing else.** Leave out any line crediting an AI tool or assistant, including an attribution line or `Co-Authored-By` trailer the harness supplies, and anything about how the text was written. The same holds for a commit message.
 
-**On a revision, show only the sections that changed.** Reprinting a body the reader has already been through in order to alter two lines buries the two lines.
+**On a revision, show only the sections that changed.** Reprinting a body the reader has already been through in order to alter two lines buries the two lines. A behaviour a new commit adds gets its own entry, not a clause on the end of an existing one.
 
 - **Printing:** give each changed section its own fenced block.
 - **`gh pr edit`:** GitHub replaces the whole body, so start from the live one (`gh pr view --json body`). Rewrite only the sections the change touches, and keep what a human wrote that the diff still supports. Pass the result with `--body-file`, then reply with the URL and each changed section in its own fenced block.
@@ -103,7 +103,13 @@ ticket number is under linked issues, so neither is repeated in prose.
 
 **Why.** The problem the change solves. Give the standing reason, not the route you took to it. The why is "post metadata belongs to the template that frames it". The chronology is "we narrowed the scope after the first pass", which is invisible in the diff and useless to a reviewer. Name any shortcoming: it gets a faster review than leaving a reviewer to find the gap. Summarise what a linked document decided rather than linking it alone, because access restrictions and retention policies outlive the link.
 
-**How to verify.** The commands you ran and what they returned, plus what a reviewer should run. "Tests pass" is a claim; `47 passed, 0 failed` is evidence.
+A PR carrying more than one concern gives each its own reason. Where a reason is in neither the diff, the commits nor the conversation, ask the user for it. Only the author knows a decision the code does not show, so do not invent one, and do not leave the concern without one.
+
+**How to verify.** The commands you ran and what they returned, plus what a reviewer should run. "Tests pass" is a claim; `47 passed, 0 failed` is evidence. A command listed without its output is a claim too.
+
+Cover what the What changed part describes. Each behaviour there gets a check you ran, or a clause naming it as unchecked. A claim scoped wider than what ran is false, however many results follow it: "each hook was tested" when one was not.
+
+Each result sits beside the command that produced it. Where reproducing one needs setup a reviewer would rebuild by hand, commit the check with the change or give the full command.
 
 Every piece of that evidence has to be reproducible from the branch. A gate failing on an untracked local file, or a figure from a script you did not commit, is not part of the change. A reviewer cannot run it, so it reads as noise and invites a question you then have to answer. Cite the result, or leave it out.
 
@@ -138,11 +144,15 @@ Two exceptions, both surfaced by the script: a whole-file deletion counts as rou
 
 Over the threshold with neither exception applying, state the line count and propose a split by concern. Do not compensate with a longer description.
 
+Lines are not the only measure. Google defines a small change by focus, not by line count, and `references/anatomy.md` has the quote. List the independent concerns in the diff: changes that could merge or revert apart. More than one means proposing a split, whatever the line count. Where the user keeps them together, each concern gets its own entry in What changed, its own reason and its own check, and the title names each.
+
 ## 5. Self-review before handing it over
 
 1. **Does every claim in the body match the diff?** A described behaviour that is not in the change costs a reviewer the most time.
-2. **Is there anything in the diff the body does not mention?** A stray debugging line, a version bump, a reformatted file.
-3. **Where the PR was already open, is everything a human wrote and the diff
+2. **Does every verification claim match a command you ran?** Read each "every", "each" and "all" in How to verify against the commands, and name what did not run.
+3. **Does every concern have its own reason and its own check?** A reason you could not find is a question for the user, not a gap.
+4. **Is there anything in the diff the body does not mention?** A stray debugging line, a version bump, a reformatted file.
+5. **Where the PR was already open, is everything a human wrote and the diff
    still supports still there?** Say what you removed and why.
 
 Report what you checked and what you found.
