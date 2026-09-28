@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-09-28T09:14+11:00 -->
+<!-- Last updated: 2026-09-28T11:55+11:00 -->
 
 # Worked examples
 
@@ -51,7 +51,7 @@ The shape around them is the point. One file changed, so there is no Start at
 line: the Files tab already routes the reviewer.
 
 The title is the first line of the body here because GitHub takes it
-separately. Printed as text, give it its own line labelled Title.
+separately. In a text-only file, it takes its own `Title:` line.
 
 ## Medium: a feature with a trade-off
 

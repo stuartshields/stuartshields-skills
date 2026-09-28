@@ -9,7 +9,7 @@ hooks:
           command: "\"${CLAUDE_SKILL_DIR}/scripts/prose-tells-guard.sh\""
 ---
 
-<!-- Last updated: 2026-09-28T11:38+11:00 -->
+<!-- Last updated: 2026-09-28T11:55+11:00 -->
 
 # Writing pull requests
 
@@ -21,13 +21,13 @@ them: the intent, and the evidence it works. Everything else in the body delays
 those.
 
 The prose rules in `references/prose.md` apply to the title and the body. Read
-the body against its word list before printing it.
+the body against its word list before handing it over.
 
 ## Output contract
 
 **"Write the PR", "raise a PR" and "open a PR" all mean open it.** Check step 1's `PUSHABLE` verdict first. On `PUSHABLE: NO`, say why in one line and stop, because the missing remote or the failed auth is what the user fixes first. Otherwise run `gh pr create --title "<title>" --body-file <file>`, or `gh pr edit` where step 1 found a PR already open, and reply with the URL.
 
-**Print instead of opening only when the user asks for the text alone.** "Don't open it", "just the text" and "write it here" ask for that, and so does a question like "what should the PR say". Print the title and body inside one fenced block with the `markdown` info string, so the raw CommonMark can be pasted into GitHub. Where the body itself carries a fenced example, open the outer fence with four backticks. Run no `gh` command. On `PUSHABLE: NO`, add one line saying the branch cannot be pushed yet.
+**Write a file instead of opening only when the user asks for the text alone.** "Don't open it", "just the text" and "write it as text" ask for that, and so does a question like "what should the PR say". Write to `/tmp/pr-<repo>-<branch>.md`, with any `/` in the branch name replaced by `-`. Outside the repo, the file cannot be committed, and the user reads it there before pasting it into GitHub. The first line is `Title: <title>`, then a blank line, then the body as raw CommonMark. Reply with the path, and run no `gh` command. On `PUSHABLE: NO`, add one line saying the branch cannot be pushed yet.
 
 Opening a PR is not permission to commit or push. Where the working tree or local commits hold changes the remote lacks, ask before committing or pushing them: the body describes a diff the PR would not yet show.
 
@@ -35,7 +35,7 @@ Opening a PR is not permission to commit or push. Where the working tree or loca
 
 **On a revision, show only the sections that changed.** Reprinting a body the reader has already been through in order to alter two lines buries the two lines. A behaviour a new commit adds gets its own entry, not a clause on the end of an existing one.
 
-- **Printing:** give each changed section its own fenced block.
+- **Text only:** rewrite the file in full, because the user pastes the whole body. Reply with the path and the names of the sections that changed.
 - **`gh pr edit`:** GitHub replaces the whole body, so start from the live one (`gh pr view --json body`). Rewrite only the sections the change touches, and keep what a human wrote that the diff still supports. Pass the result with `--body-file`, then reply with the URL and each changed section in its own fenced block.
 
 **Write it once, in the shape below.** Gather the context and read the diff first, then write the title and the body in that order. Do not draft loosely and reshape it into the contract afterwards: a reshaped draft keeps the first draft's structure and quietly loses the parts the contract asks for.

@@ -9,7 +9,7 @@ hooks:
           command: "\"${CLAUDE_SKILL_DIR}/scripts/prose-tells-guard.sh\""
 ---
 
-<!-- Last updated: 2026-09-28T09:14+11:00 -->
+<!-- Last updated: 2026-09-28T11:55+11:00 -->
 
 # Writing documentation
 
@@ -36,7 +36,7 @@ Four questions, in one `AskUserQuestion` call, which takes four at most:
 
 Ask all four together. A dialect answer arriving after the first draft respells every sentence in it, and a person answer arriving late rewrites all of them.
 
-Skip the interview where the answers already exist. An edit to an existing document takes its dialect, person and type from the document. A new document takes them from the repo's `CLAUDE.md` or style note where one records them. Say which file you read them from.
+Where the answers already exist, offer them instead of skipping the interview. An existing document shows its own dialect, person and type, and a repo's `CLAUDE.md` or style note may record them for a new one. Ask one `AskUserQuestion` question: use the answers found, naming the file each came from, or run the interview. Where nothing records them, run the interview.
 
 Reference the chosen guide; do not copy it into the repo. Record only where the project departs from it, with the reason. `references/style-guides.md` compares the four worth referencing.
 
