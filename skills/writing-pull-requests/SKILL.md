@@ -9,7 +9,7 @@ hooks:
           command: "\"${CLAUDE_SKILL_DIR}/scripts/prose-tells-guard.sh\""
 ---
 
-<!-- Last updated: 2026-09-28T09:14+11:00 -->
+<!-- Last updated: 2026-09-28T11:29+11:00 -->
 
 # Writing pull requests
 
@@ -25,17 +25,18 @@ the body against its word list before printing it.
 
 ## Output contract
 
-**Print the title and body inside one fenced block** with the `markdown` info string, so the raw CommonMark can be pasted into GitHub. Where the body itself carries a fenced example, open the outer fence with four backticks.
+**"Write the PR", "raise a PR" and "open a PR" all mean open it.** Check step 1's `PUSHABLE` verdict first. On `PUSHABLE: NO`, say why in one line and stop, because the missing remote or the failed auth is what the user fixes first. Otherwise run `gh pr create --title "<title>" --body-file <file>`, or `gh pr edit` where step 1 found a PR already open, and reply with the URL.
 
-**Asked to write the PR, not open it?** That fenced block is the whole deliverable. Run no `gh` command.
+**Print instead of opening only when the user asks for the text alone.** "Don't open it", "just the text" and "write it here" ask for that, and so does a question like "what should the PR say". Print the title and body inside one fenced block with the `markdown` info string, so the raw CommonMark can be pasted into GitHub. Where the body itself carries a fenced example, open the outer fence with four backticks. Run no `gh` command. On `PUSHABLE: NO`, add one line saying the branch cannot be pushed yet.
 
-**Asked to open it?** Check step 1's `PUSHABLE` verdict first. On `PUSHABLE: NO`, say why in one line and stop, because the missing remote or the failed auth is what the user fixes first. Where they asked only for the text, write it anyway and add one line saying the branch cannot be pushed yet.
-
-Never post, push or open anything without being asked in that turn. Pushable is a statement about the branch, not permission to use it.
+Opening a PR is not permission to commit or push. Where the working tree or local commits hold changes the remote lacks, ask before committing or pushing them: the body describes a diff the PR would not yet show.
 
 **The title and body describe the code change and nothing else.** Leave out any line crediting an AI tool or assistant, including an attribution line or `Co-Authored-By` trailer the harness supplies, and anything about how the text was written. The same holds for a commit message.
 
-**On a revision, print only the sections that changed**, each in its own fenced block. Reprinting a body the reader has already been through in order to alter two lines buries the two lines.
+**On a revision, show only the sections that changed.** Reprinting a body the reader has already been through in order to alter two lines buries the two lines.
+
+- **Printing:** give each changed section its own fenced block.
+- **`gh pr edit`:** GitHub replaces the whole body, so start from the live one (`gh pr view --json body`). Rewrite only the sections the change touches, and keep what a human wrote that the diff still supports. Pass the result with `--body-file`, then reply with the URL and each changed section in its own fenced block.
 
 **Write it once, in the shape below.** Gather the context and read the diff first, then write the title and the body in that order. Do not draft loosely and reshape it into the contract afterwards: a reshaped draft keeps the first draft's structure and quietly loses the parts the contract asks for.
 
