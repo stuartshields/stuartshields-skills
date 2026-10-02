@@ -65,8 +65,10 @@ Array arguments use hash notation, with a `@type` line per key.
 
 Every possible return type, each with a description ending in a period.
 
-`@return void` is not used outside the default bundled themes and the PHP
-compatibility shims in core. Outside WordPress, phpDocumentor permits it.
+A function that returns nothing takes `@return void`, so every block states what
+comes back. The WordPress handbook reserves `@return void` for core's bundled
+themes and PHP compatibility shims; this skill uses it everywhere, and
+phpDocumentor permits it.
 
 ## Inline comments
 

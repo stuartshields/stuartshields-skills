@@ -165,8 +165,8 @@ unparseable case and needs a manual read.
 It does not check:
 
 1. Declared types against the signature, including nullability and defaults.
-2. `@return` against every return path. WordPress forbids `@return void` outside
-   the bundled themes and the core PHP compatibility shims.
+2. `@return` against every return path, including `@return void` on a function
+   that returns nothing.
 3. `@throws` against what the body can raise.
 
 Run the project's linter for those and quote its output: `phpcs` with
