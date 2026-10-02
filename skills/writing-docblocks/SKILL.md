@@ -9,7 +9,7 @@ hooks:
           command: "sh -c 'g=$HOME/.claude/skills/writing-docblocks/scripts/docblock-guard.sh; [ -x \"$g\" ] && exec \"$g\"; exit 0'"
 ---
 
-<!-- Last updated: 2026-09-27T13:05+10:00 -->
+<!-- Last updated: 2026-10-02T12:41+11:00 -->
 
 # Writing docblocks and inline comments
 
@@ -69,17 +69,19 @@ long reads faster than a paragraph, and says more.
 
 1. **Summary.** One line. What it does, or for a hook, when it fires. Ends with
    a period. No markup.
-2. **Description.** Usually omitted. One or two lines, only when the code does
-   something the summary cannot hold, such as a side effect or an edge-case
-   return. Blank comment line above it.
+2. **Description.** Usually omitted. One to three lines, only for what a
+   caller would not expect: a gotcha, a rejected alternative, the reason for a
+   decision. Blank comment line above it.
 3. **Tags.** Only those the language or ruleset requires, in the order it
    mandates. Read the reference. WordPress PHP and WordPress JavaScript use
    different orders. Each tag description is a short phrase.
 
-Say what the code does, not why. The WordPress standard: "Avoid describing
-"why" an element exists, rather, focus on documenting "what" and "when" it does
-something." A reason for the approach goes in the commit or the PR, because it
-outlives the code it defends and nothing in the build notices.
+A comment is worth its line when it says what the code cannot: the reason
+behind an approach, an exception or a value. What the code does is already
+written in the code, so a comment restating it is the one to cut. This departs
+from the WordPress handbook, which says "Avoid describing "why" an element
+exists", on purpose: the why is the one fact a reader cannot recover from the
+code.
 
 Each fact appears once. The signature beats a tag, a tag beats a description
 sentence, and a fact the signature already states is written nowhere. The type
@@ -102,12 +104,17 @@ becomes:
 
 ```php
 /**
- * Returns the reading time in minutes at 200 words per minute, minimum 1.
+ * Returns the reading time in minutes, never less than 1.
+ *
+ * 200 words per minute, the average adult reading speed.
  *
  * @param int $post_id Post ID.
  * @return int Minutes.
  */
 ```
+
+The 200 keeps its line because the code shows the number and not why it is that
+number. "Rounds up" goes, because `ceil()` already says it.
 
 Summary rules:
 
@@ -131,16 +138,17 @@ it.
 - One line, directly above the line or block it describes, at the same
   indentation, with no blank line between. In CSS an end-of-line comment on the
   declaration is correct.
-- It says what the code does, where the code does not make that plain. If a
-  better name would make the comment unnecessary, rename instead.
+- It says what the code cannot: the reason behind an approach, an exception or
+  a value. A comment restating what the line does is noise. If a better name
+  would make the comment unnecessary, rename instead.
 - **Multi-line comments open with `/*`, never `/**`.** A parser reads `/**` as a
   DocBlock. WordPress states this for PHP and JavaScript alike.
 - A warning names what happens. "Careful here" says nothing. "Runs before
   `init`, so `get_option()` returns the default" does.
 - Never comment out code. `references/comments.md` covers it.
 
-`scripts/docblock-guard.sh` flags reasons, history, and runs over three prose
-lines on every code write. It runs from the first invocation of this skill in a
+`scripts/docblock-guard.sh` flags history and runs over three prose lines on
+every code write. It runs from the first invocation of this skill in a
 session and stays on for the rest of it. Advisory, never blocking.
 
 ## 5. Verify the block against the code

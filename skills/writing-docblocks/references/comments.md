@@ -1,11 +1,11 @@
-<!-- Last updated: 2026-09-27T13:05+10:00 -->
+<!-- Last updated: 2026-10-02T12:41+11:00 -->
 
 # When a comment earns its place
 
 The gate behind steps 2 and 4 of `SKILL.md`. Read it before deciding whether a block or an inline comment should exist at all.
 
-- A comment says what the code does, where the code does not already make that plain. If the code already says it, delete the comment.
-- No reasons. Why an approach was chosen or rejected goes in the commit or the PR, not above the code.
+- A comment is worth its line when it says what the code cannot: the reason behind an approach, an exception or a value. A comment restating what the code does adds nothing the code does not already say, so delete it.
+- A reason is about the code as it stands: "core sets `display: inline-block` on the link, so this needs the extra class". It names the constraint the code answers to, which outlives any commit message about it.
 - No narration and no session history. "Second pass", "colour pass", "the rhythm fix" mean nothing to the next reader. Describe the current state, not how it got here.
 - Do not retell the reference or the spec.
 - One line beats a paragraph. Budget: if comments exceed about 15% of a file, you are narrating.

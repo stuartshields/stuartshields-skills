@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-09-27T13:05+10:00 -->
+<!-- Last updated: 2026-10-02T12:41+11:00 -->
 
 # JavaScript and TypeScript docblocks
 
@@ -42,9 +42,10 @@ Different from the PHP order. Do not carry one across to the other.
 
 ## Summary and description
 
-**Summary:** one line, one sentence, ending in a period. No markup. The
-handbook: "Document "what" and "when" - "why" should rarely need to be
-included."
+**Summary:** one line, one sentence, ending in a period. No markup. It says what
+the element does or when it fires. A why, where there is one, goes in the
+description. The handbook says ""why" should rarely need to be included", and
+this skill departs from it; `comments.md` says when a why earns its place.
 
 **Description:** optional, and usually omitted. Ends in a period. Markdown
 permitted.

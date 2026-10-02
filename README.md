@@ -142,7 +142,7 @@ Which tags, in what order, in which syntax, for PHPDoc, JSDoc, TSDoc, WordPress 
 
 ### Its hook
 
-`scripts/docblock-guard.sh` runs before every Write or Edit to a code file once the skill has been invoked. It reports a comment giving a reason instead of saying what the code does, a comment describing history rather than current state, and a comment run past three prose lines.
+`scripts/docblock-guard.sh` runs before every Write or Edit to a code file once the skill has been invoked. It reports a comment describing history rather than current state, and a comment run past three prose lines. A reason is not reported: the skill treats the reason behind an approach, an exception or a value as what a comment is for.
 
 ## `writing-pull-requests`
 
