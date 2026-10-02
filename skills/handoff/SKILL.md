@@ -6,7 +6,7 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: "\"${CLAUDE_SKILL_DIR}/scripts/check-handoff-size.sh\""
+          command: "sh -c 'g=$HOME/.claude/skills/handoff/scripts/check-handoff-size.sh; [ -x \"$g\" ] && exec \"$g\"; exit 0'"
 ---
 
 <!-- Last updated: 2026-09-28T12:55+11:00 -->

@@ -1,7 +1,9 @@
 #!/bin/bash
 # PreToolUse advisory for Markdown prose: em dashes and assertion vocabulary.
-# Declared in the frontmatter of ../SKILL.md, so Claude Code registers it when
-# that skill is invoked and keeps it for the session. writing-pull-requests
+# Registered in the plugin-wide hooks.json under a plugin install, and in the
+# frontmatter of ../SKILL.md under ~/.claude/skills/. A hook command cannot use
+# ${CLAUDE_SKILL_DIR}: Claude Code substitutes it into a skill's allowed-tools
+# and body text only, and never exports it. writing-pull-requests
 # symlinks this script and prose-scan.awk rather than copying them, so an
 # install dereferences one source. prose-scan.selftest.sh checks the links.
 #
@@ -30,6 +32,21 @@ SCANNER="${HOOK_DIR}/prose-scan.awk"
 [ -f "$SCANNER" ] || exit 0
 
 INPUT=$(cat)
+
+# Two registrations reach this script, and two skills activate it. The
+# plugin-wide hooks.json runs it on every write, so it gates on either skill
+# having been invoked. An install into ~/.claude/skills/ carries no hooks.json
+# and no skill-state.sh, and there the frontmatter hook registers only once the
+# skill is invoked.
+SKILL_STATE="$(dirname "$0")/../../../hooks/skill-state.sh"
+if [ -f "$SKILL_STATE" ]; then
+	. "$SKILL_STATE"
+	SESSION=$(jq -r '.session_id // ""' <<<"$INPUT")
+	TRANSCRIPT=$(jq -r '.transcript_path // ""' <<<"$INPUT")
+	skill_invoked "$SESSION" "$TRANSCRIPT" writing-documentation ||
+		skill_invoked "$SESSION" "$TRANSCRIPT" writing-pull-requests ||
+		exit 0
+fi
 
 TOOL=$(jq -r '.tool_name // ""' <<<"$INPUT")
 FILE_PATH=$(jq -r '.tool_input.file_path // ""' <<<"$INPUT")

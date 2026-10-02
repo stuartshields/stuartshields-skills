@@ -1,18 +1,35 @@
 #!/bin/bash
-# PreToolUse advisory for code comments: reasons, session history, and overlong
-# blocks. Declared in ../SKILL.md frontmatter, so it registers when that skill
-# is first invoked in a session. ${CLAUDE_SKILL_DIR} resolves under a plugin
-# install and under ~/.claude/skills/ alike, where ${CLAUDE_PLUGIN_ROOT} is
-# unset.
+# PreToolUse advisory for code comments: session history and overlong blocks.
+# Registered in the plugin-wide hooks.json under a plugin install, and
+# in ../SKILL.md frontmatter under ~/.claude/skills/. A hook command cannot use
+# ${CLAUDE_SKILL_DIR}: Claude Code substitutes it into a skill's allowed-tools
+# and body text only, and never exports it to the hook process, so a path built
+# from it expands to /scripts/...
 #
-# ADVISORY, NEVER BLOCKING. "because" and "to avoid" can appear in a comment
-# that only states what code does. Report and let the model judge; exit 2 is the
-# wrong instrument for a style signal.
+# ADVISORY, NEVER BLOCKING. "the old" and "no longer" can appear in a comment
+# about current state. Report and let the model judge; exit 2 is the wrong
+# instrument for a style signal.
+#
+# A reason is not flagged. The skill treats the reason behind an approach, an
+# exception or a value as the one thing a comment can say that code cannot.
 
 # Requires jq. Without it, fail open and silent rather than print an error on every write.
 command -v jq > /dev/null 2>&1 || exit 0
 
 INPUT=$(cat)
+
+# Two registrations reach this script. The plugin-wide hooks.json runs it on
+# every write, so it gates on the skill having been invoked. An install into
+# ~/.claude/skills/ carries no hooks.json and no skill-state.sh, and there the
+# frontmatter hook registers only once the skill is invoked.
+SKILL_STATE="$(dirname "$0")/../../../hooks/skill-state.sh"
+if [ -f "$SKILL_STATE" ]; then
+	. "$SKILL_STATE"
+	skill_invoked \
+		"$(jq -r '.session_id // ""' <<<"$INPUT")" \
+		"$(jq -r '.transcript_path // ""' <<<"$INPUT")" \
+		writing-docblocks || exit 0
+fi
 
 TOOL=$(jq -r '.tool_name // ""' <<<"$INPUT")
 FILE_PATH=$(jq -r '.tool_input.file_path // ""' <<<"$INPUT")
@@ -69,8 +86,6 @@ FINDINGS=$(printf '%s' "$TEXT" | awk -v MAX_PROSE=3 '
 			} else if (was_open && probe ~ /[A-Za-z]/) run_prose++
 
 			low = tolower(line)
-			if (low ~ /(because|we chose|in order to|to avoid|as opposed to|would fight|avoids that|the reason)/)
-				print NR ": gives a reason, not what the code does"
 			# "is used to" describes purpose, not history. BWK awk has no lookbehind or
 			# \b, so the non-letter anchor keeps "this used to" matching.
 			hist = low
@@ -93,7 +108,7 @@ SUMMARY=$(printf '%s' "$FINDINGS" | tr '\n' ';' | sed 's/;$//;s/;/; /g')
 jq -n --arg file "$(basename "$FILE_PATH")" --arg n "$COUNT" --arg s "$SUMMARY" '{
 	hookSpecificOutput: {
 		hookEventName: "PreToolUse",
-		additionalContext: ("Comment check on \($file): \($n) item(s), by line of the text being written: \($s). Advisory only, and the write proceeds. Say what the code does, in one line where you can. The reason for an approach goes in the commit or the PR, and history belongs in git. If the block is longer than the thing it documents, cut it. The writing-docblocks skill carries the full standard, a budget command, and scripts/check-docblocks.sh.")
+		additionalContext: ("Comment check on \($file): \($n) item(s), by line of the text being written: \($s). Advisory only, and the write proceeds. A comment is worth its line when it says what the code cannot: the reason behind an approach, an exception or a value. Cut one that restates what the code does, and keep history in git. If the block is longer than the thing it documents, cut it. The writing-docblocks skill carries the full standard, a budget command, and scripts/check-docblocks.sh.")
 	}
 }'
 

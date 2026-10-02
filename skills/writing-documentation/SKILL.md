@@ -6,7 +6,7 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: "\"${CLAUDE_SKILL_DIR}/scripts/prose-tells-guard.sh\""
+          command: "sh -c 'g=$HOME/.claude/skills/writing-documentation/scripts/prose-tells-guard.sh; [ -x \"$g\" ] && exec \"$g\"; exit 0'"
 ---
 
 <!-- Last updated: 2026-09-28T11:55+11:00 -->
