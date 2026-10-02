@@ -40,14 +40,14 @@ Different from the PHP order. Do not carry one across to the other.
   120 characters wide in total.
 - Align types and names vertically within a tag group.
 - Tabs for indentation inside the block, spaces only for that alignment.
-  `comments.md` carries the rule.
+  `docblocks.md` carries the rule.
 
 ## Summary and description
 
 **Summary:** one line, one sentence, ending in a period. No markup. It says what
 the element does or when it fires. A why, where there is one, goes in the
 description. The handbook says ""why" should rarely need to be included", and
-this skill departs from it; `comments.md` says when a why earns its place.
+this skill departs from it; `docblocks.md` says when a why earns its place.
 
 **Description:** optional, and usually omitted. Ends in a period. Markdown
 permitted.

@@ -136,7 +136,7 @@ For a document someone reads: a README, a docs page, a skill body. Four question
 
 ## `writing-docblocks`
 
-Which tags, in what order, in which syntax, for PHPDoc, JSDoc, TSDoc, WordPress inline documentation, CSS section comments and SassDoc. The nearest convention wins: the two nearest blocks in the file, then the linter config, then the bundled reference for that language. `references/comments.md` decides whether a comment earns its place at all.
+Which tags, in what order, in which syntax, for PHPDoc, JSDoc, TSDoc, WordPress inline documentation, CSS section comments and SassDoc. The nearest convention wins: the two nearest blocks in the file, then the linter config, then the bundled reference for that language. Docblocks and inline comments have separate rules: `references/docblocks.md` treats a block as a contract for a caller who will not read the body, and `references/inline-comments.md` decides whether a comment inside the body is worth writing at all.
 
 `scripts/check-docblocks.sh <file>` checks `@param` names against the signature in PHP, JavaScript and TypeScript. It names blocks it could not parse rather than passing them. It does not check types, `@return` or `@throws`, which the project linter does.
 
