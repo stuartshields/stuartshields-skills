@@ -54,9 +54,11 @@ That installs all five into `~/.claude/skills/`. Drop `-g` to install into the c
 
 ## How the hooks work
 
-Four skills declare a hook in their `SKILL.md` frontmatter rather than in a plugin-wide `hooks.json`. Claude Code registers the hook the first time you invoke that skill in a session and keeps it running until the session ends. Each hook finds its script through `${CLAUDE_SKILL_DIR}`, so it runs the same from a plugin install and from `~/.claude/skills/`.
+Each skill guard is registered twice, because the two install shapes expose different variables. A plugin install runs the guards from `hooks/hooks.json`, where `${CLAUDE_PLUGIN_ROOT}` reaches the hook process; each guard gates on its own skill having been invoked that session, so it stays quiet until you use the skill. A skills-CLI install has no `hooks.json`, so the declaration in each `SKILL.md` frontmatter resolves the script under `$HOME/.claude/skills/`, and Claude Code registers it the first time you invoke that skill.
 
-Nothing in a skill's frontmatter fires before you have used the skill. A `HANDOFF.md` written in a session that never invoked `handoff` gets no size check. The skill hooks are advisory: they always exit 0 and never block a write or a prompt.
+A hook path cannot be built from `${CLAUDE_SKILL_DIR}`. Claude Code substitutes that name into a skill's `allowed-tools` and its body text, and does not export it to a hook process, so a hook command using it expands to `/scripts/...` and fails on every write.
+
+No guard fires before you have used its skill, under either registration. A `HANDOFF.md` written in a session that never invoked `handoff` gets no size check. The skill hooks are advisory: they always exit 0 and never block a write or a prompt.
 
 ### Before a skill is invoked
 

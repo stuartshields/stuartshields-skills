@@ -6,7 +6,7 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: "\"${CLAUDE_SKILL_DIR}/scripts/docblock-guard.sh\""
+          command: "sh -c 'g=$HOME/.claude/skills/writing-docblocks/scripts/docblock-guard.sh; [ -x \"$g\" ] && exec \"$g\"; exit 0'"
 ---
 
 <!-- Last updated: 2026-09-27T13:05+10:00 -->
@@ -140,9 +140,8 @@ it.
 - Never comment out code. `references/comments.md` covers it.
 
 `scripts/docblock-guard.sh` flags reasons, history, and runs over three prose
-lines on every code write. It is declared in this file's frontmatter, so it
-registers the first time this skill is invoked in a session and stays on for
-the rest of it. Advisory, never blocking.
+lines on every code write. It runs from the first invocation of this skill in a
+session and stays on for the rest of it. Advisory, never blocking.
 
 ## 5. Verify the block against the code
 
