@@ -24,7 +24,7 @@ Omit what does not apply. Never reorder.
 ## Formatting
 
 - Tabs for indentation inside the block, as in the surrounding file. Spaces only
-  to align columns, below. `comments.md` carries the rule.
+  to align columns, below. `docblocks.md` carries the rule.
 - Wrap at 80 characters of text.
 - Nothing between the block and the declaration.
 - Align the type, variable and description columns within a tag group.
@@ -35,7 +35,7 @@ Omit what does not apply. Never reorder.
 Markdown. Write "img element", never the literal tag. The summary says what the
 element does or when it fires. A why, where there is one, goes in the
 description. The handbook says "Avoid describing "why" an element exists", and
-this skill departs from it; `comments.md` says when a why earns its place.
+this skill departs from it; `docblocks.md` says when a why earns its place.
 
 **Description:** optional, and usually omitted. Markdown allowed, HTML
 prohibited outside code examples. Blank comment line before and after lists and
