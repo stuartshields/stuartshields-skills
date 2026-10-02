@@ -16,9 +16,12 @@ hooks:
 The block above a declaration, and the comments inside a function body. Prose
 documentation is a different standard and is not covered here.
 
-`references/comments.md` decides whether a comment earns its place. This skill
-decides which tags, in what order, in what syntax, and whether the block still
-matches the code.
+Two kinds of comment, two sets of rules. `references/docblocks.md` covers the
+block above a declaration, which describes a contract to a caller who will not
+read the body. `references/inline-comments.md` covers a comment inside the body,
+which explains one decision to a reader already looking at the code. This skill
+holds the procedure: which tags, in what order, in what syntax, and whether the
+block still matches the code.
 
 The reader is a maintainer who knows the language, the framework and the
 codebase, and meets the block in editor hover or autocomplete while doing
@@ -74,14 +77,15 @@ long reads faster than a paragraph, and says more.
    decision. Blank comment line above it.
 3. **Tags.** Only those the language or ruleset requires, in the order it
    mandates. Read the reference. WordPress PHP and WordPress JavaScript use
-   different orders. Each tag description is a short phrase.
+   different orders. Each tag description is a short phrase spent on what the
+   value means: units, accepted values, defaults, what empty or null does.
 
-A comment is worth its line when it says what the code cannot: the reason
-behind an approach, an exception or a value. What the code does is already
-written in the code, so a comment restating it is the one to cut. This departs
-from the WordPress handbook, which says "Avoid describing "why" an element
-exists", on purpose: the why is the one fact a reader cannot recover from the
-code.
+`references/docblocks.md` decides what goes in and what stays out. A block
+describes the contract, not the body, so rewriting the body without changing its
+inputs, outputs or side effects leaves the block alone. The why it carries is
+the one a caller would not expect. This departs from the WordPress handbook,
+which says "Avoid describing "why" an element exists", on purpose: the why is
+the one fact a reader cannot recover from the code.
 
 Each fact appears once. The signature beats a tag, a tag beats a description
 sentence, and a fact the signature already states is written nowhere. The type
@@ -123,8 +127,9 @@ Summary rules:
   when the post is password-protected" survives truncation.
 - Never open with a phrase that delays the verb: "This method", "This function
   is used to", "A `Foo` is a", "Helper that", "Used to", "Responsible for",
-  "It is important to note". Start at the verb, or at the noun the reader
-  wants.
+  "It is important to note". Open with a third-person singular verb:
+  "Retrieves", "Returns", "Filters". A constant, a property or a file header
+  takes a noun phrase instead.
 - Past roughly eight tag rows, the finding is that the function has too many
   parameters. Say so.
 
@@ -139,13 +144,16 @@ it.
   indentation, with no blank line between. In CSS an end-of-line comment on the
   declaration is correct.
 - It says what the code cannot: the reason behind an approach, an exception or
-  a value. A comment restating what the line does is noise. If a better name
-  would make the comment unnecessary, rename instead.
+  a value. `references/inline-comments.md` lists the comments worth writing and
+  where a longer reason goes instead. If a better name would make the
+  comment unnecessary, rename instead.
+- It makes sense on its own. A reader arrives from a stack trace or a diff, so
+  no "as above" and no "same reason" pointing at another comment.
 - **Multi-line comments open with `/*`, never `/**`.** A parser reads `/**` as a
   DocBlock. WordPress states this for PHP and JavaScript alike.
 - A warning names what happens. "Careful here" says nothing. "Runs before
   `init`, so `get_option()` returns the default" does.
-- Never comment out code. `references/comments.md` covers it.
+- Never comment out code. `references/inline-comments.md` covers it.
 
 `scripts/docblock-guard.sh` flags history and runs over three prose lines on
 every code write. It runs from the first invocation of this skill in a
@@ -165,8 +173,8 @@ unparseable case and needs a manual read.
 It does not check:
 
 1. Declared types against the signature, including nullability and defaults.
-2. `@return` against every return path. WordPress forbids `@return void` outside
-   the bundled themes and the core PHP compatibility shims.
+2. `@return` against every return path, including `@return void` on a function
+   that returns nothing.
 3. `@throws` against what the body can raise.
 
 Run the project's linter for those and quote its output: `phpcs` with
@@ -180,8 +188,9 @@ softened. Cutting is the cheaper fix.
 
 ## 6. Measure the budget
 
-`references/comments.md` puts it at about 15% of a file. Count it rather than
-judge it, because the ratio is invisible while you write and obvious afterwards.
+`references/inline-comments.md` puts it at about 15% of a file. Count it rather
+than judge it, because the ratio is invisible while you write and obvious
+afterwards.
 
 ```sh
 f=<file>; echo "$(( $(grep -cE '^\s*(/\*|\*|//)' "$f") * 100 / $(wc -l < "$f") ))% comment"
