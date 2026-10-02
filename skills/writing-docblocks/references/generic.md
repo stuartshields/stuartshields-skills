@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-09-27T13:05+10:00 -->
+<!-- Last updated: 2026-10-02T12:41+11:00 -->
 
 # Any other language
 
@@ -41,7 +41,8 @@ Where the language mandates no order, use `@param`, `@return`, `@throws`,
 IOException` is worse than omitting the tag, because it looks like
 documentation.
 
-Continuation lines indent four or more spaces from the `@`.
+Continuation lines indent one tab further than the `@`, or four spaces in a
+language whose files take spaces, such as Python.
 
 ## Per-language starting points
 

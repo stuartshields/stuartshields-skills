@@ -23,7 +23,8 @@ Omit what does not apply. Never reorder.
 
 ## Formatting
 
-- Spaces, not tabs, inside the block. The surrounding file stays tab-indented.
+- Tabs for indentation inside the block, as in the surrounding file. Spaces only
+  to align columns, below. `comments.md` carries the rule.
 - Wrap at 80 characters of text.
 - Nothing between the block and the declaration.
 - Align the type, variable and description columns within a tag group.

@@ -39,6 +39,8 @@ Different from the PHP order. Do not carry one across to the other.
 - Wrap at 80 characters of text. A deeply indented block may wrap later, up to
   120 characters wide in total.
 - Align types and names vertically within a tag group.
+- Tabs for indentation inside the block, spaces only for that alignment.
+  `comments.md` carries the rule.
 
 ## Summary and description
 

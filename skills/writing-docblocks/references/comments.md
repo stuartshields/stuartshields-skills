@@ -20,4 +20,4 @@ A comment explaining what a name should have said is a rename waiting to happen.
 
 ## Indentation inside the block
 
-Indentation follows the project's convention for the file. WordPress PHP is the exception worth knowing: the surrounding file stays tab-indented and the lines inside the DocBlock use spaces. `php.md` carries it.
+Indent with tabs inside the block, as in the rest of the file: the leading whitespace, a wrapped tag description, and nested `@type` rows. Aligning the type, variable and description columns within a tag group is the one place spaces go, because a tab's width varies by editor and breaks the alignment. A file in a format that requires spaces, such as Python or YAML, keeps them.
