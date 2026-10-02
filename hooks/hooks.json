@@ -22,6 +22,14 @@
 					{
 						"type": "command",
 						"command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/docs-prose-guard.sh\""
+					},
+					{
+						"type": "command",
+						"command": "\"${CLAUDE_PLUGIN_ROOT}/skills/writing-docblocks/scripts/docblock-guard.sh\""
+					},
+					{
+						"type": "command",
+						"command": "\"${CLAUDE_PLUGIN_ROOT}/skills/writing-documentation/scripts/prose-tells-guard.sh\""
 					}
 				]
 			},
@@ -43,6 +51,15 @@
 					{
 						"type": "command",
 						"command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/record-skill.sh\""
+					}
+				]
+			},
+			{
+				"matcher": "Write|Edit",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "\"${CLAUDE_PLUGIN_ROOT}/skills/handoff/scripts/check-handoff-size.sh\""
 					}
 				]
 			}

@@ -54,9 +54,11 @@ That installs all five into `~/.claude/skills/`. Drop `-g` to install into the c
 
 ## How the hooks work
 
-Four skills declare a hook in their `SKILL.md` frontmatter rather than in a plugin-wide `hooks.json`. Claude Code registers the hook the first time you invoke that skill in a session and keeps it running until the session ends. Each hook finds its script through `${CLAUDE_SKILL_DIR}`, so it runs the same from a plugin install and from `~/.claude/skills/`.
+Each skill guard is registered twice, because the two install shapes expose different variables. A plugin install runs the guards from `hooks/hooks.json`, where `${CLAUDE_PLUGIN_ROOT}` reaches the hook process; each guard gates on its own skill having been invoked that session, so it stays quiet until you use the skill. A skills-CLI install has no `hooks.json`, so the declaration in each `SKILL.md` frontmatter resolves the script under `$HOME/.claude/skills/`, and Claude Code registers it the first time you invoke that skill.
 
-Nothing in a skill's frontmatter fires before you have used the skill. A `HANDOFF.md` written in a session that never invoked `handoff` gets no size check. The skill hooks are advisory: they always exit 0 and never block a write or a prompt.
+A hook path cannot be built from `${CLAUDE_SKILL_DIR}`. Claude Code substitutes that name into a skill's `allowed-tools` and its body text, and does not export it to a hook process, so a hook command using it expands to `/scripts/...` and fails on every write.
+
+No guard fires before you have used its skill, under either registration. A `HANDOFF.md` written in a session that never invoked `handoff` gets no size check. The skill hooks are advisory: they always exit 0 and never block a write or a prompt.
 
 ### Before a skill is invoked
 
@@ -134,13 +136,13 @@ For a document someone reads: a README, a docs page, a skill body. Four question
 
 ## `writing-docblocks`
 
-Which tags, in what order, in which syntax, for PHPDoc, JSDoc, TSDoc, WordPress inline documentation, CSS section comments and SassDoc. The nearest convention wins: the two nearest blocks in the file, then the linter config, then the bundled reference for that language. `references/comments.md` decides whether a comment earns its place at all.
+Which tags, in what order, in which syntax, for PHPDoc, JSDoc, TSDoc, WordPress inline documentation, CSS section comments and SassDoc. The nearest convention wins: the two nearest blocks in the file, then the linter config, then the bundled reference for that language. Docblocks and inline comments have separate rules: `references/docblocks.md` treats a block as a contract for a caller who will not read the body, and `references/inline-comments.md` decides whether a comment inside the body is worth writing at all.
 
 `scripts/check-docblocks.sh <file>` checks `@param` names against the signature in PHP, JavaScript and TypeScript. It names blocks it could not parse rather than passing them. It does not check types, `@return` or `@throws`, which the project linter does.
 
 ### Its hook
 
-`scripts/docblock-guard.sh` runs before every Write or Edit to a code file once the skill has been invoked. It reports a comment giving a reason instead of saying what the code does, a comment describing history rather than current state, and a comment run past three prose lines.
+`scripts/docblock-guard.sh` runs before every Write or Edit to a code file once the skill has been invoked. It reports a comment describing history rather than current state, and a comment run past three prose lines. A reason is not reported: the skill treats the reason behind an approach, an exception or a value as what a comment is for.
 
 ## `writing-pull-requests`
 
