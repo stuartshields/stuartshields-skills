@@ -83,9 +83,9 @@ long reads faster than a paragraph, and says more.
 `references/docblocks.md` decides what goes in and what stays out. A block
 describes the contract, not the body, so rewriting the body without changing its
 inputs, outputs or side effects leaves the block alone. The why it carries is
-the one a caller would not expect. This departs from the WordPress handbook, which says "Avoid
-describing "why" an element exists", on purpose: the why is the one fact a
-reader cannot recover from the code.
+the one a caller would not expect. This departs from the WordPress handbook,
+which says "Avoid describing "why" an element exists", on purpose: the why is
+the one fact a reader cannot recover from the code.
 
 Each fact appears once. The signature beats a tag, a tag beats a description
 sentence, and a fact the signature already states is written nowhere. The type
@@ -188,8 +188,9 @@ softened. Cutting is the cheaper fix.
 
 ## 6. Measure the budget
 
-`references/inline-comments.md` puts it at about 15% of a file. Count it rather than
-judge it, because the ratio is invisible while you write and obvious afterwards.
+`references/inline-comments.md` puts it at about 15% of a file. Count it rather
+than judge it, because the ratio is invisible while you write and obvious
+afterwards.
 
 ```sh
 f=<file>; echo "$(( $(grep -cE '^\s*(/\*|\*|//)' "$f") * 100 / $(wc -l < "$f") ))% comment"
