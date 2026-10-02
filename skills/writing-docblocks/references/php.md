@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-09-27T13:05+10:00 -->
+<!-- Last updated: 2026-10-02T12:41+11:00 -->
 
 # PHP docblocks
 
@@ -23,7 +23,8 @@ Omit what does not apply. Never reorder.
 
 ## Formatting
 
-- Spaces, not tabs, inside the block. The surrounding file stays tab-indented.
+- Tabs for indentation inside the block, as in the surrounding file. Spaces only
+  to align columns, below. `docblocks.md` carries the rule.
 - Wrap at 80 characters of text.
 - Nothing between the block and the declaration.
 - Align the type, variable and description columns within a tag group.
@@ -31,9 +32,10 @@ Omit what does not apply. Never reorder.
 ## Summary and description
 
 **Summary:** one sentence, two lines maximum, ending in a period. No HTML, no
-Markdown. Write "img element", never the literal tag. The handbook: "Avoid
-describing "why" an element exists, rather, focus on documenting "what" and
-"when" it does something."
+Markdown. Write "img element", never the literal tag. The summary says what the
+element does or when it fires. A why, where there is one, goes in the
+description. The handbook says "Avoid describing "why" an element exists", and
+this skill departs from it; `docblocks.md` says when a why earns its place.
 
 **Description:** optional, and usually omitted. Markdown allowed, HTML
 prohibited outside code examples. Blank comment line before and after lists and
@@ -64,8 +66,10 @@ Array arguments use hash notation, with a `@type` line per key.
 
 Every possible return type, each with a description ending in a period.
 
-`@return void` is not used outside the default bundled themes and the PHP
-compatibility shims in core. Outside WordPress, phpDocumentor permits it.
+A function that returns nothing takes `@return void`, so every block states what
+comes back. The WordPress handbook reserves `@return void` for core's bundled
+themes and PHP compatibility shims; this skill uses it everywhere, and
+phpDocumentor permits it.
 
 ## Inline comments
 

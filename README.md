@@ -136,13 +136,13 @@ For a document someone reads: a README, a docs page, a skill body. Four question
 
 ## `writing-docblocks`
 
-Which tags, in what order, in which syntax, for PHPDoc, JSDoc, TSDoc, WordPress inline documentation, CSS section comments and SassDoc. The nearest convention wins: the two nearest blocks in the file, then the linter config, then the bundled reference for that language. `references/comments.md` decides whether a comment earns its place at all.
+Which tags, in what order, in which syntax, for PHPDoc, JSDoc, TSDoc, WordPress inline documentation, CSS section comments and SassDoc. The nearest convention wins: the two nearest blocks in the file, then the linter config, then the bundled reference for that language. Docblocks and inline comments have separate rules: `references/docblocks.md` treats a block as a contract for a caller who will not read the body, and `references/inline-comments.md` decides whether a comment inside the body is worth writing at all.
 
 `scripts/check-docblocks.sh <file>` checks `@param` names against the signature in PHP, JavaScript and TypeScript. It names blocks it could not parse rather than passing them. It does not check types, `@return` or `@throws`, which the project linter does.
 
 ### Its hook
 
-`scripts/docblock-guard.sh` runs before every Write or Edit to a code file once the skill has been invoked. It reports a comment giving a reason instead of saying what the code does, a comment describing history rather than current state, and a comment run past three prose lines.
+`scripts/docblock-guard.sh` runs before every Write or Edit to a code file once the skill has been invoked. It reports a comment describing history rather than current state, and a comment run past three prose lines. A reason is not reported: the skill treats the reason behind an approach, an exception or a value as what a comment is for.
 
 ## `writing-pull-requests`
 
