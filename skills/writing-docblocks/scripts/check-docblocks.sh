@@ -5,6 +5,9 @@
 # often skipped, because doing it by eye across a long file is tedious
 # and a stale @param looks correct until someone trusts it.
 #
+# A block above a hook call (apply_filters, do_action, applyFilters, doAction)
+# is checked against the arguments the call passes after the hook name.
+#
 # Handles PHP, JavaScript and TypeScript. Reports what it could not parse
 # rather than passing it silently, since a false clean is worse than a
 # gap you know about.
@@ -92,6 +95,46 @@ for FILE in "$@"; do
 		return "?destructured"
 	}
 
+	# A hook passes one @param per argument after its name. Names are compared
+	# only where the argument is a bare variable, since a literal or a constant
+	# has no name of its own to be documented under.
+	function check_hook(   q, hook, name, problems, nargs, m, i, arg, argname) {
+		q = "\047"
+		hook = trim(sigp[1])
+		gsub("^[\"" q "]|[\"" q "]$", "", hook)
+		name = hook_fn " " hook
+		if (hook_fn ~ /(_ref_array|_deprecated)$/) {
+			if (np > 0) {
+				printf "%s:%d  %s\n    arguments passed as one array; @param agreement not checkable here, read it by hand\n", file, block_line, name
+				skipped++
+			} else ok++
+			return
+		}
+		nargs = (ns > 0 ? ns - 1 : 0)
+		problems = ""
+		if (np != nargs) problems = problems sprintf("\n    %d @param rows against %d hook arguments", np, nargs)
+		m = (np < nargs ? np : nargs)
+		for (i = 1; i <= m; i++) {
+			arg = trim(sigp[i + 1])
+			sub(/^&/, "", arg)
+			argname = ""
+			if (lang == "php" && arg ~ /^\$[A-Za-z_][A-Za-z0-9_]*$/) argname = substr(arg, 2)
+			else if (lang == "js" && arg ~ /^[A-Za-z_$][A-Za-z0-9_$]*$/ && arg !~ /^(true|false|null|undefined|this)$/) argname = arg
+			if (argname != "" && params[i] != argname) {
+				problems = problems sprintf("\n    position %d: @param names %s, the hook passes %s", i, params[i], argname)
+			}
+		}
+		if (problems != "") {
+			printf "%s:%d  %s%s\n", file, block_line, name, problems
+			bad++
+		} else ok++
+	}
+
+	BEGIN {
+		if (lang == "php") hook_re = "(^|[^A-Za-z0-9_$>:])(apply_filters|apply_filters_ref_array|apply_filters_deprecated|do_action|do_action_ref_array|do_action_deprecated)[ \t]*[(]"
+		else hook_re = "(^|[^A-Za-z0-9_$])(applyFilters|doAction)[ \t]*[(]"
+	}
+
 	/\/\*\*/ {
 		reset_block()
 		in_block = 1
@@ -151,9 +194,23 @@ for FILE in "$@"; do
 		awaiting = 0
 		depth = 0
 
-		# Pull out the parameter list.
-		if (!match(sig, /\(/)) next
-		inner = substr(sig, RSTART + 1)
+		# A hook block documents the arguments a call passes, not a signature.
+		# Casts go first, because `(array) apply_filters(` would otherwise read
+		# the cast as the parameter list. It is a hook only when its call holds
+		# the first paren left, so a function whose body calls one is not.
+		is_hook = 0
+		bare = sig
+		gsub(/\([ \t]*(array|string|int|integer|bool|boolean|float|double|object)[ \t]*\)/, "", bare)
+		if (match(bare, hook_re) && index(bare, "(") == RSTART + RLENGTH - 1) {
+			is_hook = 1
+			hook_fn = substr(bare, RSTART, RLENGTH - 1)
+			sub(/^[^A-Za-z_]+/, "", hook_fn)
+			sub(/[ \t]+$/, "", hook_fn)
+			inner = substr(bare, RSTART + RLENGTH)
+		} else {
+			if (!match(sig, /\(/)) next
+			inner = substr(sig, RSTART + 1)
+		}
 		d = 1
 		out = ""
 		for (i = 1; i <= length(inner); i++) {
@@ -182,6 +239,13 @@ for FILE in "$@"; do
 			buf = buf c
 		}
 		if (trim(buf) != "") sigp[++ns] = buf
+
+		if (is_hook) {
+			check_hook()
+			reset_block()
+			delete sigp
+			next
+		}
 
 		nsig = 0
 		delete signames
