@@ -9,7 +9,7 @@ hooks:
           command: "sh -c 'g=$HOME/.claude/skills/writing-docblocks/scripts/docblock-guard.sh; [ -x \"$g\" ] && exec \"$g\"; exit 0'"
 ---
 
-<!-- Last updated: 2026-10-02T12:41+11:00 -->
+<!-- Last updated: 2026-10-15T11:42+11:00 -->
 
 # Writing docblocks and inline comments
 
@@ -166,9 +166,12 @@ scripts/check-docblocks.sh <file> [<file>...]
 ```
 
 Checks `@param` names against the signature in name, count and order across PHP,
-JavaScript and TypeScript. Exits non-zero on disagreement, and names blocks it
-could not parse instead of passing them. A destructured parameter is the usual
-unparseable case and needs a manual read.
+JavaScript and TypeScript. A block above a hook call, such as `apply_filters()` or
+`applyFilters()`, is checked against the arguments passed after the hook name: by
+count, and by name where an argument is a bare variable. Exits non-zero on
+disagreement, and names blocks it could not parse instead of passing them. A
+destructured parameter is the usual unparseable case and needs a manual read, as
+does a hook whose arguments arrive as one array.
 
 It does not check:
 
