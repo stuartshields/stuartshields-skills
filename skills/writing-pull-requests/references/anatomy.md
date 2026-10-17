@@ -80,6 +80,16 @@ GitHub:
 > Guidance is especially helpful when a pull request touches many files or
 > requires a specific review order.
 
+### Risk and how to revert
+
+Anthropic, on the Claude Code team's own PR template:
+
+> The PR template asks how the change was tested and how to undo it.
+
+And in its recommendations:
+
+> Require CI, and add "Testing", "Risk" and "How to revert" to your PR template.
+
 ### Linked issues
 
 GitHub:
@@ -106,8 +116,9 @@ GitHub:
 
 ## Sources
 
-Quotes verified against the live pages on 2026-09-28.
+Quotes verified against the live pages on 2026-09-28, and the Anthropic quotes on 2026-10-17.
 
 - https://google.github.io/eng-practices/review/developer/cl-descriptions.html
 - https://google.github.io/eng-practices/review/developer/small-cls.html
 - https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/getting-started/helping-others-review-your-changes
+- https://claude.dev/blog/solving-code-review-at-anthropic/

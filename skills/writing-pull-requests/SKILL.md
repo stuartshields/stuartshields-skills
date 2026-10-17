@@ -9,7 +9,7 @@ hooks:
           command: "sh -c 'g=$HOME/.claude/skills/writing-pull-requests/scripts/prose-tells-guard.sh; [ -x \"$g\" ] && exec \"$g\"; exit 0'"
 ---
 
-<!-- Last updated: 2026-09-28T12:08+11:00 -->
+<!-- Last updated: 2026-10-17T18:45+10:00 -->
 
 # Writing pull requests
 
@@ -90,11 +90,11 @@ A commit message stays a label. A commit that grows into three paragraphs is a P
 
 Open the file and read it. The script prints its headings, and the headings are the least of it. The instruction for each section sits in an HTML comment beneath it, and that is where a team states what it wants and what will reject the PR.
 
-Its sections replace the four below, in its order, under its headings, including any rule it states about the title. Fill every one. Where a section does not apply, say why in a clause rather than deleting the heading: a missing heading reads as an oversight, an answered one reads as a decision. One exception: a section only a human can supply, such as screenshots, a recording or a demo link. Leave the heading with nothing beneath it. Prose explaining why you attached no screenshot is addressed to the person who has to attach it, and it occupies the space the screenshot goes in.
+Its sections replace the five below, in its order, under its headings, including any rule it states about the title. Fill every one. Where a section does not apply, say why in a clause rather than deleting the heading: a missing heading reads as an oversight, an answered one reads as a decision. One exception: a section only a human can supply, such as screenshots, a recording or a demo link. Leave the heading with nothing beneath it. Prose explaining why you attached no screenshot is addressed to the person who has to attach it, and it occupies the space the screenshot goes in.
 
-The four parts below are the fallback for a repo with no template. They are also the standard for what the content inside a template's headings has to do, whatever those headings are called.
+The five parts below are the fallback for a repo with no template. They are also the standard for what the content inside a template's headings has to do, whatever those headings are called. Where a template has no heading for risk or for undoing the change, put that part under How to verify, or the template's nearest equivalent.
 
-Four parts. Drop one only where the change genuinely has nothing to put in it. `references/anatomy.md` carries what each holds, with the source quotes.
+Five parts. Drop one only where the change genuinely has nothing to put in it. `references/anatomy.md` carries what each holds, with the source quotes.
 
 Use the shortest form that carries a fact: a table row beats a bullet, a bullet
 beats a sentence, a sentence beats a paragraph. Each fact appears once, in the
@@ -116,6 +116,8 @@ Each result sits beside the command that produced it. Where reproducing one need
 Every piece of that evidence has to be reproducible from the branch. A gate failing on an untracked local file, or a figure from a script you did not commit, is not part of the change. A reviewer cannot run it, so it reads as noise and invites a question you then have to answer. Cite the result, or leave it out.
 
 **Status is a checkbox, not a sentence.** Where the template carries a pre-review checklist, an unticked box already says the step is outstanding. Saying it again in prose ("steps 1 to 6 have not been run in a browser", "no screenshots attached") addresses the author rather than the reviewer. It is the first thing a reader skips. Leave the box unticked and write nothing. Only where there is no checklist does an untested area need a clause of its own.
+
+**Risk and how to revert.** What breaks if this change is wrong, and the step that undoes it. Name who or what it reaches: which users, requests, jobs or stored data. Then give the undo: revert the merge commit, turn off a named flag, or run a named down migration. A revert does not undo a change that wrote data, ran a migration or called an external service. Say so where that applies, and give the recovery instead. Where the risk is negligible, one clause carries both halves: "Docs only. Revert the commit."
 
 **Where to start.** Only where the diff has more than one file worth reading. Two lines do the work, and the second is the one people omit:
 
@@ -156,7 +158,8 @@ The split proposal goes to the user in the reply, never into the body. The body 
 2. **Does every verification claim match a command you ran?** Read each "every", "each" and "all" in How to verify against the commands, and name what did not run.
 3. **Does every concern have its own reason and its own check?** A reason you could not find is a question for the user, not a gap.
 4. **Is there anything in the diff the body does not mention?** A stray debugging line, a version bump, a reformatted file.
-5. **Where the PR was already open, is everything a human wrote and the diff
+5. **Does the undo actually undo it?** Where the change writes data, migrates a schema or calls an external service, a plain revert leaves that behind. The body has to name the recovery.
+6. **Where the PR was already open, is everything a human wrote and the diff
    still supports still there?** Say what you removed and why.
 
 Report what you checked and what you found.
