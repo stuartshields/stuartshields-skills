@@ -3,7 +3,7 @@ name: audit-vs-fix-discipline
 description: Use when the user asks for a code review or asks you to investigate, audit, check, scan, look at, go through, or find issues in code, especially phrased as "do a code review", "properly investigate", "look for Performance, Security, Bugs, Regression", "do not use training data", or "do not make things up". Any diagnostic request without an explicit fix verb. Also use before answering any question about what code does, whether a job or a file recurs, whether a case is already handled, or whether anything retries, cleans up, or calls something, when the answer would change what the user builds. Also use when about to write "nothing", "never", "always", "only" or "no other" about a codebase.
 ---
 
-<!-- Last updated: 2026-09-12T20:20+10:00 -->
+<!-- Last updated: 2026-10-17T20:15+10:00 -->
 
 # Audit vs fix discipline
 
@@ -127,7 +127,6 @@ All four headers appear in every report. An empty tier carries the single bullet
 | "This pattern is usually a bug." | Then confirm it is one *here*, in this file, before flagging it. |
 | "It's just a question, not a review." | The obligation attaches to the claim, not to the user's phrasing. Skip the findings format, keep the verification. |
 | "I read the function, so I read what decides it." | The task requires whatever decides the claim, usually one call site further out than feels necessary. A function cannot tell you whether it runs again. |
-| "I should answer in text before reaching for tools." | Answering first stops a question springboarding into unrequested edits. It does not license answering from a file you have not opened: read-only tools are part of forming the answer. |
 | "The branch I'm on is the state of the work." | Check. Feature branches lag the epic, and the answer often landed in a sibling PR. |
 
 ## When not to use

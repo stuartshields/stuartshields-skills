@@ -10,8 +10,10 @@ jq -e . > /dev/null 2>&1 <<<"$INPUT" || exit 0
 
 . "$(dirname "$0")/skill-state.sh"
 
+# A hyphen, underscore, slash or leading dot next to the word means an
+# identifier such as `feat-pr-risk`, `pr_count` or `docs/pr/`, not a request.
 jq -r '.prompt // ""' <<<"$INPUT" \
-	| grep -qiE '(^|[^[:alnum:]])(pr|prs|mr|pull request|pull requests|merge request)([^[:alnum:]]|$)' || exit 0
+	| grep -qiE '(^|[^[:alnum:]_./-])(pr|prs|mr|pull request|pull requests|merge request)([^[:alnum:]_/-]|$)' || exit 0
 
 SESSION=$(jq -r '.session_id // ""' <<<"$INPUT")
 [ -z "$SESSION" ] && exit 0
