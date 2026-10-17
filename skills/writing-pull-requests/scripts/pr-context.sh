@@ -153,7 +153,7 @@ if [ -z "$TEMPLATE" ]; then
 		echo "Found outside the standard paths:"
 		printf '%s\n' "$FOUND"
 	else
-		echo "None. Use the four-part body from SKILL.md step 4."
+		echo "None. Use the five-part body from SKILL.md step 3."
 	fi
 elif [ -f "$TEMPLATE" ]; then
 	echo "Found: $TEMPLATE"
