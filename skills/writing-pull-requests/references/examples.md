@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-09-28T11:55+11:00 -->
+<!-- Last updated: 2026-10-19T16:48+10:00 -->
 
 # Worked examples
 
@@ -77,9 +77,8 @@ loses the pending retries. Making it durable needs a schema change, tracked in
 `wp queue:dispatch --dry-run` against the staging endpoint shows three retries
 then a dead-letter row.
 
-**Start at** `src/Queue/Dispatcher.php:88`, which holds the retry decision, and
-`src/Queue/Backoff.php` for the schedule.
-**Skip** `tests/__snapshots__/`, a mechanical regeneration.
+**Start at** the retry decision in the dispatcher, then the backoff schedule.
+**Skip** the test snapshots, which are regenerated.
 
 Refs #1877
 ```
@@ -110,15 +109,12 @@ them nothing. "Tests pass" is a claim with no output.
 ```markdown
 Extract Order into OrderTotals, OrderTaxes, OrderShipping and OrderPersistence.
 
-**Size warning: 1,840 lines across 34 files.** Google's guidance puts 1,000
-lines as usually too large, and this is over it. Of the total, 1,310 lines are
-the mechanical move of existing methods into the four new classes with no
-change to their bodies; 530 lines are new interfaces and their tests. It splits
-into the four extractions as separate PRs.
+**Size warning: 1,840 lines across 34 files.** That is over Google's
+1,000-line limit. 1,310 lines move existing methods unchanged. The other 530
+are new interfaces and their tests. It could ship as four PRs, one per class.
 
-**Why now:** checkout tests each needed a seeded database because totals and
-persistence sat in one class, so the suite took 4 minutes. It is 40 seconds
-after this.
+**Why now:** totals and saving sat in one class, so every checkout test needed
+a seeded database. The suite took 4 minutes. It now takes 40 seconds.
 
 **Shortcoming:** OrderTaxes still reaches for the global tax config rather than
 taking it as a constructor argument. Changing that touches the admin screens.
@@ -127,10 +123,10 @@ taking it as a constructor argument. Changing that touches the admin screens.
 `composer test` returns `412 passed, 0 failed` (was 412 before, unchanged).
 `composer test -- --group checkout` runs in 41s, down from 4m 06s.
 
-**Start at** `src/Order/OrderTotals.php`, the only class whose logic changed.
-**Skim** the other three: methods moved verbatim, and
+**Start at** OrderTotals, the only class whose logic changed.
+**Skim** the other three. Their methods moved unchanged, and
 `git diff -M --stat` shows them as renames.
-**Skip** `tests/Unit/Order/*Test.php`, new tests for the extracted interfaces.
+**Skip** the new unit tests for the extracted interfaces.
 ```
 
 The 1,000-line figure is Google's and real. Every other number here is
