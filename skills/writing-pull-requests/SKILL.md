@@ -9,7 +9,7 @@ hooks:
           command: "sh -c 'g=$HOME/.claude/skills/writing-pull-requests/scripts/prose-tells-guard.sh; [ -x \"$g\" ] && exec \"$g\"; exit 0'"
 ---
 
-<!-- Last updated: 2026-10-17T18:45+10:00 -->
+<!-- Last updated: 2026-10-19T16:48+10:00 -->
 
 # Writing pull requests
 
@@ -22,6 +22,19 @@ those.
 
 The prose rules in `references/prose.md` apply to the title and the body. Read
 the body against its word list before handing it over.
+
+**Write in plain English, and keep it short.** Write it the way you would
+explain the change to a colleague at their desk. Pick the everyday word over
+the technical one, and the short sentence over the long one. Cut any sentence
+that repeats a fact or adds none. Where a part fits on one line, give it one
+line.
+
+**Name code by what it does, never by its file.** Write "the retry check in the
+webhook dispatcher", not `src/Queue/Dispatcher.php:88`. The Files tab already
+lists every path. A path says where something is but not what it does, so the
+reader still has to open the file to learn why it matters. This holds in every
+part, including the title and Where to start. Name a function or class only
+where the reviewer needs that name to find the code.
 
 ## Output contract
 
@@ -122,8 +135,8 @@ Every piece of that evidence has to be reproducible from the branch. A gate fail
 **Where to start.** Only where the diff has more than one file worth reading. Two lines do the work, and the second is the one people omit:
 
 ```markdown
-**Start at** `src/Queue/Dispatcher.php:88`, which holds the retry decision.
-**Skip** `tests/__snapshots__/`, which is a mechanical regeneration.
+**Start at** the retry decision in the webhook dispatcher.
+**Skip** the test snapshots, which are regenerated.
 ```
 
 **Linked issues.** A closing keyword only where merging finishes the issue. Otherwise reference it plainly, so merging does not close work still open.
@@ -161,5 +174,8 @@ The split proposal goes to the user in the reply, never into the body. The body 
 5. **Does the undo actually undo it?** Where the change writes data, migrates a schema or calls an external service, a plain revert leaves that behind. The body has to name the recovery.
 6. **Where the PR was already open, is everything a human wrote and the diff
    still supports still there?** Say what you removed and why.
+7. **Does any line name a file path?** Replace it with what the code does.
+8. **Could any sentence be shorter or go?** Read each one and cut what a
+   reviewer would skip.
 
 Report what you checked and what you found.
