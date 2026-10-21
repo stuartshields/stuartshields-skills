@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-09-12T19:32+10:00 -->
+<!-- Last updated: 2026-10-21T17:58+10:00 -->
 
 # Prose rules
 
@@ -21,8 +21,8 @@ A checker's list, not a rule. Every entry has a legitimate use somewhere: quotin
 
 | Finding | Words or shapes |
 |---|---|
-| Asserts significance | seamless, delve, vibrant, bustling, nestled, testament, holistic, synergy, tapestry, with their inflections |
-| Needs a usage check, since a technical sense exists | robust, leverage, elevate, crucial, unlock |
+| Asserts significance | "seamless", "delve", "vibrant", "bustling", "nestled", "testament", "holistic", "synergy", "tapestry", with their inflections |
+| Needs a usage check, since a technical sense exists | "robust", "leverage", "elevate", "crucial", "unlock" |
 | Set phrase | "not just X, but Y", "more than just", "dive into", "in today's", "pivotal moment", "marks a shift", "serves as", "underscores the" |
 | Throat-clearing | "here's the thing", "here's why", "it's worth noting", "at the end of the day", "when it comes to", "in a world where", "let that sink in", "at its core" |
 | Punctuation | an em dash anywhere; an en dash not sitting between two numbers |
