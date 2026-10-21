@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-09-28T09:14+11:00 -->
+<!-- Last updated: 2026-10-21T17:28+10:00 -->
 
 # Formatting
 
@@ -38,12 +38,6 @@ A heuristic, and the weakest rule in this file. `attention.md` says what it rest
 
 1. **The alternation is a symptom, not the goal.** Pick the carrier that fits the content. A section that has run twelve lines of prose is usually doing two jobs, and splitting it is the real fix.
 2. **A genuine fourteen-line explanation stays fourteen lines.** Breaking an argument into bullets to hit a rhythm makes it worse.
-
-## Line length
-
-Hard wrapping is a per-repo decision, and mixing wrapped and unwrapped paragraphs produces diffs nobody can read. Fuchsia wraps prose at 80 characters and code at 100. The author's own skills do not wrap.
-
-Match the file you are editing. Starting a new file, match its neighbours, and say which file you matched.
 
 ## Decided by the dialect answer
 

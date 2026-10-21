@@ -1,21 +1,16 @@
-<!-- Last updated: 2026-10-19T16:48+10:00 -->
+<!-- Last updated: 2026-10-21T17:41+10:00 -->
 
 # Worked examples
 
-Three constructed descriptions, at three sizes, each paired with the weak
-version it replaces.
+Three constructed descriptions, at three sizes, each paired with the weak version it replaces.
 
 ## Read these for shape, never for content
 
-**Every repository, file path, line number, test count, timing, issue number
-and event count below is invented.** None of it was observed. These show where
-each part of a description sits and what a filled-in part reads like.
+**Every repository, file path, line number, test count, timing, issue number and event count below is invented.** None of it was observed. These show where each part of a description sits and what a filled-in part reads like.
 
 Take the structure. Take none of the figures.
 
-A figure that cannot be traced to a command you ran or a file you read does not
-go in. `SKILL.md` step 5 checks every claim in the body against the diff, and a
-number imported from this file is what that check is looking for.
+A figure that cannot be traced to a command you ran or a file you read does not go in. `SKILL.md` step 5 checks every claim in the body against the diff, and a number imported from this file is what that check is looking for.
 
 ## Small: a one-file fix
 
@@ -25,8 +20,7 @@ number imported from this file is what that check is looking for.
 Fix bug
 ```
 
-Google names this one: "'Fix bug' is an inadequate CL description. What bug?
-What did you do to fix it?" It is true and it is useless.
+Google names this one: "'Fix bug' is an inadequate CL description. What bug? What did you do to fix it?" It is true and it is useless.
 
 **After**
 
@@ -46,12 +40,9 @@ Manual check on `/blog/` shows full final words on all 10 excerpts.
 Fixes #1841
 ```
 
-The invented parts are the test counts, the excerpt count and the issue number.
-The shape around them is the point. One file changed, so there is no Start at
-line: the Files tab already routes the reviewer.
+The invented parts are the test counts, the excerpt count and the issue number. The shape around them is the point. One file changed, so there is no Start at line: the Files tab already routes the reviewer.
 
-The title is the first line of the body here because GitHub takes it
-separately. In a text-only file, it takes its own `Title:` line.
+The title is the first line of the body here because GitHub takes it separately. In a text-only file, it takes its own `Title:` line.
 
 ## Medium: a feature with a trade-off
 
@@ -83,13 +74,9 @@ then a dead-letter row.
 Refs #1877
 ```
 
-The shortcoming paragraph is the part most descriptions omit. Google asks for
-it plainly: "If there are any shortcomings to the approach, they should be
-mentioned." Stating one gets a faster review than leaving a reviewer to find
-it.
+The shortcoming paragraph is the part most descriptions omit. Google asks for it plainly: "If there are any shortcomings to the approach, they should be mentioned." Stating one gets a faster review than leaving a reviewer to find it.
 
-Note `Refs #1877`, not `Closes #1877`. In this invented scenario the issue
-covers durable retry state too, so merging would not finish it.
+Note `Refs #1877`, not `Closes #1877`. In this invented scenario the issue covers durable retry state too, so merging would not finish it.
 
 ## Large: over the size threshold
 
@@ -100,9 +87,7 @@ Big refactor, sorry this one's a monster. Moving code from A to B mostly.
 Should be fine, tests pass.
 ```
 
-Three faults. "Moving code from A to B." is on Google's list of similarly bad
-descriptions. The apology is atmosphere that costs the reader a line and tells
-them nothing. "Tests pass" is a claim with no output.
+Three faults. "Moving code from A to B." is on Google's list of similarly bad descriptions. The apology is atmosphere that costs the reader a line and tells them nothing. "Tests pass" is a claim with no output.
 
 **After**
 
@@ -129,16 +114,11 @@ taking it as a constructor argument. Changing that touches the admin screens.
 **Skip** the new unit tests for the extracted interfaces.
 ```
 
-The 1,000-line figure is Google's and real. Every other number here is
-invented, and they are internally consistent only because a worked example that
-contradicts itself teaches the wrong lesson.
+The 1,000-line figure is Google's and real. Every other number here is invented, and they are internally consistent only because a worked example that contradicts itself teaches the wrong lesson.
 
-The size warning proposes a split rather than apologising for the absence of
-one. That is the behaviour step 4 of the skill asks for: the description names
-the problem and hands the decision back.
+The size warning proposes a split rather than apologising for the absence of one. That is the behaviour step 4 of the skill asks for: the description names the problem and hands the decision back.
 
-The reviewer routing does the other half. A 34-file diff where 30 files are
-verbatim moves is reviewable once someone knows which four are not.
+The reviewer routing does the other half. A 34-file diff where 30 files are verbatim moves is reviewable once someone knows which four are not.
 
 ## The shapes to reuse
 

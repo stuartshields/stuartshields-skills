@@ -1,19 +1,14 @@
-<!-- Last updated: 2026-09-13T19:25+10:00 -->
+<!-- Last updated: 2026-10-21T17:41+10:00 -->
 
 # Sentence shapes that read as generated
 
-Structural patterns, not a word list. `prose.md` holds the words, and a
-project's prose hook flags them on every Markdown write, which is the right
-instrument for a denylist: deterministic, no judgement to distort, no context
-cost. A shape cannot be matched that way, so it lives here.
+Structural patterns, not a word list. `prose.md` holds the words, and a project's prose hook flags them on every Markdown write, which is the right instrument for a denylist: deterministic, no judgement to distort, no context cost. A shape cannot be matched that way, so it lives here.
 
-Read this during the line-level pass in step 4, and when a draft passes every
-contract term and still reads wrong.
+Read this during the line-level pass in step 4, and when a draft passes every contract term and still reads wrong.
 
 ## Why these cost something
 
-Every pattern below asks the reader to do work that returns them no
-information. `attention.md` carries the measurements.
+Every pattern below asks the reader to do work that returns them no information. `attention.md` carries the measurements.
 
 ## Binary contrast
 
@@ -31,16 +26,11 @@ A negation used to set up its own reversal.
 
 ## Negative listing
 
-Naming what a thing is not, several times, before naming what it is. The reader
-holds three rejected ideas to reach one real one.
+Naming what a thing is not, several times, before naming what it is. The reader holds three rejected ideas to reach one real one.
 
-> This is not a cron replacement. It is not a message broker, and it does not
-> persist anything across restarts. It runs a function after a delay you set.
+> This is not a cron replacement. It is not a message broker, and it does not persist anything across restarts. It runs a function after a delay you set.
 
-**Repair:** open with the real one, then keep at most one contrast, and only
-where a reader arriving from a named alternative would otherwise guess wrong.
-"It runs a function after a delay you set. Unlike cron, a pending delay is
-dropped on restart."
+**Repair:** open with the real one, then keep at most one contrast, and only where a reader arriving from a named alternative would otherwise guess wrong. "It runs a function after a delay you set. Unlike cron, a pending delay is dropped on restart."
 
 ## Dramatic fragmentation
 
@@ -50,8 +40,7 @@ dropped on restart."
 | "X. And Y. And Z." | "It retries. And backs off. And gives up." | "It retries three times with exponential backoff, then gives up." |
 | Sentence fragments for emphasis | "Three times. Then the dead-letter table." | "After the third retry the event moves to the dead-letter table." |
 
-**Repair:** complete sentences. A fragment used for weight is asking the layout
-to carry an argument the words did not make.
+**Repair:** complete sentences. A fragment used for weight is asking the layout to carry an argument the words did not make.
 
 ## Rhetorical setup
 
@@ -68,9 +57,7 @@ Announcing an insight in place of delivering it.
 
 ## False agency
 
-An inanimate subject given a human verb. This is the most common tell in
-technical prose, because it lets a sentence describe a decision without naming
-who made it.
+An inanimate subject given a human verb. This is the most common tell in technical prose, because it lets a sentence describe a decision without naming who made it.
 
 | Shape | Repair |
 |---|---|
@@ -80,9 +67,7 @@ who made it.
 | "the error surfaces" | Where? Name the log, the stream, the exit code. |
 | "the culture shifts" | People changed what they do. |
 
-**Repair:** find the actor and put them at the front. Where no specific actor
-fits, "you" puts the reader in the seat, which the personalization evidence in
-`attention.md` says is the strongest move available anyway.
+**Repair:** find the actor and put them at the front. Where no specific actor fits, "you" puts the reader in the seat, which the personalization evidence in `attention.md` says is the strongest move available anyway.
 
 ## Narrator from a distance
 
@@ -94,19 +79,13 @@ fits, "you" puts the reader in the seat, which the personalization evidence in
 
 ## Meta-commentary
 
-Sentences about the document rather than about its subject. The banned openers
-in step 4 of `SKILL.md` are the word-level list; "The rest of this guide
-explains…" and "But that's another topic" are the same shape mid-document.
+Sentences about the document rather than about its subject. The banned openers in step 4 of `SKILL.md` are the word-level list; "The rest of this guide explains…" and "But that's another topic" are the same shape mid-document.
 
-**Repair:** delete. The heading already announced the section. This is the same
-rule as the voice term in step 3 forbidding a sentence whose only job is to
-introduce the next one.
+**Repair:** delete. The heading already announced the section. This is the same rule as the voice term in step 3 forbidding a sentence whose only job is to introduce the next one.
 
 ## Vague declarative
 
-A sentence asserting that something is significant without naming the
-significance. The word list in `prose.md` catches the common vocabulary; the
-shape is broader than the words.
+A sentence asserting that something is significant without naming the significance. The word list in `prose.md` catches the common vocabulary; the shape is broader than the words.
 
 | Shape | Repair |
 |---|---|
@@ -114,18 +93,15 @@ shape is broader than the words.
 | "The reasons are structural." | Name a reason |
 | "This is where it gets interesting." | Be interesting |
 
-The word-level version is in step 3 of `SKILL.md`: avoid the superlatives, and
-reserve "ensure" and "guarantee" for claims you will stand behind.
+The word-level version is in step 3 of `SKILL.md`: avoid the superlatives, and reserve "ensure" and "guarantee" for claims you will stand behind.
 
 ## The justifying tail
 
 A clause appended to explain why the preceding statement matters.
 
-> Start without Redis and your first `enqueue()` call hangs instead of
-> erroring, which costs more time to diagnose than to prevent.
+> Start without Redis and your first `enqueue()` call hangs instead of erroring, which costs more time to diagnose than to prevent.
 
-**Test:** delete everything after the last comma. Where the sentence still
-stands, the tail was the writer reassuring themselves that the point landed.
+**Test:** delete everything after the last comma. Where the sentence still stands, the tail was the writer reassuring themselves that the point landed.
 
 ## The subjectless feature list
 
@@ -137,23 +113,15 @@ Bullets that are noun phrases with no subject, no number and no cost.
 | Dead-letter routing with no setup | Failed events land in the `dead_letters` table after the third retry |
 | Survives process restarts | Retry state lives in Redis, so a Redis restart drops anything mid-backoff |
 
-The right column survives the substitution test in step 5. The left column does
-not.
+The right column survives the substitution test in step 5. The left column does not.
 
 ## What this file does not tell you to do
 
-Three rules that circulate with the patterns above and are wrong for
-documentation. They are listed so a later reader does not add them back.
+Three rules that circulate with the patterns above and are wrong for documentation. They are listed so a later reader does not add them back.
 
-1. **"Never open a sentence with a Wh- word."** Step 4 recommends "When the
-   build fails in CI" as a heading, because a heading that leads with the
-   information beats one that names a category. The Wh- ban would forbid it.
-2. **"Two items beat three."** Step 4 sets five bullets as the heuristic and
-   says a genuine list of eight flags stays a list of eight. A reference page
-   enumerating options is not padding.
-3. **"Cut every adverb."** "Deliberately", "explicitly" and "roughly" carry
-   meaning that costs a clause to replace. The emphasis crutches worth removing
-   are already in the hook's word list.
+1. **"Never open a sentence with a Wh- word."** Step 4 recommends "When the build fails in CI" as a heading, because a heading that leads with the information beats one that names a category. The Wh- ban would forbid it.
+2. **"Two items beat three."** Step 4 sets five bullets as the heuristic and says a genuine list of eight flags stays a list of eight. A reference page enumerating options is not padding.
+3. **"Cut every adverb."** "Deliberately", "explicitly" and "roughly" carry meaning that costs a clause to replace. The emphasis crutches worth removing are already in the hook's word list.
 
 ## Sources
 
