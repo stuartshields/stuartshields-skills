@@ -1,16 +1,12 @@
-<!-- Last updated: 2026-09-27T13:05+10:00 -->
+<!-- Last updated: 2026-10-21T17:41+10:00 -->
 
 # CSS and SASS comments
 
-Stylesheets have no signature to document, so a block comment partitions the
-file instead. SassDoc adds an API layer for mixins and functions.
+Stylesheets have no signature to document, so a block comment partitions the file instead. SassDoc adds an API layer for mixins and functions.
 
 ## WordPress CSS
 
-**"Comment, and comment liberally."** The handbook says it about file size:
-minification and `SCRIPT_DEBUG` strip comments, so source keeps them. That
-permits comments. It does not ask for paragraphs, and the one-line default in
-`SKILL.md` still holds.
+**"Comment, and comment liberally."** The handbook says it about file size: minification and `SCRIPT_DEBUG` strip comments, so source keeps them. That permits comments. It does not ask for paragraphs, and the one-line default in `SKILL.md` still holds.
 
 **Numbered section headers**, so a section is searchable by number:
 
@@ -22,8 +18,7 @@ permits comments. It does not ask for paragraphs, and the one-line default in
  */
 ```
 
-A newline goes before and after the block. A long stylesheet takes a table of
-contents at the top using the same numbers.
+A newline goes before and after the block. A long stylesheet takes a table of contents at the top using the same numbers.
 
 **Inline comments** carry no blank line separating them from the code:
 
@@ -35,8 +30,7 @@ contents at the top using the same numbers.
 }
 ```
 
-Every `!important` gets a same-line comment naming what it overrides, such as
-`/* Overrides the block library's inline width. */`.
+Every `!important` gets a same-line comment naming what it overrides, such as `/* Overrides the block library's inline width. */`.
 
 **Wrap long comments at 80 characters**, broken by hand.
 
@@ -44,8 +38,7 @@ Do not write CSSDoc into a WordPress tree.
 
 ## SassDoc
 
-For `.scss` and `.sass`, SassDoc documents mixins, functions, variables and
-placeholders. It reads `///` line comments, not `/** */` blocks.
+For `.scss` and `.sass`, SassDoc documents mixins, functions, variables and placeholders. It reads `///` line comments, not `/** */` blocks.
 
 ```scss
 /// Chunks a list into sub-lists of a given length.
@@ -64,28 +57,19 @@ Square brackets give a default value, as in JSDoc.
 
 21 annotations:
 
-`@access`, `@alias`, `@author`, `@content`, `@deprecated`, `@example`,
-`@group`, `@groupDescription`, `@ignore`, `@link`, `@name`, `@output`,
-`@parameter`, `@property`, `@require`, `@return`, `@see`, `@since`, `@throw`,
-`@todo`, `@type`
+`@access`, `@alias`, `@author`, `@content`, `@deprecated`, `@example`, `@group`, `@groupDescription`, `@ignore`, `@link`, `@name`, `@output`, `@parameter`, `@property`, `@require`, `@return`, `@see`, `@since`, `@throw`, `@todo`, `@type`
 
-Aliases: `@param` for `@parameter`, `@returns` for `@return`, `@prop` for
-`@property`.
+Aliases: `@param` for `@parameter`, `@returns` for `@return`, `@prop` for `@property`.
 
-One use per item is enforced for `@access`, `@content`, `@deprecated`,
-`@group`, `@output`, `@return` and `@type`. The rest may repeat.
+One use per item is enforced for `@access`, `@content`, `@deprecated`, `@group`, `@output`, `@return` and `@type`. The rest may repeat.
 
 ### Which annotations to write
 
-`@param` and `@return` on every public mixin or function. `@group` once the file
-has more than a handful. `@output` on a mixin, since what it emits cannot be
-inferred from its name. `@access private` on anything callers should not reach.
+`@param` and `@return` on every public mixin or function. `@group` once the file has more than a handful. `@output` on a mixin, since what it emits cannot be inferred from its name. `@access private` on anything callers should not reach.
 
 ## Checking it
 
-`stylelint` handles formatting. Nothing checks SassDoc annotations against the
-signature, so step 5 of the skill is manual here: read the argument list and the
-`@param` lines side by side.
+`stylelint` handles formatting. Nothing checks SassDoc annotations against the signature, so step 5 of the skill is manual here: read the argument list and the `@param` lines side by side.
 
 ## Sources
 

@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-09-28T09:14+11:00 -->
+<!-- Last updated: 2026-10-21T17:41+10:00 -->
 
 # Detection
 
@@ -10,8 +10,7 @@ Everything the skill reads before it writes. Run these rather than assuming.
 git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||'
 ```
 
-Falls back to checking which of `main`, `master`, `develop` exists. Where the
-PR already exists, `gh pr view --json baseRefName` is authoritative.
+Falls back to checking which of `main`, `master`, `develop` exists. Where the PR already exists, `gh pr view --json baseRefName` is authoritative.
 
 ## The change
 
@@ -21,8 +20,7 @@ git log --oneline --no-merges <base>...HEAD
 git diff <base>...HEAD
 ```
 
-`--stat` first: it gives the line count for the size check in step 4 and says
-whether the full diff is readable in one pass.
+`--stat` first: it gives the line count for the size check in step 4 and says whether the full diff is readable in one pass.
 
 ## The template
 
@@ -35,20 +33,15 @@ ls .github/pull_request_template.md \
    .github/PULL_REQUEST_TEMPLATE/ 2>/dev/null
 ```
 
-GitHub also honours a `PULL_REQUEST_TEMPLATE` subdirectory inside the root or
-`docs/`, and the filename is case-insensitive in practice. Where nothing turns
-up, widen once:
+GitHub also honours a `PULL_REQUEST_TEMPLATE` subdirectory inside the root or `docs/`, and the filename is case-insensitive in practice. Where nothing turns up, widen once:
 
 ```sh
 find . -iname 'pull_request_template*' -not -path './node_modules/*' 2>/dev/null
 ```
 
-Where the directory form holds several templates, they are selected by a
-`template` query parameter on the PR URL. Pick by the kind of change and name
-which you picked.
+Where the directory form holds several templates, they are selected by a `template` query parameter on the PR URL. Pick by the kind of change and name which you picked.
 
-Templates only take effect once merged to the default branch, so a template
-added on the current branch is not yet live. Use it anyway and say so.
+Templates only take effect once merged to the default branch, so a template added on the current branch is not yet live. Use it anyway and say so.
 
 ## The commit convention
 
@@ -56,9 +49,7 @@ added on the current branch is not yet live. Use it anyway and say so.
 git log --format=%s -n 40 <base>
 ```
 
-Conventional Commits shows as a `type:` or `type(scope):` prefix on most
-subjects. A handful of stray `fix:` lines is not a convention. Match what is
-there; do not introduce one the repo has not adopted.
+Conventional Commits shows as a `type:` or `type(scope):` prefix on most subjects. A handful of stray `fix:` lines is not a convention. Match what is there; do not introduce one the repo has not adopted.
 
 ## The issue reference
 
@@ -68,9 +59,7 @@ Three places, in order:
 2. A commit trailer: `Refs: #1234`, `Closes #1234`.
 3. The user, where neither carries one and the change looks issue-driven.
 
-**Closing keywords** GitHub recognises: `close`, `closes`, `closed`, `fix`,
-`fixes`, `fixed`, `resolve`, `resolves`, `resolved`, each followed by `#<n>`,
-or `owner/repo#<n>` across repositories.
+**Closing keywords** GitHub recognises: `close`, `closes`, `closed`, `fix`, `fixes`, `fixed`, `resolve`, `resolves`, `resolved`, each followed by `#<n>`, or `owner/repo#<n>` across repositories.
 
 ## Existing PR state
 

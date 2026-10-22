@@ -75,6 +75,11 @@ function tell(word, label,    pat) {
 	line = $0
 	gsub(/`[^`]*`/, "", line)             # inline code spans
 	gsub(/\[[^]]*\]\([^)]*\)/, "", line)  # link targets carry hyphens and dashes
+	# A quoted phrase in a table cell names a tell rather than using it: the
+	# catalogues in tells.md and prose.md are tables of exactly these. The same
+	# quote in a sentence is still scanned, since prose quotes its own examples
+	# rarely enough that a hit there is worth reading.
+	if (line ~ /^[[:space:]]*\|/) gsub(/"[^"]*"/, "", line)
 	l = tolower(line)
 
 	snippet = line

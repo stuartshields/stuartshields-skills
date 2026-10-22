@@ -97,6 +97,15 @@ check 'a tell inside a code span is not prose' 0 \
 check 'the same tell in prose is flagged' 1 \
 	"$(printf 'It was a seamless migration.\n' | count 'seamless' on)"
 
+# A catalogue of tells is a table quoting each one. tells.md:52 was reported as
+# a throat-clearing opener for the row naming that opener.
+check 'a quoted tell in a table cell is not flagged' 0 \
+	"$(printf '%s\n' "| \"Here's what I mean:\" | filler |" | count 'throat-clearing' on)"
+check 'an unquoted tell in a table cell is flagged' 1 \
+	"$(printf '%s\n' "| Here's what I mean: | filler |" | count 'throat-clearing' on)"
+check 'a quoted tell in a sentence is flagged' 1 \
+	"$(printf '%s\n' "He wrote \"Here's what I mean:\" twice." | count 'throat-clearing' on)"
+
 # writing-pull-requests shares the word list, the hook and the scanner through
 # relative symlinks, so the repository holds one copy of each. The skills CLI
 # copies with dereference on, so an install materialises real files: the link

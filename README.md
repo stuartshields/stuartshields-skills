@@ -132,7 +132,7 @@ For a document someone reads: a README, a docs page, a skill body. Four question
 
 ### Its hook
 
-`scripts/prose-tells-guard.sh` runs before every Write or Edit to a Markdown file once the skill has been invoked. It reports em dashes, en dashes outside a numeric range, a short list of assertion vocabulary, and sentences past 30 words. Fenced code and YAML frontmatter are skipped. Run `scripts/prose-scan.selftest.sh` after editing the scanner.
+`scripts/prose-tells-guard.sh` runs before every Write or Edit to a Markdown file once the skill has been invoked. It reports em dashes, en dashes outside a numeric range, a short list of assertion vocabulary, and sentences past 30 words. Fenced code, YAML frontmatter and a double-quoted phrase in a table row are skipped. Run `scripts/prose-scan.selftest.sh` after editing the scanner.
 
 ## `writing-docblocks`
 

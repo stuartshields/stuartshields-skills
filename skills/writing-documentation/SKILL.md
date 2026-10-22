@@ -9,7 +9,7 @@ hooks:
           command: "sh -c 'g=$HOME/.claude/skills/writing-documentation/scripts/prose-tells-guard.sh; [ -x \"$g\" ] && exec \"$g\"; exit 0'"
 ---
 
-<!-- Last updated: 2026-09-28T11:55+11:00 -->
+<!-- Last updated: 2026-10-21T17:28+10:00 -->
 
 # Writing documentation
 
@@ -113,6 +113,8 @@ The left column is a consequence the reader can act on. The right column is atmo
 ## 4. Draft in two passes
 
 Mixing structural and line-level editing produces unfocused work.
+
+**Match the file's line wrapping before writing the first line.** Look at the file you are editing: one line per paragraph, or paragraphs broken at a fixed width. Write the same, at the same width. A new file matches its neighbours, and you say which file you matched. Mixing wrapped and unwrapped paragraphs in one file produces diffs nobody can read. Where nothing settles it, do not wrap, which is how the author's own skills are written.
 
 **Structural pass.** Section order, consolidation, what gets lifted out.
 

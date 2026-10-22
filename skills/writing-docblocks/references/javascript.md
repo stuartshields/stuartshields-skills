@@ -1,17 +1,14 @@
-<!-- Last updated: 2026-10-02T12:41+11:00 -->
+<!-- Last updated: 2026-10-21T17:41+10:00 -->
 
 # JavaScript and TypeScript docblocks
 
-WordPress follows JSDoc 3. TypeScript files in a WordPress tree keep the
-WordPress tag order; only the type information changes.
+WordPress follows JSDoc 3. TypeScript files in a WordPress tree keep the WordPress tag order; only the type information changes.
 
 ## The opening delimiter
 
-A docblock must open with `/**`. A block opening `/*` or `/***` is skipped by
-the parser.
+A docblock must open with `/**`. A block opening `/*` or `/***` is skipped by the parser.
 
-The inverse rule is the one that bites: a multi-line comment that is not
-documentation must open with `/*`, or the parser treats it as a DocBlock.
+The inverse rule is the one that bites: a multi-line comment that is not documentation must open with `/*`, or the parser treats it as a DocBlock.
 
 ## Tag order, WordPress
 
@@ -36,27 +33,19 @@ Different from the PHP order. Do not carry one across to the other.
 
 ## Formatting
 
-- Wrap at 80 characters of text. A deeply indented block may wrap later, up to
-  120 characters wide in total.
+- Wrap at 80 characters of text. A deeply indented block may wrap later, up to 120 characters wide in total.
 - Align types and names vertically within a tag group.
-- Tabs for indentation inside the block, spaces only for that alignment.
-  `docblocks.md` carries the rule.
+- Tabs for indentation inside the block, spaces only for that alignment. `docblocks.md` carries the rule.
 
 ## Summary and description
 
-**Summary:** one line, one sentence, ending in a period. No markup. It says what
-the element does or when it fires. A why, where there is one, goes in the
-description. The handbook says ""why" should rarely need to be included", and
-this skill departs from it; `docblocks.md` says when a why earns its place.
+**Summary:** one line, one sentence, ending in a period. No markup. It says what the element does or when it fires. A why, where there is one, goes in the description. The handbook says ""why" should rarely need to be included", and this skill departs from it; `docblocks.md` says when a why earns its place.
 
-**Description:** optional, and usually omitted. Ends in a period. Markdown
-permitted.
+**Description:** optional, and usually omitted. Ends in a period. Markdown permitted.
 
 ## `@since`
 
-Three digits, as in PHP. Additional `@since` lines with versions and
-descriptions form the changelog. `svn blame` finds the version something landed
-in core.
+Three digits, as in PHP. Additional `@since` lines with versions and descriptions form the changelog. `svn blame` finds the version something landed in core.
 
 ## `@param`
 
@@ -78,29 +67,23 @@ Square brackets mark an optional parameter, with `=` giving the default.
 
 Three differences in a `.ts` file:
 
-1. **Do not repeat types.** The signature carries them. Write
-   `@param text - Raw excerpt text.` with the TSDoc hyphen, no braces.
+1. **Do not repeat types.** The signature carries them. Write `@param text - Raw excerpt text.` with the TSDoc hyphen, no braces.
 2. **`@returns`, not `@return`.**
 3. **`@typeParam` documents a generic**, where JSDoc would use `@template`.
 
 TSDoc tags split three ways:
 
-- **Block:** `@param`, `@returns`, `@throws`, `@remarks`, `@example`,
-  `@defaultValue`, `@typeParam`, `@privateRemarks`, `@decorator`
-- **Modifier:** `@alpha`, `@beta`, `@public`, `@internal`, `@experimental`,
-  `@deprecated`, `@sealed`, `@virtual`, `@override`, `@readonly`,
-  `@eventProperty`
+- **Block:** `@param`, `@returns`, `@throws`, `@remarks`, `@example`, `@defaultValue`, `@typeParam`, `@privateRemarks`, `@decorator`
+- **Modifier:** `@alpha`, `@beta`, `@public`, `@internal`, `@experimental`, `@deprecated`, `@sealed`, `@virtual`, `@override`, `@readonly`, `@eventProperty`
 - **Inline:** `@link`, `@inheritDoc`, `@label`
 
 `@packageDocumentation` marks the block documenting the entry point.
 
-Where `tsconfig.json` or the lint config picks a side, follow it and say which
-file you read.
+Where `tsconfig.json` or the lint config picks a side, follow it and say which file you read.
 
 ## Checking it
 
-`eslint` with `eslint-plugin-jsdoc` checks tag presence, order and signature
-agreement. `tsc` catches type drift. Run one and quote it.
+`eslint` with `eslint-plugin-jsdoc` checks tag presence, order and signature agreement. `tsc` catches type drift. Run one and quote it.
 
 ## Sources
 
