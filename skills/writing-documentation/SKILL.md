@@ -9,7 +9,7 @@ hooks:
           command: "sh -c 'g=$HOME/.claude/skills/writing-documentation/scripts/prose-tells-guard.sh; [ -x \"$g\" ] && exec \"$g\"; exit 0'"
 ---
 
-<!-- Last updated: 2026-10-21T17:28+10:00 -->
+<!-- Last updated: 2026-10-22T22:52+10:00 -->
 
 # Writing documentation
 
@@ -53,6 +53,8 @@ Four types, and they are not interchangeable. Mixing them is the most common rea
 | Reference | looking something up | the signature, the flags, the shape |
 | Explanation | trying to understand | the question being answered |
 
+Diátaxis opens a tutorial with "In this tutorial, we will…" and a how-to guide with "This guide shows you how to…". Start with the words after that frame. A sentence about the document is the one a reader skips, and `references/tells.md` lists it as a tell.
+
 **Lead with what the reader gets, not where the code came from.** A first paragraph explaining the project's origin ("extracted from a real client project") spends the most-read line on context nobody needs yet.
 
 That holds for a README and a how-to guide. It does not hold for reference, where opening with the signature is correct and a value proposition is padding.
@@ -74,6 +76,7 @@ Defaults where the user has no preference, from GitLab: sentences under 20 words
 1. **Front-load at four levels.** Document, section, paragraph, sentence. Most documents do the first and skip the rest.
 2. **One action per numbered step.** "Install the CLI and authenticate" is two steps wearing one number, and a reader interrupted between them loses the second.
 3. **A summary block above anything past 100 lines.** The reader decides whether to continue from it.
+4. **In a tutorial, every step says what the reader should see.** Give the output or the change it makes. Where a likely mistake shows a sign, name it: "If the list is empty, step 2 did not trust the key." A learner who cannot tell whether a step worked stops trusting the steps after it.
 
 ### Voice terms
 
@@ -81,6 +84,7 @@ Limits alone produce prose that breaks none of them and still reads as though no
 
 - **First person for the choices you made.** "I would not skip that step" beats "that step matters more than it sounds".
 - **Second person for what the reader does**, including permission to disagree with you.
+- **Reference takes no first person.** It describes the thing and does not opine.
 - **No sentence whose only job is to introduce the next one.**
 - **Give the consequence rather than saying there is one.**
 
@@ -96,6 +100,8 @@ Every term above constrains shape. A draft can satisfy all of them and still say
 Padding is not neutral. The reader spends attention rejecting an unearned claim, which is time taken from the text that mattered.
 
 Avoid the superlatives "best, simplest, fastest, never, and always". Treat "ensure" and "guarantee" as claims you will stand behind. Google's rule: "The safest approach is always to write factually and objectively, limiting what you say to verifiable information."
+
+Explanation is the exception. It weighs alternatives and gives judgements, each with a reason the reader can check: "Polling suits a single server better than webhooks, because webhooks need a public endpoint."
 
 `references/tells.md` holds the sentence shapes that produce this failure. `references/attention.md` holds the measurements.
 
@@ -120,12 +126,13 @@ Mixing structural and line-level editing produces unfocused work.
 
 - Every fact once, in the section where the reader needs it. Where it appears twice, it stays in the earlier, more specific section. If the skill set appears under "What's included", it does not also appear under "How it works".
 - Cut what the reader already knows. Step 2's reader column says who they are. A how-to guide for a WordPress plugin does not explain what a hook is, and a README does not explain what npm does.
+- **Content of another type moves out, and a link stays behind.** An explanation inside a how-to guide or tutorial, or instructions inside reference, go to a section or file of their own type. Moving keeps them for the reader who wants them later, and cutting does not. A one-clause reason stays inline: "HTTPS, because it is more secure" needs no page.
 - Prerequisites collapse into one "Requirements" block, not spread across "What this assumes", "Compatibility" and "Notes".
 - Examples past roughly 30 lines move to their own file with a short teaser left behind.
 
 **Every section is a re-entry point.** Attention leaves partway through and comes back at a heading, so the structure has to survive being entered anywhere.
 
-1. **Headings lead with the words carrying the information.** "Configuring the cache" over "Configuration", "When the build fails in CI" over "Troubleshooting". A heading naming a category has told the reader nothing.
+1. **Headings lead with the words carrying the information.** "How to configure the cache" over "Configuration", "When the build fails in CI" over "Troubleshooting". A heading naming a category has told the reader nothing. A gerund is not enough for a how-to guide: "Configuring the cache" could be about whether to, not how. An explanation heading takes an implicit "About": "About cache invalidation".
 2. **No section depends on having read the one above it.** Where it genuinely does, its first line says what it is assuming.
 
 **Line-level pass.** Sentence shape and bullets. Read `references/tells.md` here.
@@ -184,9 +191,12 @@ The finding is the first point where a reader would need something the document 
 - an unstated prerequisite
 - a command that assumes a directory
 - a variable introduced without saying where it comes from
+- a step with no sign of whether it worked
 - an install command that fetches somebody else's package
 
 The last one hides behind a successful lookup. A registry entry with the same name is a match only when its `repository` field, maintainer or published description is this project's. A name alone matching proves that the name is taken, and the install section then says so and gives the path or URL that does work.
+
+Reference and explanation have no task to follow. Walk reference as a lookup: pick a fact a reader would come for, and find it from the headings alone. For explanation, check that the question it opens with is answered by the end.
 
 ### The scan test
 
