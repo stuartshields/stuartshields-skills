@@ -1,4 +1,4 @@
-<!-- Last updated: 2026-09-28T09:14+11:00 -->
+<!-- Last updated: 2026-10-22T22:52+10:00 -->
 
 # The interview
 
@@ -41,6 +41,8 @@ Three constraints hold whatever the answer:
 3. Third person for the reader plus first person for the author does not cohere. If the author says "I chose", the reader is "you".
 
 Google, for a user who asks for "we": "Use second person: 'you' rather than 'we.'"
+
+Diátaxis writes tutorials in "we", meaning tutor and learner together. This skill keeps "you" for tutorials as for every other type, so the reader has one name across a repo's documents. A user who wants Diátaxis's "we" picks first person plural here, under constraint 2's author-plus-reader meaning.
 
 **One place the answer is not open.** A `SKILL.md` `description` is third person whatever the document around it does. Anthropic's guidance: "Always write in third person. The description is injected into the system prompt, and inconsistent point-of-view can cause discovery problems." So "Processes Excel files and generates reports", never "I can help you process Excel files". The body below the frontmatter is governed by question 2 as normal.
 
