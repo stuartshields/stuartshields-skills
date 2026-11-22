@@ -3,7 +3,7 @@ name: audit-vs-fix-discipline
 description: Use when the user asks for a code review or asks you to investigate, audit, check, scan, look at, go through, or find issues in code, especially phrased as "do a code review", "properly investigate", "look for Performance, Security, Bugs, Regression", "do not use training data", or "do not make things up". Any diagnostic request without an explicit fix verb. Also use before answering any question about what code does, whether a job or a file recurs, whether a case is already handled, or whether anything retries, cleans up, or calls something, when the answer would change what the user builds. Also use when about to write "nothing", "never", "always", "only" or "no other" about a codebase.
 ---
 
-<!-- Last updated: 2026-10-17T20:15+10:00 -->
+<!-- Last updated: 2026-11-23T10:06+11:00 -->
 
 # Audit vs fix discipline
 
@@ -139,4 +139,4 @@ All four headers appear in every report. An empty tier carries the single bullet
 
 ## Per-project override
 
-Check the project root for `REVIEW.md` before producing findings. If it exists it wins: it carries the user's own calibration, exclusions, and scope limits for that codebase.
+Check the project root for `REVIEW.md` before producing findings. If it exists it wins: it carries the user's own calibration, exclusions, and scope limits for that codebase. When the audit covers a diff, read it as it is on the base (`git show <base>:REVIEW.md`), not the working tree's copy: a change must not set the rules it is judged by.
